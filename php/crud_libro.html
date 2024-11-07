@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD de Libros</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="text-center"><i class="fas fa-book"></i> Proyecto CRUD de Libros</h2>
+    <p class="lead">Sigue los pasos detallados a continuación para completar el proyecto de CRUD de libros en tu entorno de desarrollo local.</p>
+    
+    <div class="accordion" id="crudSteps">
+        <!-- Paso 1 -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="step1Heading">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#step1" aria-expanded="true" aria-controls="step1">
+                    <i class="fas fa-code-branch"></i> Paso 1: Realizar un fork del repositorio
+                </button>
+            </h2>
+            <div id="step1" class="accordion-collapse collapse show" aria-labelledby="step1Heading" data-bs-parent="#crudSteps">
+                <div class="accordion-body">
+                    <p>Ve al repositorio: <a href="https://github.com/profeInformatica101/crud_php_example" target="_blank">https://github.com/profeInformatica101/crud_php_example</a> y haz clic en <strong>Fork</strong> para crear una copia en tu cuenta de GitHub.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paso 2 -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="step2Heading">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step2" aria-expanded="false" aria-controls="step2">
+                    <i class="fas fa-clone"></i> Paso 2: Clonar el repositorio forkeado
+                </button>
+            </h2>
+            <div id="step2" class="accordion-collapse collapse" aria-labelledby="step2Heading" data-bs-parent="#crudSteps">
+                <div class="accordion-body">
+                    <p>En tu repositorio forkeado, haz clic en <strong>Code</strong> y copia la URL. Luego, clona el repositorio en tu entorno local:</p>
+                    <code>git clone &lt;URL-del-repositorio&gt;</code>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paso 3 -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="step3Heading">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step3" aria-expanded="false" aria-controls="step3">
+                    <i class="fas fa-code"></i> Paso 3: Crear una rama para el CRUD de libro
+                </button>
+            </h2>
+            <div id="step3" class="accordion-collapse collapse" aria-labelledby="step3Heading" data-bs-parent="#crudSteps">
+                <div class="accordion-body">
+                    <p>Crea una nueva rama llamada <code>crud_libro</code> y cambia a esta rama:</p>
+                    <pre><code>git branch crud_libro
+git checkout crud_libro</code></pre>
+                    <p>Verifica las ramas existentes con <code>git branch -a</code>.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paso 4 -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="step4Heading">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step4" aria-expanded="false" aria-controls="step4">
+                    <i class="fas fa-database"></i> Paso 4: Ejecutar el script SQL
+                </button>
+            </h2>
+            <div id="step4" class="accordion-collapse collapse" aria-labelledby="step4Heading" data-bs-parent="#crudSteps">
+                <div class="accordion-body">
+                    <p>Ejecuta el archivo SQL en <code>/crud_php_example/bbdd/tienda.sql</code> utilizando PHPMyAdmin:</p>
+                    <ul>
+                        <li>Abre <strong>PHPMyAdmin</strong> y selecciona o crea una base de datos (por ejemplo, <code>tienda</code>).</li>
+                        <li>Importa el archivo <code>tienda.sql</code> desde la sección de Importar.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paso 5 -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="step5Heading">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step5" aria-expanded="false" aria-controls="step5">
+                    <i class="fas fa-edit"></i> Paso 5: Crear la rama y modificar el CRUD para libros
+                </button>
+            </h2>
+            <div id="step5" class="accordion-collapse collapse" aria-labelledby="step5Heading" data-bs-parent="#crudSteps">
+                <div class="accordion-body">
+                    <p>Crea una nueva rama para trabajar en el CRUD de libros:</p>
+                    <pre><code>git branch libro
+git checkout libro</code></pre>
+                    <p>Modifica los archivos <code>.php</code> del CRUD actual para que trabajen con una tabla llamada <code>libros</code> en la base de datos.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paso 6 -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="step6Heading">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step6" aria-expanded="false" aria-controls="step6">
+                    <i class="fas fa-check-circle"></i> Paso 6: Pruebas y verificación
+                </button>
+            </h2>
+            <div id="step6" class="accordion-collapse collapse" aria-labelledby="step6Heading" data-bs-parent="#crudSteps">
+                <div class="accordion-body">
+                    <p>Inicia los servicios nuevamente y accede a la aplicación en el navegador para verificar que las operaciones de CRUD de libros funcionan correctamente.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
