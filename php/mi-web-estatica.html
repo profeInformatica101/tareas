@@ -17,48 +17,47 @@
         <div class="accordion-item">
             <h2 class="accordion-header" id="step1Heading">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#step1" aria-expanded="true" aria-controls="step1">
-                    <i class="fas fa-folder-plus"></i> Paso 1: Crear un repositorio público en GitHub
+                    <i class="fas fa-folder-plus"></i> Paso 1: Realiza un fork del de <a href="https://profeinformatica101.github.io/mi-web-estatica/">mi-web-estatica</a>
                 </button>
             </h2>
             <div id="step1" class="accordion-collapse collapse show" aria-labelledby="step1Heading" data-bs-parent="#githubPagesSteps">
                 <div class="accordion-body">
-                    <p>Ve a tu cuenta de GitHub y crea un nuevo repositorio público llamado <strong>mi-web-estatica</strong>.</p>
+                    <p>Accede a la <a href="https://github.com/profeInformatica101/mi-web-estatica">cuenta de GitHub </a>y realiza un fork.</p>
                 </div>
             </div>
         </div>
-
-        <!-- Paso 2 -->
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="step2Heading">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step2" aria-expanded="false" aria-controls="step2">
-                    <i class="fas fa-clone"></i> Paso 2: Clonar el repositorio
-                </button>
-            </h2>
-            <div id="step2" class="accordion-collapse collapse" aria-labelledby="step2Heading" data-bs-parent="#githubPagesSteps">
-                <div class="accordion-body">
-                    <p>Clona el repositorio en tu entorno local utilizando el siguiente comando:</p>
-                    <code>git clone https://github.com/<tu-usuario>/mi-web-estatica</code>
-                </div>
-            </div>
+ <!-- Paso 2 -->
+ <div class="accordion-item">
+    <h2 class="accordion-header" id="step2Heading">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step2" aria-expanded="false" aria-controls="step2">
+            <i class="fas fa-clone"></i> Paso 2: Clonar el repositorio forkeado
+        </button>
+    </h2>
+    <div id="step2" class="accordion-collapse collapse" aria-labelledby="step2Heading" data-bs-parent="#crudSteps">
+        <div class="accordion-body">
+            <p>En tu repositorio forkeado, haz clic en <strong>Code</strong> y copia la URL. Luego, clona el repositorio en tu entorno local:</p>
+            <code>git clone &lt;URL-del-repositorio&gt;</code>
         </div>
+    </div>
+</div>
 
         <!-- Paso 3 -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="step3Heading">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step3" aria-expanded="false" aria-controls="step3">
-                    <i class="fas fa-link"></i> Paso 3: Verificar URL pública
+                    <i class="fas fa-code"></i> Paso 3: Crear una rama 'desarrollo-web' para realizar tus cambios
                 </button>
             </h2>
-            <div id="step3" class="accordion-collapse collapse" aria-labelledby="step3Heading" data-bs-parent="#githubPagesSteps">
+            <div id="step3" class="accordion-collapse collapse" aria-labelledby="step3Heading" data-bs-parent="#crudSteps">
                 <div class="accordion-body">
-                    <p>Tu URL pública será:</p>
-                    <ul>
-                        <li>Mi URL pública: <a href="https://profeinformatica101.github.io/mi-web-estatica/" target="_blank">https://profeinformatica101.github.io/mi-web-estatica/</a></li>
-                        <li>Tu URL pública: <code>https://&lt;tu-usuario&gt;.github.io/mi-web-estatica/</code></li>
-                    </ul>
+                    <p>Crea una nueva rama llamada <code>desarrollo-web</code> y cambia a esta rama:</p>
+                    <pre><code>git branch desarrollo-web
+git checkout desarrollo-web</code></pre>
+                    <p>Verifica las ramas existentes con <code>git branch -a</code>.</p>
                 </div>
             </div>
         </div>
+
 
         <!-- Paso 4 -->
         <div class="accordion-item">
@@ -74,6 +73,8 @@
             </div>
         </div>
 
+
+
         <!-- Paso 5 -->
         <div class="accordion-item">
             <h2 class="accordion-header" id="step5Heading">
@@ -86,7 +87,7 @@
                     <p>Haz commit de tus cambios y súbelos al repositorio en GitHub con los siguientes comandos:</p>
                     <pre><code>git add .
 git commit -m "Subida inicial del diseño de mi web estática"
-git push origin main</code></pre>
+git push origin desarrollo-web</code></pre>
                 </div>
             </div>
         </div>
