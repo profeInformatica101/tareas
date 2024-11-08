@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solución al Problema de Maven</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Solución al Problema de Maven</h1>
+        <p>"No compiler is provided in this environment. Perhaps you are running on a JRE rather than a JDK?"</p>
+    </header>
+    <main>
+        <section>
+            <h2>Descripción del Problema</h2>
+            <p>Este error ocurre cuando Maven no encuentra el compilador de Java porque el entorno está utilizando una JRE en lugar de una JDK.</p>
+        </section>
+        <section>
+            <h2>Pasos para Resolver el Problema</h2>
+            <ol>
+                <li>
+                    <strong>Verifica que tienes instalada la JDK:</strong>
+                    <p>Ejecuta el siguiente comando en la terminal:</p>
+                    <code>javac -version</code>
+                    <p>Si el comando no muestra una versión de <code>javac</code>, instala la JDK. Por ejemplo, en Ubuntu o Debian:</p>
+                    <pre>sudo apt install openjdk-17-jdk</pre>
+                    <p>En Fedora o CentOS:</p>
+                    <pre>sudo dnf install java-17-openjdk-devel</pre>
+                </li>
+                <li>
+                    <strong>Configura la variable de entorno <code>JAVA_HOME</code>:</strong>
+                    <p>Establece <code>JAVA_HOME</code> a la ubicación de la JDK en tu sistema.</p>
+                    <h3>En Windows:</h3>
+                    <ul>
+                        <li>Abre "Propiedades del Sistema" y accede a "Variables de entorno".</li>
+                        <li>Agrega una nueva variable de sistema llamada <code>JAVA_HOME</code> con el valor de la ruta a tu JDK.</li>
+                        <li>Actualiza la variable <code>PATH</code> para incluir <code>%JAVA_HOME%\bin</code>.</li>
+                    </ul>
+                    <h3>En Linux o macOS:</h3>
+                    <p>Agrega las siguientes líneas al archivo <code>~/.bashrc</code>, <code>~/.bash_profile</code> o <code>~/.zshrc</code> (dependiendo de tu shell):</p>
+                    <pre>
+export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
+export PATH=$JAVA_HOME/bin:$PATH
+                    </pre>
+                    <p>Después, recarga el archivo de configuración con:</p>
+                    <code>source ~/.bashrc</code>
+                </li>
+                <li>
+                    <strong>Verifica la configuración de Maven:</strong>
+                    <p>Ejecuta <code>mvn -v</code> y verifica que <code>Java home</code> apunte a la JDK en lugar de una JRE.</p>
+                </li>
+                <li>
+                    <strong>Reinicia el entorno de desarrollo:</strong>
+                    <p>Si estás usando un IDE, asegúrate de que esté configurado para usar la JDK en lugar de la JRE en la configuración de Java del IDE.</p>
+                </li>
+            </ol>
+        </section>
+        <section>
+            <h2>Resumen</h2>
+            <p>Para solucionar este problema:</p>
+            <ul>
+                <li>Asegúrate de tener una JDK instalada.</li>
+                <li>Configura <code>JAVA_HOME</code> para que apunte a la JDK.</li>
+                <li>Verifica que Maven esté usando la JDK configurada.</li>
+            </ul>
+            <p>Después de realizar estos pasos, el problema debería resolverse y Maven podrá compilar el proyecto correctamente.</p>
+        </section>
+    </main>
+    <footer>
+        <p>Desarrollado por tu nombre</p>
+    </footer>
+</body>
+</html>
