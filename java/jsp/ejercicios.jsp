@@ -87,10 +87,12 @@
         </div>
     </div>
 
-    <!-- Mostrar repositorio en iframe -->
-    <div class="mt-5">
-        <h4><i class="fas fa-eye"></i> Visualización del Repositorio Principal</h4>
-        <iframe src="https://github.com/profeInformatica101/ejercicios_jsp" style="width: 100%; height: 500px;" title="Repositorio en GitHub"></iframe>
+    <!-- Botón para abrir el repositorio en una nueva pestaña -->
+    <div class="mt-5 text-center">
+        <h4><i class="fas fa-eye"></i> Acceso directo al Repositorio Principal</h4>
+        <a href="https://github.com/profeInformatica101/ejercicios_jsp" target="_blank" class="btn btn-primary">
+            <i class="fab fa-github"></i> Ver Repositorio en GitHub
+        </a>
     </div>
 </div>
 
