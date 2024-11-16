@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ordena las Etiquetas Completas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .draggable {
+      cursor: grab;
+      padding: 10px;
+      margin: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f8f9fa;
+      display: inline-block;
+    }
+    .dropzone {
+      min-height: 300px;
+      border: 2px dashed #ccc;
+      border-radius: 5px;
+      background-color: #e9ecef;
+      padding: 10px;
+    }
+    .dragging {
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="text-center">Ordena las Etiquetas JSP</h1>
+    <p class="text-center">Arrastra y organiza las etiquetas en el orden correcto.</p>
+
+    <div class="row">
+      <div class="col-md-6">
+        <h3 class="text-center">Elementos Disponibles</h3>
+        <div id="available-elements" class="dropzone">
+          <!-- Las etiquetas se generarán dinámicamente -->
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h3 class="text-center">Zona de Ordenación</h3>
+        <div id="ordered-elements" class="dropzone"></div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <button id="check-order" class="btn btn-primary">Comprobar Orden</button>
+    </div>
+  </div>
+
+  <script>
+    // JSON actualizado con todas las etiquetas completas
+    const jsonData = {
+  "elements": [
+    { "content": "<html>" },
+    { "content": "<body>" },
+    { "content": "<%" },
+    { "content": "import java.util.*;" },
+    { "content": "ArrayList<String> al = (ArrayList<String>) session.getAttribute(\"hobby\");" },
+    { "content": "if (al != null) {" },
+    { "content": "Iterator<String> it = al.iterator();" },
+    { "content": "while (it.hasNext()) {" },
+    { "content": "out.print(it.next());" },
+    { "content": "}" },
+    { "content": "} else {" },
+    { "content": "out.print(\"No hobbies found.\");" },
+    { "content": "}" },
+    { "content": "%>" },
+    { "content": "</body>" },
+    { "content": "</html>" }
+  ]
+};
+
+    // Generar dinámicamente las etiquetas en la zona de elementos disponibles
+    const availableElements = document.getElementById('available-elements');
+    jsonData.elements.forEach((item, index) => {
+      const div = document.createElement('div');
+      div.classList.add('draggable');
+      div.setAttribute('draggable', 'true');
+      div.setAttribute('data-order', index + 1);
+      div.textContent = item.content;
+      availableElements.appendChild(div);
+    });
+
+    // Funcionalidad Drag and Drop
+    const draggables = document.querySelectorAll('.draggable');
+    const dropzones = document.querySelectorAll('.dropzone');
+
+    draggables.forEach(draggable => {
+      draggable.addEventListener('dragstart', () => {
+        draggable.classList.add('dragging');
+      });
+
+      draggable.addEventListener('dragend', () => {
+        draggable.classList.remove('dragging');
+      });
+    });
+
+    dropzones.forEach(dropzone => {
+      dropzone.addEventListener('dragover', e => {
+        e.preventDefault();
+        const draggingElement = document.querySelector('.dragging');
+        dropzone.appendChild(draggingElement);
+      });
+    });
+
+    // Comprobar el orden de las etiquetas
+    document.getElementById('check-order').addEventListener('click', () => {
+      const orderedElements = Array.from(document.getElementById('ordered-elements').children)
+        .map(el => el.textContent.trim());
+      const correctOrder = jsonData.elements.map(el => el.content);
+
+      const isCorrect = orderedElements.every((el, index) => el === correctOrder[index]);
+      if (isCorrect && orderedElements.length === correctOrder.length) {
+        alert('¡Correcto! Has ordenado las etiquetas correctamente.');
+      } else {
+        alert('El orden no es correcto. Inténtalo de nuevo.');
+      }
+    });
+  </script>
+</body>
+</html>
