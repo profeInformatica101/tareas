@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tareas: Debugger en Java</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+
+        .card-header i {
+            margin-right: 10px;
+        }
+
+        .list-group-item i {
+            margin-right: 10px;
+        }
+
+        .objective {
+            background-color: #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        pre {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Tareas para Probar el Debugger <i class="bi bi-bug-fill"></i></h1>
+        
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <i class="bi bi-code-square"></i> Código Java para las tareas
+            </div>
+            <div class="card-body">
+                <pre>
+package com.ejemplos.debugger;
+
+public class Ejemplo1 {
+    public static void main(String[] args) {
+        int[] numeros = {10, 20, 30, 40, 50};
+        int suma = 0;
+       
+        // Suma de los elementos del arreglo
+        for (int i = 0; i <= numeros.length; i++) { // Error: Índice fuera de rango
+            suma += numeros[i];
+        }
+
+        // Calcula el promedio
+        double promedio = suma / numeros.length;
+
+        System.out.println("Suma: " + suma);
+        System.out.println("Promedio: " + promedio);
+    }
+}
+                </pre>
+            </div>
+        </div>
+
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <i class="bi bi-play-circle-fill"></i> 1. Identificar un error de ejecución con un breakpoint
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Establece un breakpoint en la línea del bucle <code>for</code>.</li>
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Ejecuta el programa en modo depuración.</li>
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Observa el índice <code>i</code> en la ventana de variables y confirma que intenta acceder a un índice fuera del rango.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <i class="bi bi-skip-forward-circle-fill"></i> 2. Explorar el flujo del bucle con Step Over
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Usa <strong>Step Over</strong> para avanzar línea por línea dentro del bucle.</li>
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Observa cómo cambia el valor de <code>suma</code> en cada iteración.</li>
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Confirma que el bucle intenta acceder a un índice no válido al final.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <i class="bi bi-arrow-down-square-fill"></i> 3. Corregir el error y validar el cálculo del promedio
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Corrige la condición del bucle reemplazando <code>i &lt;= numeros.length</code> por <code>i &lt; numeros.length</code>.</li>
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Vuelve a ejecutar el programa en modo depuración.</li>
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Verifica que el valor de <code>suma</code> y <code>promedio</code> sea correcto.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <i class="bi bi-calculator-fill"></i> 4. Evaluar expresiones durante la depuración
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Establece un breakpoint en la línea donde se calcula el promedio.</li>
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Usa la funcionalidad <strong>Evaluate Expression</strong> para comprobar los valores de:</li>
+                    <ul>
+                        <li class="list-group-item"><i class="bi bi-dash"></i> <code>suma</code></li>
+                        <li class="list-group-item"><i class="bi bi-dash"></i> <code>numeros.length</code></li>
+                        <li class="list-group-item"><i class="bi bi-dash"></i> <code>suma / numeros.length</code></li>
+                    </ul>
+                </ul>
+            </div>
+        </div>
+
+        <div class="objective mt-4">
+            <h4>Objetivo General</h4>
+            <p>Estas tareas enseñarán a los estudiantes:</p>
+            <ul>
+                <li><i class="bi bi-check-circle-fill"></i> Cómo identificar y solucionar errores de ejecución.</li>
+                <li><i class="bi bi-check-circle-fill"></i> Cómo inspeccionar y modificar variables durante la depuración.</li>
+                <li><i class="bi bi-check-circle-fill"></i> Cómo evaluar expresiones y comprender el flujo del programa.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
