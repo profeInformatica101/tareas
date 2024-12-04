@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tareas: Pruebas Unitarias con JUnit 5</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+
+        .card-header i {
+            margin-right: 10px;
+        }
+
+        .list-group-item i {
+            margin-right: 10px;
+        }
+
+        .objective {
+            background-color: #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        pre {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Tareas para Pruebas Unitarias con JUnit 5 <i class="bi bi-clipboard-check"></i></h1>
+        
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <i class="bi bi-code-square"></i> Código Java para Pruebas Unitarias
+            </div>
+            <div class="card-body">
+                <pre>
+package com;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+class CalculadoraTest {
+
+    @Test
+    void testSuma() {
+        Calculadora calculadora = new Calculadora(5, 3);
+        assertEquals(8, calculadora.suma(), "La suma debe ser correcta");
+    }
+
+    @Test
+    void testResta() {
+        Calculadora calculadora = new Calculadora(5, 3);
+        assertEquals(2, calculadora.resta(), "La resta debe ser correcta");
+    }
+
+    @Test
+    void testMultiplica() {
+        Calculadora calculadora = new Calculadora(5, 3);
+        assertEquals(15, calculadora.multiplica(), "La multiplicación debe ser correcta");
+    }
+
+    @Test
+    void testDivide() {
+        Calculadora calculadora = new Calculadora(6, 3);
+        assertEquals(2, calculadora.divide(), "La división debe ser correcta");
+    }
+
+    @Test
+    void testDivide0ThrowsException() {
+        Calculadora calculadora = new Calculadora(5, 0);
+        Exception exception = assertThrows(ArithmeticException.class, calculadora::divide0);
+        assertEquals("División por 0", exception.getMessage());
+    }
+}
+                </pre>
+            </div>
+        </div>
+
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <i class="bi bi-gear-wide-connected"></i> 1. Pruebas Unitarias Básicas
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item"><i class="bi bi-check2-circle"></i> Crea pruebas unitarias para validar los métodos <code>suma</code>, <code>resta</code>, <code>multiplica</code> y <code>divide</code>.</li>
+                    <li class="list-group-item"><i class="bi bi-check2-circle"></i> Usa <code>assertEquals</code> para comparar el resultado esperado con el obtenido.</li>
+                    <li class="list-group-item"><i class="bi bi-check2-circle"></i> Asegúrate de incluir mensajes descriptivos para identificar errores fácilmente.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <i class="bi bi-exclamation-triangle-fill"></i> 2. Prueba de Manejo de Excepciones
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Escribe una prueba para el método <code>divide0</code> que verifique la excepción <code>ArithmeticException</code>.</li>
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Usa <code>assertThrows</code> para capturar la excepción lanzada.</li>
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Valida que el mensaje de la excepción sea <code>"División por 0"</code>.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <i class="bi bi-box-arrow-in-down"></i> 3. Configuración con <code>@BeforeEach</code>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Usa <code>@BeforeEach</code> para inicializar una instancia de <code>Calculadora</code> antes de cada prueba.</li>
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Verifica que cada método use esta instancia configurada.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <i class="bi bi-diagram-3-fill"></i> 4. Pruebas Parametrizadas con <code>@ParameterizedTest</code>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Implementa pruebas parametrizadas para el método <code>suma</code> usando diferentes conjuntos de datos.</li>
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Usa <code>@CsvSource</code> para definir entradas y resultados esperados.</li>
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Verifica que los valores proporcionados producen los resultados correctos.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <i class="bi bi-bounding-box"></i> 5. Casos de Prueba para Valores Límite
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Crea casos de prueba para números negativos, cero y valores extremos como <code>Integer.MAX_VALUE</code>.</li>
+                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Valida que los métodos de <code>Calculadora</code> manejen correctamente estos casos.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="objective mt-4">
+            <h4>Objetivo General</h4>
+            <p>Estas tareas ayudarán a los estudiantes a:</p>
+            <ul>
+                <li><i class="bi bi-check-circle-fill"></i> Escribir pruebas unitarias utilizando <strong>JUnit 5</strong>.</li>
+                <li><i class="bi bi-check-circle-fill"></i> Validar métodos básicos y manejo de excepciones.</li>
+                <li><i class="bi bi-check-circle-fill"></i> Implementar pruebas parametrizadas.</li>
+                <li><i class="bi bi-check-circle-fill"></i> Probar valores límite para garantizar la robustez del código.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
