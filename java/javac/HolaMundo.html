@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Fullscreen</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000;
+        }
+        #video-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: black;
+        }
+        video {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <p></p>
+<table style="background-color: rgb(255, 207, 53);">
+  <caption> </caption>
+  <thead>
+    <tr>
+      <th scope="col">
+        <h3><strong>RA1:</strong> "Reconoce los elementos y herramientas que
+          intervienen en el desarrollo de un programa informático, analizando
+          sus características y las fases en las que actúan hasta llegar a su
+          puesta en funcionamiento"</h3>
+        <span style="font-weight: normal;"><em><br><strong>Criterios de
+              evaluación:</strong></em></span>
+        <ul>
+          <li>a) Se ha reconocido la relación de los programas con los
+            componentes del sistema informático: memoria, procesador,
+            periféricos, entre otros.</li>
+          <li>b) Se han identificado las fases de desarrollo de una aplicación
+            informática.</li>
+          <li>c) Se han diferenciado los conceptos de código fuente, objeto y
+            ejecutable.</li>
+          <li>d) Se han reconocido las características de la generación de
+            código intermedio para su ejecución en máquinas virtuales.</li>
+          <li>e) Se han clasificado los lenguajes de programación, identificando
+            sus características.</li>
+          <li>f) Se ha evaluado la funcionalidad ofrecida por las herramientas
+            utilizadas en el desarrollo de software.</li>
+          <li>g) Se han identificado las características y escenarios de uso de
+            las metodologías ágiles de desarrollo de software.</li>
+        </ul>
+      </th>
+    </tr>
+  </thead>
+</table>
+<p><br>.</p>
+        <video id="video" src="HolaMundo.mp4" controls></video>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "f" || event.key === "F") {
+                toggleFullScreen();
+            }
+        });
+
+        function toggleFullScreen() {
+            const videoContainer = document.getElementById("video-container");
+            if (!document.fullscreenElement) {
+                videoContainer.requestFullscreen().catch(err => console.error(err));
+            } else {
+                document.exitFullscreen();
+            }
+        }
+    </script>
+</body>
+</html>
