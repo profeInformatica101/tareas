@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cheatsheet de JUnit 5</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <style>
+        pre {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
+        code {
+            color: #d63384;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Cheatsheet de JUnit 5</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Sección de Dependencias Maven -->
+        <section class="mb-5">
+            <h2 class="mb-3">Dependencias Maven para JUnit 5</h2>
+            <p>Incluye en tu <strong>pom.xml</strong> las siguientes dependencias para habilitar JUnit 5 en tu proyecto Maven:</p>
+            <pre><code class="language-xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+        &lt;artifactId&gt;junit-jupiter-api&lt;/artifactId&gt;
+        &lt;version&gt;5.11.3&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+        &lt;artifactId&gt;junit-jupiter-engine&lt;/artifactId&gt;
+        &lt;version&gt;5.11.3&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre>
+            
+            <h3 class="mt-4">Configuración del build en Maven</h3>
+            <p>En la sección <code>&lt;build&gt;</code> del <code>pom.xml</code>, se configura el plugin del compilador para especificar la versión de Java a usar. Esto asegura que el código se compile y genere bytecode compatible con la versión del JDK instalado en tu sistema.</p>
+            <pre><code class="language-xml">&lt;build&gt;
+  &lt;plugins&gt;
+    &lt;plugin&gt;
+      &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+      &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+      &lt;version&gt;3.8.1&lt;/version&gt;
+      &lt;configuration&gt;
+        &lt;source&gt;17&lt;/source&gt;
+        &lt;target&gt;17&lt;/target&gt;
+      &lt;/configuration&gt;
+    &lt;/plugin&gt;
+  &lt;/plugins&gt;
+&lt;/build&gt;
+</code></pre>
+            <p><strong>Explicación:</strong>  
+            Las etiquetas <code>&lt;source&gt;</code> y <code>&lt;target&gt;</code> indican la versión del lenguaje Java utilizada para compilar y el nivel de bytecode generado, respectivamente. Por ejemplo, si colocas <code>17</code> en ambos, el código se compilará y generará bytecode compatible con Java 17. Debes tener instalada la versión correspondiente de Java en tu sistema, de lo contrario obtendrás errores de compilación.</p>
+        </section>
+
+        <!-- Gradle Dependencies (Traducido) -->
+        <section class="mb-5">
+            <h2 class="mb-3">Dependencias Gradle</h2>
+            <p>Si en lugar de Maven utilizas Gradle, puedes incluir en tu <strong>build.gradle</strong> las siguientes dependencias:</p>
+            <pre><code class="language-groovy">dependencies {
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.11.3')
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.11.3')
+}
+</code></pre>
+        </section>
+
+        <!-- Basic JUnit 5 Test -->
+        <section class="mb-5">
+            <h2 class="mb-3">Prueba básica con JUnit 5</h2>
+            <pre><code class="language-java">import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+
+public class JUnit5ExampleTest {
+
+    @Test
+    void primeraPrueba() {
+        assertEquals("ok","ok");
+    }
+
+}
+</code></pre>
+        </section>
+
+        <!-- Lifecycle -->
+        <section class="mb-5">
+            <h2 class="mb-3">Ciclo de vida de las pruebas (Lifecycle)</h2>
+            <p>Los métodos de callback se ejecutan según el ciclo de vida de las pruebas:</p>
+            <pre><code class="language-java">import org.junit.jupiter.api.*;
+
+public class AppTest {
+
+    @BeforeAll
+    static void setup() {
+        System.out.println("Se ejecuta antes de todas las pruebas");
+    }
+
+    @BeforeEach
+    void setupThis() {
+        System.out.println("Se ejecuta antes de cada método @Test en la clase actual");
+    }
+
+    @AfterEach
+    void tearThis() {
+        System.out.println("Se ejecuta después de cada método @Test en la clase actual");
+    }
+
+    @AfterAll
+    static void tear() {
+        System.out.println("Se ejecuta después de todas las pruebas");
+    }
+}
+</code></pre>
+        </section>
+
+        <!-- Assertions -->
+        <section class="mb-5">
+            <h2 class="mb-3">Aserciones</h2>
+            <p>Las aserciones ayudan a validar la salida esperada con la salida real de una prueba.</p>
+            <pre><code class="language-java">@Test
+void ejemploAserciones() {
+    Assertions.assertTrue(trueBool);
+    Assertions.assertFalse(falseBool);
+
+    Assertions.assertNotNull(notNullString);
+    Assertions.assertNull(nullString);
+
+    Assertions.assertNotSame(originalObject, otherObject);
+    Assertions.assertEquals(4, 4);
+    Assertions.assertNotEquals(3, 2);
+
+    Assertions.assertArrayEquals(new int[]{1,2,3}, new int[]{1,2,3}, "Prueba de Arrays Iguales");
+
+    Iterable&lt;Integer&gt; listaUno = Arrays.asList(1,2,3,4);
+    Iterable&lt;Integer&gt; listaDos = Arrays.asList(1,2,3,4);
+    Assertions.assertIterableEquals(listaUno, listaDos);
+
+    Assertions.assertTimeout(Duration.ofMillis(100), () -&gt; {
+        Thread.sleep(50);
+        return "resultado";
+    });
+
+    Throwable exception = Assertions.assertThrows(IllegalArgumentException.class, () -&gt; {
+        throw new IllegalArgumentException("mensaje de error");
+    });
+
+    Assertions.fail("sin razón válida para aprobar");
+}
+</code></pre>
+        </section>
+
+        <!-- Assumptions -->
+        <section class="mb-5">
+            <h2 class="mb-3">Suposiciones (Assumptions)</h2>
+            <p>Una suposición fallida resulta en que la prueba se aborte, ya que no tiene sentido continuar si la condición inicial no se cumple.</p>
+            <pre><code class="language-java">@Test
+void pruebaSuposicion() {
+    System.setProperty("myproperty", "foo");
+    Assumptions.assumeTrue("foo".equals(System.getProperty("myproperty")));
+}
+
+@Test
+public void pruebaConexion() {
+    boolean isConnected = checkConnection(); // Método que verifica conexión
+    Assumptions.assumingThat(isConnected, () -&gt; {
+        // Código de prueba que requiere conexión activa
+        assertTrue(myApiCall().contains("Hello World"));
+    });
+}
+</code></pre>
+        </section>
+
+        <!-- Conditional Execution -->
+        <section class="mb-5">
+            <h2 class="mb-3">Ejecución Condicional</h2>
+            <p>Tu prueba se ejecutará según diferentes condiciones disponibles en el paquete <strong>org.junit.jupiter.api.condition</strong>.</p>
+
+            <h3 class="mt-4">Ejecución Condicional por JRE</h3>
+            <p>Se ejecuta según la versión de JRE que se esté utilizando.</p>
+            <pre><code class="language-java">public class AppTest {
+
+    @Test
+    @EnabledForJreRange(min = JRE.JAVA_8, max = JRE.JAVA_11)
+    public void test1() {
+        System.out.println("Se ejecuta solo en JRE entre 8 y 11");
+    }
+
+    @Test
+    @EnabledOnJre({JRE.JAVA_8, JRE.JAVA_11})
+    public void test2() {
+        System.out.println("Se ejecuta solo en JRE 8 y 11");
+    }
+
+    @Test
+    @DisabledForJreRange(min = JRE.JAVA_8, max = JRE.JAVA_11)
+    public void test3() {
+        System.out.println("NO se ejecuta en JRE entre 8 y 11");
+    }
+
+    @Test
+    @DisabledOnJre({JRE.JAVA_8, JRE.JAVA_11})
+    public void test4() {
+        System.out.println("NO se ejecuta en JRE 8 y 11");
+    }
+}
+</code></pre>
+
+            <h3 class="mt-4">Ejecución Condicional por Sistema Operativo</h3>
+            <pre><code class="language-java">public class OperatingSystemTest {
+
+    @Test
+    @EnabledOnOs({OS.LINUX, OS.WINDOWS})
+    void enLinuxOWindows() {
+        System.out.println("Se ejecuta en Linux o Windows.");
+    }
+
+    @Test
+    @DisabledOnOs({OS.WINDOWS, OS.AIX, OS.SOLARIS, OS.MAC})
+    void noEnWindowsAixSolarisMac() {
+        System.out.println("No se ejecuta en Windows, AIX, Solaris ni MAC.");
+    }
+}
+</code></pre>
+
+            <h3 class="mt-4">Ejecución Condicional basada en retorno de un método</h3>
+            <pre><code class="language-java">@Test
+@EnabledIf("miFuncion")
+void enabled() {
+    assertTrue(true);
+}
+
+@Test
+@DisabledIf("miFuncion")
+void disabled() {
+    assertTrue(true);
+}
+
+boolean miFuncion() {
+    return true;
+}
+</code></pre>
+
+            <h3 class="mt-4">Ejecución Condicional por variables de entorno y propiedades del sistema</h3>
+            <pre><code class="language-java">@Test
+@EnabledIfEnvironmentVariable(named = "ENV", matches = ".*oracle.*")
+public void soloEnEntornoDev() {
+    // Se ejecuta solo si la variable ENV cumple la condición
+}
+
+@Test
+@DisabledIfEnvironmentVariable(named = "ENV", matches = ".*mysql.*")
+public void noEnProd() {
+    // No se ejecuta si ENV contiene 'mysql'
+}
+
+@Test
+@EnabledIfSystemProperty(named = "my.property", matches = "prod.*")
+public void soloSiMiPropiedadIniciaConProd() {
+    // Se ejecuta solo si la propiedad del sistema empieza con 'prod'
+}
+</code></pre>
+        </section>
+
+        <!-- Repeated Tests -->
+        <section class="mb-5">
+            <h2 class="mb-3">Pruebas Repetidas con JUnit 5</h2>
+            <p>La anotación <strong>@RepeatedTest</strong> permite ejecutar varias veces una misma prueba. La cantidad de veces se configura como parámetro en @RepeatedTest.</p>
+            <pre><code class="language-java">@Test
+@RepeatedTest(5)
+void sumaRepetida() {
+   Calculator calculator = new Calculator();
+   Random rand = new Random();
+   int n = rand.nextInt(50);
+
+   Assertions.assertEquals(n*2, calculator.add(n, n), "Comprobando la suma");
+}
+</code></pre>
+        </section>
+
+        <!-- Test Suite -->
+        <section class="mb-5">
+            <h2 class="mb-3">Suite de Pruebas</h2>
+            <p>Usando JUnit 5, puedes ejecutar pruebas distribuidas en múltiples clases y diferentes paquetes:</p>
+            <pre><code class="language-java">@RunWith(JUnitPlatform.class)
+@SelectPackages("com.howtodoinjava.junit5.examples.packageA") 
+public class JUnit5TestSuiteExample {
+}
+</code></pre>
+        </section>
+
+        <p><strong>Conclusión:</strong></p>
+        <p>Esta guía rápida de <strong>JUnit 5</strong> fue proporcionada como referencia. Puedes consultar más <a href="https://www.mastertheboss.com/cheatsheets/">CheatSheets</a> para ampliar tus conocimientos.</p>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
