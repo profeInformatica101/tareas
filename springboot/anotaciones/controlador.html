@@ -159,7 +159,7 @@ public List<Producto> listarProductos() {
   return productoServicio.listarTodosLosProductos();
 }</pre>
               </li>
-              <li><strong>@ResponseEntity:</strong> Personaliza la respuesta HTTP.
+              <li><strong>ResponseEntity:</strong> Personaliza la respuesta HTTP.
                 <pre>@GetMapping("/productos/{id}")
 public ResponseEntity<Producto> obtenerProducto(@PathVariable Long id) {
   Producto producto = productoServicio.obtenerProductoPorId(id);
