@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pruebas Unitarias</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Pruebas unitarias :: Cuenta Bancaria</h1>
+    <div class="mermaid">
+graph TD
+    Inicio --> Constructor
+    Constructor -->|"saldoInicial >= 0"| MetodoDepositar
+    Constructor -->|"saldoInicial < 0"| Error
+    MetodoDepositar -->|"cantidad > 0"| MetodoRetirar
+    MetodoDepositar -->|"cantidad <= 0"| ErrorDeposito
+    MetodoRetirar -->|"cantidad > 0 y saldo suficiente"| MetodoGetSaldo
+    MetodoRetirar -->|"cantidad <= 0 o insuficiente"| ErrorRetiro
+    MetodoGetSaldo --> Fin
+    </div>
+
+    <h2 style="text-align: center;">Tabla de Pruebas Unitarias</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Caso de Prueba</th>
+                <th>Descripción</th>
+                <th>Resultado Esperado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Constructor con saldo inicial válido</td>
+                <td>Crear una cuenta con saldo positivo</td>
+                <td>Cuenta creada exitosamente</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Constructor con saldo inicial inválido</td>
+                <td>Crear una cuenta con saldo negativo</td>
+                <td>Excepción lanzada</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Depósito válido</td>
+                <td>Depositar una cantidad positiva</td>
+                <td>Saldo incrementado</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Depósito inválido</td>
+                <td>Depositar una cantidad negativa</td>
+                <td>Excepción lanzada</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Retiro válido</td>
+                <td>Retirar una cantidad menor al saldo</td>
+                <td>Saldo decrementado</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>Retiro inválido</td>
+                <td>Retirar una cantidad negativa</td>
+                <td>Excepción lanzada</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>Retiro con fondos insuficientes</td>
+                <td>Retirar más de lo disponible</td>
+                <td>Excepción lanzada</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>Consulta de saldo</td>
+                <td>Obtener el saldo actual</td>
+                <td>Saldo correcto</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 style="text-align: center;">Pruebas Unitarias en JUnit 5</h2>
+    <pre><code class="language-java">import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+class CuentaBancariaTest {
+
+    @Test
+    @DisplayName("Crear una cuenta con saldo positivo")
+    void testConstructorSaldoValido() {
+        CuentaBancaria cuenta = new CuentaBancaria(1000);
+        assertEquals(1000, cuenta.getSaldo());
+    }
+
+    @Test
+    void testConstructorSaldoInvalido() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> new CuentaBancaria(-100));
+        assertEquals("El saldo inicial no puede ser negativo.", exception.getMessage());
+    }
+
+    @Test
+    void testDepositoValido() {
+        CuentaBancaria cuenta = new CuentaBancaria(1000);
+        assertEquals(1500, cuenta.depositar(500));
+    }
+
+    @Test
+    void testDepositoInvalido() {
+        CuentaBancaria cuenta = new CuentaBancaria(1000);
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> cuenta.depositar(-100));
+        assertEquals("La cantidad a depositar debe ser positiva.", exception.getMessage());
+    }
+
+    @Test
+    void testRetiroValido() {
+        CuentaBancaria cuenta = new CuentaBancaria(1000);
+        assertEquals(500, cuenta.retirar(500));
+    }
+
+    @Test
+    void testRetiroInvalido() {
+        CuentaBancaria cuenta = new CuentaBancaria(1000);
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> cuenta.retirar(-100));
+        assertEquals("La cantidad a retirar debe ser positiva.", exception.getMessage());
+    }
+
+    @Test
+    void testRetiroFondosInsuficientes() {
+        CuentaBancaria cuenta = new CuentaBancaria(1000);
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> cuenta.retirar(1500));
+        assertEquals("Fondos insuficientes para retirar.", exception.getMessage());
+    }
+
+    @Test
+    void testGetSaldo() {
+        CuentaBancaria cuenta = new CuentaBancaria(1000);
+        assertEquals(1000, cuenta.getSaldo());
+    }
+}
+/**
+Otras pruebas
+*/
+
+@Test
+@DisplayName("Prueba con tiempo máximo")
+void testConTiempo() {
+    assertTimeout(Duration.ofMillis(100), () -> cuenta.depositar(100));
+}
+
+@Test
+@EnabledOnOs(OS.WINDOWS)
+@DisplayName("Prueba condicional en Windows")
+void testSoloEnWindows() {
+    assumeTrue(System.getProperty("os.name").contains("Windows"));
+    assertDoesNotThrow(() -> cuenta.depositar(100));
+}
+
+@RepeatedTest(3)
+@DisplayName("Depósito repetido")
+void testDepositoRepetido(RepetitionInfo info) {
+    System.out.println("Repetición: " + info.getCurrentRepetition());
+    assertDoesNotThrow(() -> cuenta.depositar(50));
+}
+
+@Test
+@DisplayName("Fallo intencional")
+void testFalloIntencional() {
+    fail("Fallo intencionado para pruebas");
+}
+</code></pre>
+</body>
+</html>
