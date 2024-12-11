@@ -190,6 +190,33 @@ void testDepositoRepetido(RepetitionInfo info) {
 void testFalloIntencional() {
     fail("Fallo intencionado para pruebas");
 }
+
+/** Refactorizar
+
+CuentaBancaria cuenta;
+
+    @BeforeAll
+    static void antesDeTodo() {
+        System.out.println("Configuración global: antes de todas las pruebas");
+    }
+
+    @BeforeEach
+    void configuracion() {
+        cuenta = new CuentaBancaria(1000);
+        System.out.println("Configuración inicial por prueba");
+    }
+
+    @AfterEach
+    void limpieza() {
+        System.out.println("Finalizando prueba");
+    }
+
+    @AfterAll
+    static void despuesDeTodo() {
+        System.out.println("Limpieza global: después de todas las pruebas");
+    }
+
+    */
 </code></pre>
 </body>
 </html>
