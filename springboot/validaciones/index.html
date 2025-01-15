@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validación en Spring Boot</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .highlight {
+            background-color: #f8f9fa;
+            border-left: 4px solid #0d6efd;
+            padding: 1rem;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+        .card-header {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .error-example {
+            background-color: #f8d7da;
+            color: #842029;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+        <div class="card">
+            <div class="card-header text-center">
+                <h3>Objetivo de la Tarea</h3>
+            </div>
+            <div class="card-body">
+                <p>Añadir la dependencia de validación en el archivo <code>pom.xml</code>:</p>
+                <div class="highlight">
+<pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</pre>
+                </div>
+
+                <h5 class="mt-4">Validaciones en la Entidad <code>Coche</code></h5>
+                <p>En la clase <code>Coche</code>, agrega las siguientes validaciones:</p>
+                <ul>
+                    <li>
+                        <code>@NotBlank(message = "El nombre no puede estar vacio")</code><br>
+                        <code>@Size(min=2, max=50, message="El nombre debe tener entre 2 y 50 caracteres")</code><br>
+                        <strong>Al campo:</strong> <code>nombre</code>
+                    </li>
+                    <li>
+                        <code>@Pattern(regexp = "^\\d{4}[A-Za-z]{3}$", message = "La matrícula debe tener 4 dígitos seguidos de 3 letras (ej: 5251MHX).")</code><br>
+                        <strong>Al campo:</strong> <code>matricula</code>
+                    </li>
+                    <li>
+                        <code>@Pattern(regexp = "^(rojo|azul|verde|amarillo)$", message = "El color debe ser uno de: rojo, azul, verde o amarillo.")</code><br>
+                        <strong>Al campo:</strong> <code>color</code>
+                    </li>
+                </ul>
+
+                <h5 class="mt-4">Controlador <code>CocheController</code></h5>
+                <p>Modificar el método que recibe el formulario de creación/edición para aplicar validación:</p>
+                <div class="highlight">
+<pre>
+@PostMapping("/agregar")
+public String nuevoCoche(@Valid @ModelAttribute("coche") Coche coche, BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+        return "coche-form"; // Volver a la vista del formulario si hay errores
+    }
+
+    servicio.nuevoCoche(coche);
+    return "redirect:/coches";
+}
+</pre>
+                </div>
+
+                <p><strong>Bibliografía:</strong> <a href="https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-ann-methods">Spring Framework Documentation</a>, <a href="https://beanvalidation.org/">Bean Validation Specification</a></p>
+
+                <h5 class="mt-4">Vista Thymeleaf (<code>coche-form.html</code>)</h5>
+                <p>Asegúrate de que los campos estén vinculados y muestren los errores:</p>
+                <ul>
+                    <li><strong>Nombre:</strong></li>
+                    <div class="highlight">
+<pre>
+&lt;input type="text" th:field="*{nombre}" /&gt;
+&lt;div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">&lt;/div&gt;
+</pre>
+                    </div>
+                    <li><strong>Matrícula:</strong></li>
+                    <div class="highlight">
+<pre>
+&lt;input type="text" th:field="*{matricula}" /&gt;
+&lt;div th:if="${#fields.hasErrors('matricula')}" th:errors="*{matricula}">&lt;/div&gt;
+</pre>
+                    </div>
+                    <li><strong>Color:</strong></li>
+                    <div class="highlight">
+<pre>
+&lt;input type="text" th:field="*{color}" /&gt;
+&lt;div th:if="${#fields.hasErrors('color')}" th:errors="*{color}">&lt;/div&gt;
+</pre>
+                    </div>
+                </ul>
+
+                <p><strong>Bibliografía:</strong> <a href="https://www.thymeleaf.org/documentation.html">Thymeleaf Documentation</a></p>
+
+                <h5 class="mt-4">Pruebas del Proyecto</h5>
+                <ul>
+                    <li>Intentar crear un coche con un nombre muy corto (ej: "A") y verificar que se muestre el mensaje de error.</li>
+                    <li>Probar una matrícula inválida (ej: "123ABC") y observar el mensaje de error.</li>
+                    <li>Introducir un color no permitido (ej: "negro") y comprobar el mensaje.</li>
+                    <li>Confirmar que, cuando se introducen datos correctos, el formulario se procesa sin errores y el coche se guarda en la base de datos.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

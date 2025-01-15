@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medición de Cobertura de Código con JaCoCo</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .hero-section {
+            background: url('https://via.placeholder.com/1200x400') no-repeat center center/cover;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            padding: 60px 20px;
+            text-align: center;
+            background-color: #6c757d;
+        }
+        .step-image {
+            max-width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .step-image:hover {
+            transform: scale(1.5);
+            z-index: 1000;
+            position: relative;
+        }
+        code{
+            color:red;
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <header class="hero-section">
+        <h1><i class="fas fa-code"></i> Medición de Cobertura de Código con JaCoCo</h1>
+        <p>Aprende qué es JaCoCo, cómo integrarlo en tus proyectos y cómo interpretar los resultados de cobertura.</p>
+    </header>
+
+    <main class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <h2><i class="fas fa-info-circle"></i> ¿Qué es JaCoCo?</h2>
+                <p><strong>JaCoCo (Java Code Coverage Library)</strong> es una herramienta para medir la cobertura de pruebas en código Java.</p>
+                <p>La cobertura de código indica qué porcentaje de las líneas y ramas de tu código han sido ejecutadas durante las pruebas, ayudando a identificar partes que necesitan más pruebas.</p>
+                <p><a href="https://www.eclemma.org/jacoco/"><i class="fas fa-book"></i> Sitio oficial de JaCoCo</a></p>
+                <img src="img/logo.png" alt="Introducción a JaCoCo" class="step-image">
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <h2><i class="fas fa-cogs"></i> Paso 1: Agregar JaCoCo a tu Proyecto</h2>
+                <p>Para usar JaCoCo en un proyecto Maven, añade el siguiente plugin en el archivo <code>pom.xml</code>:</p>
+                <pre class="bg-light p-3 border rounded"><code>&lt;plugin&gt;
+  &lt;groupId&gt;org.jacoco&lt;/groupId&gt;
+  &lt;artifactId&gt;jacoco-maven-plugin&lt;/artifactId&gt;
+  &lt;version&gt;0.8.10&lt;/version&gt;
+  &lt;executions&gt;
+    &lt;execution&gt;
+      &lt;goals&gt;
+        &lt;goal&gt;prepare-agent&lt;/goal&gt;
+      &lt;/goals&gt;
+    &lt;/execution&gt;
+    &lt;execution&gt;
+      &lt;id&gt;report&lt;/id&gt;
+      &lt;phase&gt;verify&lt;/phase&gt;
+      &lt;goals&gt;
+        &lt;goal&gt;report&lt;/goal&gt;
+      &lt;/goals&gt;
+    &lt;/execution&gt;
+  &lt;/executions&gt;
+&lt;/plugin&gt;
+</code></pre>
+                <p>Este plugin genera un informe detallado de cobertura después de ejecutar las pruebas.</p>
+                <img src="img/jacoco.png" alt="Configuración de JaCoCo" class="step-image">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <h2><i class="fas fa-play-circle"></i> Paso 2: Ejecutar las Pruebas y Generar un Informe</h2>
+                <p>Ejecuta el siguiente comando para correr las pruebas y generar el informe de cobertura:</p>
+                <pre class="bg-light p-3 border rounded"><code>mvn clean verify</code></pre>
+                <p>El informe de cobertura se generará en la carpeta <code>target/site/jacoco/</code>.</p>
+                <img src="img/mvn_clean_verify.png" alt="Ejecución de pruebas con JaCoCo" class="step-image">
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <h2><i class="fas fa-chart-bar"></i> Paso 3: Interpretar el Informe</h2>
+                <p>Abre el archivo <code>index.html</code> en un navegador. Verás:</p>
+                <ul>
+                    <li><strong>Líneas cubiertas:</strong> Porcentaje de líneas ejecutadas durante las pruebas.</li>
+                    <li><strong>Métodos cubiertos:</strong> Métodos ejecutados al menos una vez.</li>
+                    <li><strong>Cobertura de ramas:</strong> Ramas ejecutadas en estructuras de control.</li>
+                </ul>
+                <p>Esto ayuda a identificar partes del código que necesitan pruebas adicionales.</p>
+               
+            </div>
+        </div>
+
+        <h2 class="mt-5">Resumen de Pasos</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Paso</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Agregar el plugin de JaCoCo al archivo <code>pom.xml</code>.</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Ejecutar pruebas con <code>mvn clean verify</code>.</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Abrir el informe generado en <code>target/site/jacoco/index.html</code> y analizar los resultados.</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="mt-5 p-4 bg-light border rounded">
+            <h3><i class="fas fa-link"></i> Recursos sobre JaCoCo y Cobertura de Pruebas</h3>
+            <ul>
+              
+                <li>
+                    <a href="https://mvnrepository.com/artifact/org.jacoco/jacoco-maven-plugin" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> Documentación oficial del plugin de JaCoCo (Maven Repository)
+                    </a>
+                </li>
+                <li>
+                    <a href="https://platzi.com/tutoriales/1503-testing-java/3841-jacoco-y-la-cobertura-de-pruebas-en-el-codigo/" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> JaCoCo y la cobertura de pruebas en el código (Platzi)
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.baeldung.com/jacoco" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> Guía de JaCoCo para medir la cobertura de código en Java (Baeldung)
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="text-center mt-5">
+            <a href="https://www.eclemma.org/jacoco/" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> Más información sobre JaCoCo</a>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
