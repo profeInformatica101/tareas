@@ -56,7 +56,10 @@
             <div class="col-md-6 mb-4">
                 <h2><i class="fas fa-cogs"></i> Paso 1: Agregar JaCoCo a tu Proyecto</h2>
                 <p>Para usar JaCoCo en un proyecto Maven, añade el siguiente plugin en el archivo <code>pom.xml</code>:</p>
-                <pre class="bg-light p-3 border rounded"><code>&lt;plugin&gt;
+                <pre class="bg-light p-3 border rounded"><code>
+&lt;build&gt;
+&lt;plugins&gt;
+&lt;plugin&gt;
   &lt;groupId&gt;org.jacoco&lt;/groupId&gt;
   &lt;artifactId&gt;jacoco-maven-plugin&lt;/artifactId&gt;
   &lt;version&gt;0.8.10&lt;/version&gt;
@@ -75,6 +78,8 @@
     &lt;/execution&gt;
   &lt;/executions&gt;
 &lt;/plugin&gt;
+&lt;/plugins&gt;
+&lt;/build&gt;
 </code></pre>
                 <p>Este plugin genera un informe detallado de cobertura después de ejecutar las pruebas.</p>
                 <img src="img/jacoco.png" alt="Configuración de JaCoCo" class="step-image">
