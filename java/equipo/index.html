@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividad: Figuras Geométricas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        code{
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Implementación Colaborativa de Figuras Geométricas</h1>
+        <div class="accordion" id="accordionExample">
+
+            <!-- Organización del Equipo -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <i class="bi bi-people"></i> 1. Organización del Equipo
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <ul>
+                            <li>Seleccionen un <strong>líder de equipo</strong>, quien será responsable de realizar el fork inicial del repositorio base: <a href="https://github.com/profeInformatica101/figuras_geometricas_base" target="_blank">Repositorio Base</a>.</li>
+                            <li>El líder deberá clonar el repositorio forkeado y añadir a los demás integrantes del equipo como colaboradores.</li>
+                            <li>Cada integrante trabajará en su propia rama de feature correspondiente a la figura asignada (por ejemplo: <code>feature/circulo</code>, <code>feature/cuadrado</code>).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desarrollo del Proyecto -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <i class="bi bi-file-earmark-code"></i> 2. Desarrollo del Proyecto
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <img src="diagrama.png" alt="Diagrama del proyecto">
+                        <ul>
+                            <li>La clase abstracta <code>FiguraGeometrica</code> se encuentra incluida en el proyecto base.</li>
+                           
+                            <li>Cada clase deberá incluir:
+                                <ul>
+                                    <li>Propiedades específicas de la figura.</li>
+                                    <li>Métodos necesarios para calcular áreas y perímetros.</li>
+                                    <li>Uso de etiquetas de <mark><a href="https://es.wikipedia.org/wiki/Javadoc"><strong>Javadoc</strong></a> para documentar cada método y propiedad de la clase.</mark></li>
+                                </ul>
+                            </li>
+                            <li>Implementa pruebas unitarias para validar el correcto funcionamiento de cada figura en la carpeta <code>src/test/java/com/endes/figuras</code>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trabajo Colaborativo con Git -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <i class="bi bi-git"></i> 3. Trabajo Colaborativo con Git
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <ul>
+                            <li>Cada integrante trabajará en una rama de feature correspondiente a su figura.</li>
+                            <li>Pasos para realizar un <strong>pull request</strong>:
+                                <ol>
+                                    <li>Sube los cambios a tu rama de feature en el repositorio remoto (<code>git push</code>).</li>
+                                    <li>En el repositorio en GitHub, selecciona tu rama y haz clic en "Compare & pull request".</li>
+                                    <li>Rellena la descripción del pull request, explicando qué cambios se realizaron.</li>
+                                    <li>Solicita la revisión del líder o de un compañero.</li>
+                                    <li>Una vez aprobado, realiza el merge a la rama principal (<code>main</code> o <code>master</code>).</li>
+                                </ol>
+                            </li>
+                            <li>Comandos básicos de Git:
+                                <pre>
+# Clonar el repositorio
+$ git clone <url-del-repositorio>
+
+# Crear una nueva rama
+$ git checkout -b feature/<nombre-rama>
+
+# Añadir cambios al área de preparación
+$ git add .
+
+# Confirmar los cambios
+$ git commit -m "Mensaje descriptivo"
+
+# Subir la rama al repositorio remoto
+$ git push origin feature/<nombre-rama>
+                                </pre>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documentación -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        <i class="bi bi-journal-text"></i> 4. Documentación
+                    </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <ul>
+                            <li>Genera la documentación del proyecto con <strong>Javadoc</strong> y guárdala en la carpeta <code>docs</code>.</li>
+                            <li>Incluye un archivo <code>README.md</code> con:
+                                <ul>
+                                    <li>Una breve descripción del proyecto.</li>
+                                    <li>Listado de integrantes del equipo y las figuras asignadas.</li>
+                                    <li>Instrucciones para compilar, ejecutar y probar el código.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Entrega Final -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFive">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        <i class="bi bi-box-arrow-up-right"></i> 5. Entrega Final
+                    </button>
+                </h2>
+                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <ul>
+                            <li>Una vez que el proyecto esté completo, cada integrante deberá realizar un fork del repositorio final del equipo y mantenerlo en su cuenta personal de GitHub con la ruta: <code>https://github.com/&lt;tu_usuario_github&gt;/figuras_geometricas_base</code>.</li>
+                            <li>En Moodle, entrega el enlace a tu repositorio personal con el proyecto completo y funcional.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.js"></script>
+</body>
+</html>
