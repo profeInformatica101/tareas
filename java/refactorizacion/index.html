@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Empleados</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="script.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+        }
+        code{
+            color:blueviolet;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center mb-4">Gestión de Empleados</h2>
+        <p><strong>Ejercicio 3: Código para refactorizar</strong></p>
+        <p>Partiendo de un código que simula un sistema básico para la gestión de empleados, aplicarás técnicas de refactorización y documentación. Además, registrarás tus cambios de manera progresiva en el repositorio <strong>refactorizacion</strong> en GitHub, manteniendo un historial de commits limpio y descriptivo.</p>
+        
+        <p><strong>Repositorio:</strong> <a href="https://github.com/tu_usuario/refactorizacion" target="_blank">maven_endes en GitHub</a></p>
+        
+        <pre>
+public class EmployeeManager {
+    String[] employeeNames = new String[10];
+    int[] employeeYears = new int[10];
+    int numberOfEmployees = 0;
+    
+    public void addEmployee(String name, int years) {
+        if (numberOfEmployees < 10) {
+            employeeNames[numberOfEmployees] = name;
+            employeeYears[numberOfEmployees] = years;
+            numberOfEmployees++;
+            System.out.println(name + " added to the system.");
+        } else {
+            System.out.println("Cannot add more employees, system is full.");
+        }
+    }
+    
+    public void printEmployees() {
+        System.out.println("List of employees:");
+        for (int i = 0; i < numberOfEmployees; i++) {
+            System.out.println(employeeNames[i] + ", Years in company: " + employeeYears[i]);
+        }
+    }
+    
+    public static void main(String[] args) {
+        EmployeeManager manager = new EmployeeManager();
+        manager.addEmployee("John Doe", 5);
+        manager.addEmployee("Jane Smith", 2);
+        manager.printEmployees();
+    }
+}
+        </pre>
+        
+        <h4>Instrucciones:</h4>
+        <ol>
+            <li><strong>Introduce una Clase Employee:</strong> Crea una nueva clase <em>Employee</em> para encapsular la información del empleado, incluyendo nombre y años en la empresa.</li>
+            <li><strong>Usa una Lista en Lugar de Arrays Estáticos:</strong> Modifica la clase <em>EmployeeManager</em> para usar una lista dinámica <code>List&lt;Employee&gt;</code> en vez de arrays estáticos.</li>
+            <li><strong>Mejora el Manejo de Capacidad:</strong> Elimina cualquier restricción sobre el número máximo de empleados.</li>
+            <li><strong>Encapsulación y Separación de Responsabilidades:</strong> Ajusta los niveles de acceso y encapsula los datos correctamente.</li>
+            <li><strong>Refactoriza el Método printEmployees:</strong> Usa un bucle <code>for-each</code> para mejorar la claridad y legibilidad.</li>
+            <li><strong>Documentación con Javadoc:</strong> Agrega comentarios Javadoc a clases y métodos.</li>
+            <li><strong>Versionado con Git:</strong> Realiza commits incrementales con mensajes descriptivos.</li>
+        </ol>
+    </div>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FetchType y CascadeType en JPA</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h2>Comparación de FetchType y CascadeType en JPA</h2>
+    
+    <h3>FetchType (Carga de Relaciones)</h3>
+    <table>
+        <tr>
+            <th>Tipo</th>
+            <th>Descripción</th>
+            <th>¿Cuándo usarlo?</th>
+            <th>Ejemplo</th>
+        </tr>
+        <tr>
+            <td><b>FetchType.LAZY</b></td>
+            <td>Las entidades relacionadas solo se cargan cuando son accedidas explícitamente.</td>
+            <td>Cuando la relación no siempre se necesita, para mejorar el rendimiento.</td>
+            <td>
+                <pre>
+@Entity
+class Usuario {
+    @OneToOne(fetch = FetchType.LAZY)
+    private InformacionUsuario info;
+}</pre>
+            </td>
+        </tr>
+        <tr>
+            <td><b>FetchType.EAGER</b></td>
+            <td>Las entidades relacionadas se cargan automáticamente con la entidad principal.</td>
+            <td>Cuando la relación es crítica y siempre se necesita.</td>
+            <td>
+                <pre>
+@Entity
+class Usuario {
+    @OneToOne(fetch = FetchType.EAGER)
+    private InformacionUsuario info;
+}</pre>
+            </td>
+        </tr>
+    </table>
+    
+    <h3>CascadeType (Propagación de Operaciones)</h3>
+    <table>
+        <tr>
+            <th>Tipo</th>
+            <th>Descripción</th>
+            <th>Ejemplo de uso</th>
+            <th>Código</th>
+        </tr>
+        <tr>
+            <td><b>CascadeType.ALL</b></td>
+            <td>Aplica todas las operaciones de persistencia (guardar, actualizar, eliminar, etc.).</td>
+            <td>Cuando se quiere que todas las operaciones en la entidad principal afecten a la entidad relacionada.</td>
+            <td>
+                <pre>
+@OneToOne(cascade = CascadeType.ALL)
+private InformacionUsuario info;</pre>
+            </td>
+        </tr>
+        <tr>
+            <td><b>CascadeType.PERSIST</b></td>
+            <td>Guarda la entidad relacionada automáticamente cuando se guarda la entidad principal.</td>
+            <td>Cuando se quiere insertar automáticamente la relación sin llamar manualmente a save().</td>
+            <td>
+                <pre>
+@OneToOne(cascade = CascadeType.PERSIST)
+private InformacionUsuario info;</pre>
+            </td>
+        </tr>
+        <tr>
+            <td><b>CascadeType.MERGE</b></td>
+            <td>Actualiza la entidad relacionada cuando la entidad principal se actualiza.</td>
+            <td>Cuando se quiere sincronizar cambios en la relación.</td>
+            <td>
+                <pre>
+@OneToOne(cascade = CascadeType.MERGE)
+private InformacionUsuario info;</pre>
+            </td>
+        </tr>
+        <tr>
+            <td><b>CascadeType.REMOVE</b></td>
+            <td>Elimina la entidad relacionada cuando la entidad principal es eliminada.</td>
+            <td>Cuando se quiere borrar la relación al borrar la entidad principal.</td>
+            <td>
+                <pre>
+@OneToOne(cascade = CascadeType.REMOVE)
+private InformacionUsuario info;</pre>
+            </td>
+        </tr>
+        <tr>
+            <td><b>CascadeType.REFRESH</b></td>
+            <td>Recarga la entidad relacionada desde la base de datos.</td>
+            <td>Cuando se necesita forzar la actualización de los datos en memoria.</td>
+            <td>
+                <pre>
+@OneToOne(cascade = CascadeType.REFRESH)
+private InformacionUsuario info;</pre>
+            </td>
+        </tr>
+        <tr>
+            <td><b>CascadeType.DETACH</b></td>
+            <td>Separa la entidad y sus relaciones del contexto de persistencia.</td>
+            <td>Cuando no se quiere que las entidades sean gestionadas por Hibernate.</td>
+            <td>
+                <pre>
+@OneToOne(cascade = CascadeType.DETACH)
+private InformacionUsuario info;</pre>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+
