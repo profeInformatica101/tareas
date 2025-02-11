@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Refactorización: Código Espagueti para Gestión de Productos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      max-width: 800px;
+      margin-top: 50px;
+    }
+    code {
+      color: blueviolet;
+    }
+    pre {
+      background-color: #e9ecef;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 class="text-center mb-4">Código Espagueti para Refactorizar</h2>
+    <p><strong>Ejercicio:</strong> Refactorizar el siguiente código espagueti que gestiona productos.</p>
+    <p>
+      El código actual mezcla responsabilidades, utiliza arrays y listas de forma ineficiente, y tiene un manejo de excepciones disperso.
+      Tu tarea es limpiar y reorganizar este código aplicando buenas prácticas de programación, encapsulamiento, separación de responsabilidades y manejo adecuado de excepciones.
+    </p>
+
+    <pre>
+// Código espagueti para la gestión de productos
+
+public class spaghettiproducts {
+
+    // Arrays estáticos para almacenar datos de productos
+    String[] productNames = new String[3];
+    double[] productPrices = new double[3];
+    int productCount = 0;
+
+    // Agrega un producto, pero con manejo de errores disperso y lógica mezclada
+    public void addProduct(String name, double price) {
+        if (name == null || name.trim().isEmpty()) {
+            System.out.println("Error: Nombre inválido");
+            return;
+        }
+        if (price < 0) {
+            System.out.println("Error: Precio negativo");
+            return;
+        }
+        try {
+            if (productCount < productNames.length) {
+                productNames[productCount] = name;
+                productPrices[productCount] = price;
+                productCount++;
+                System.out.println("Producto agregado: " + name);
+            } else {
+                // Conversión improvisada de arrays a listas
+                System.out.println("Límite de array alcanzado. Convirtiendo a lista...");
+                java.util.List<String> namesList = new java.util.ArrayList<>();
+                java.util.List<Double> pricesList = new java.util.ArrayList<>();
+                for (int i = 0; i < productCount; i++) {
+                    namesList.add(productNames[i]);
+                    pricesList.add(productPrices[i]);
+                }
+                namesList.add(name);
+                pricesList.add(price);
+                // Reconstruye los arrays a partir de la lista
+                productNames = new String[namesList.size()];
+                productPrices = new double[pricesList.size()];
+                for (int i = 0; i < namesList.size(); i++) {
+                    productNames[i] = namesList.get(i);
+                    productPrices[i] = pricesList.get(i);
+                }
+                productCount = namesList.size();
+                System.out.println("Producto agregado después de conversión: " + name);
+            }
+        } catch (Exception e) {
+            System.out.println("Error al agregar producto: " + e.getMessage());
+        }
+    }
+
+    // Lista todos los productos. Si no hay productos, lanza una excepción de forma ineficiente.
+    public void listProducts() {
+        try {
+            if (productCount == 0) {
+                throw new Exception("No hay productos para listar.");
+            }
+            for (int i = 0; i < productCount; i++) {
+                System.out.println("Producto " + (i + 1) + ": " + productNames[i] + " - Precio: " + productPrices[i]);
+            }
+        } catch (Exception e) {
+            System.out.println("Error en listProducts: " + e.getMessage());
+        }
+    }
+
+    // Busca un producto por nombre. La búsqueda y manejo de errores están mezclados.
+    public void findProduct(String searchName) {
+        boolean found = false;
+        for (int i = 0; i < productCount; i++) {
+            if (productNames[i].equalsIgnoreCase(searchName)) {
+                System.out.println("Producto encontrado: " + productNames[i] + " - Precio: " + productPrices[i]);
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            try {
+                throw new Exception("Producto no encontrado: " + searchName);
+            } catch (Exception e) {
+                System.out.println("Error en findProduct: " + e.getMessage());
+            }
+        }
+    }
+
+    // Método main que mezcla la lógica de negocio con la presentación
+    public static void main(String[] args) {
+        SpaghettiProducts sp = new SpaghettiProducts();
+        sp.addProduct("Monitor", 250);
+        sp.addProduct("Teclado", 50);
+        sp.addProduct("Mouse", 25);
+        sp.addProduct("Impresora", 150); // Debería activar la conversión de arrays a listas
+        sp.listProducts();
+        sp.findProduct("Teclado");
+        sp.findProduct("Scanner"); // Producto inexistente para provocar error
+    }
+}
+    </pre>
+
+    <h4>Aspectos a Refactorizar y Patrones a Aplicar:</h4>
+    <ul>
+      <li>
+        <strong>Separación de Responsabilidades:</strong>
+        <ul>
+          <li>
+            Extraer la representación de un producto en una clase <code>Product</code> que encapsule sus atributos y validaciones.
+          </li>
+          <li>
+            Crear una clase <code>ProductManager</code> para manejar la lógica de negocio, separando la presentación (uso de <code>System.out</code>) de la manipulación de datos.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>Uso Consistente de Estructuras de Datos:</strong>
+        <ul>
+          <li>
+            Sustituir el uso mixto de arrays y listas por una única estructura de datos dinámica, como <code>List&lt;Product&gt;</code>.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>Manejo de Excepciones:</strong>
+        <ul>
+          <li>
+            Utilizar excepciones específicas (por ejemplo, <code>IllegalArgumentException</code> o <code>NoSuchElementException</code>) en lugar de imprimir mensajes en consola.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>Patrones de Refactorización:</strong>
+        <ul>
+          <li>
+            <em>Extract Method:</em> Divide métodos largos y con múltiples responsabilidades en métodos más pequeños y específicos.
+          </li>
+          <li>
+            <em>Extract Class:</em> Separa funcionalidades relacionadas en clases distintas (por ejemplo, separar la lógica del producto y la gestión de productos).
+          </li>
+          <li>
+            <em>Inline Method:</em> Si existen métodos que solo encapsulan una línea o una operación simple, considera eliminarlos para simplificar el código.
+          </li>
+          <li>
+            <em>Encapsulate Field:</em> Asegúrate de que los atributos estén privados y se acceda a ellos mediante getters y setters, evitando modificaciones directas.
+          </li>
+          <li>
+            <em>Replace Conditional with Polymorphism:</em> Si encuentras condicionales complejos que varían según el tipo de producto o comportamiento, evalúa usar herencia o interfaces.
+          </li>
+          <li>
+            <em>Introduce Parameter Object:</em> Si múltiples parámetros se pasan juntos a varios métodos, considera agruparlos en un objeto.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>Legibilidad y Modularidad:</strong>
+        <ul>
+          <li>
+            Extraer métodos para tareas específicas y añadir comentarios que expliquen la funcionalidad.
+          </li>
+          <li>
+            Eliminar código redundante y mejorar la estructura para facilitar su mantenimiento.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>Versionado con Git:</strong>
+        <ul>
+          <li>
+            Realiza commits incrementales y descriptivos para cada refactorización aplicada.
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>
