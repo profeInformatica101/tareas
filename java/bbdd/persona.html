@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarea: Persistencia de Productos en SQLite</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="#">Persistencia de Productos en SQLite</a>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h1>Ejercicio anterior</h1>
+    <a href="../refactorizacion/e1.html">Refactoriza Persona</a>
+    <h1 class="text-center text-primary">Persistencia de Productos</h1>
+    <p class="text-center">Refactoriza el código espagueti para almacenar productos en una base de datos SQLite.</p>
+
+    <!-- Menú de pestañas -->
+    <ul class="nav nav-tabs" id="tutorialTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="tab1" data-bs-toggle="tab" href="#step1">1. Crear Proyecto Maven</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tab2" data-bs-toggle="tab" href="#step2">2. Configurar SQLite</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tab3" data-bs-toggle="tab" href="#step3">3. Crear Modelo</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tab4" data-bs-toggle="tab" href="#step4">4. Implementar DAO</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tab5" data-bs-toggle="tab" href="#step5">5. Programa Principal</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tab6" data-bs-toggle="tab" href="#step6">6. Pruebas Unitarias</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tab7" data-bs-toggle="tab" href="#step7">7. Documentación</a>
+        </li>
+    </ul>
+
+    <!-- Contenido de pestañas -->
+    <div class="tab-content mt-3">
+
+        <!-- Paso 1 -->
+        <div id="step1" class="tab-pane fade show active">
+            <h3>Paso 1: Crear Proyecto Maven</h3>
+            <p>Crea una nueva rama en tu repositorio:</p>
+            <pre><code>git checkout -b dev/persistencia_productos</code></pre>
+            <p>Agrega la dependencia de SQLite en el `pom.xml`:</p>
+            <pre><code>
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.xerial&lt;/groupId&gt;
+        &lt;artifactId&gt;sqlite-jdbc&lt;/artifactId&gt;
+        &lt;version&gt;3.7.2&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+            </code></pre>
+        </div>
+
+        <!-- Paso 2 -->
+        <div id="step2" class="tab-pane fade">
+            <h3>Paso 2: Configurar SQLite</h3>
+            <p>Crea la base de datos y la tabla `productos.db` con este código:</p>
+            <pre><code>
+import java.sql.*;
+
+public class DatabaseManager {
+    private static final String URL = "jdbc:sqlite:productos.db";
+
+    public static void createTable() {
+        String sql = "CREATE TABLE IF NOT EXISTS productos (" +
+                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                     "nombre TEXT NOT NULL, " +
+                     "precio REAL NOT NULL)";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+    public static void main(String[] args) { createTable(); }
+}
+            </code></pre>
+        </div>
+
+        <!-- Paso 3 -->
+        <div id="step3" class="tab-pane fade">
+            <h3>Paso 3: Crear Modelo `Producto`</h3>
+            <pre><code>
+public class Producto {
+    private int id;
+    private String nombre;
+    private double precio;
+
+    public Producto(int id, String nombre, double precio) {
+        this.id = id;
+        this.nombre = nombre;
+        this.precio = precio;
+    }
+}
+            </code></pre>
+        </div>
+
+        <!-- Paso 4 -->
+        <div id="step4" class="tab-pane fade">
+            <h3>Paso 4: Implementar DAO</h3>
+            <pre><code>
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProductoDAO {
+    private static final String URL = "jdbc:sqlite:productos.db";
+
+    public void agregarProducto(Producto producto) {
+        String sql = "INSERT INTO productos (nombre, precio) VALUES (?, ?)";
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, producto.getNombre());
+            pstmt.setDouble(2, producto.getPrecio());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
+            </code></pre>
+        </div>
+
+        <!-- Paso 5 -->
+        <div id="step5" class="tab-pane fade">
+            <h3>Paso 5: Programa Principal</h3>
+            <pre><code>
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        ProductoDAO dao = new ProductoDAO();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Nombre del producto: ");
+        String nombre = scanner.nextLine();
+        System.out.print("Precio del producto: ");
+        double precio = scanner.nextDouble();
+        dao.agregarProducto(new Producto(nombre, precio));
+    }
+}
+            </code></pre>
+        </div>
+
+        <!-- Paso 6 -->
+        <div id="step6" class="tab-pane fade">
+            <h3>Paso 6: Crear Pruebas Unitarias</h3>
+            <pre><code>
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class ProductoDAOTest {
+    private ProductoDAO productoDAO;
+
+    @Before
+    public void setUp() {
+        productoDAO = new ProductoDAO();
+    }
+
+    @Test
+    public void testAgregarYBuscarProducto() {
+        Producto producto = new Producto("Prueba", 99.99);
+        productoDAO.agregarProducto(producto);
+        Producto encontrado = productoDAO.buscarProducto("Prueba");
+        assertNotNull(encontrado);
+    }
+}
+            </code></pre>
+        </div>
+
+        <!-- Paso 7 -->
+        <div id="step7" class="tab-pane fade">
+            <h3>Paso 7: Documentar con Javadoc</h3>
+            <pre><code>
+/**
+ * Clase que maneja la persistencia de productos en la base de datos SQLite.
+ */
+public class ProductoDAO {
+    // Implementación aquí...
+}
+            </code></pre>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
