@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postman - Ejercicio 2: Consumir API de GitHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Postman - Ejercicio 2: Consumo de API de GitHub</h1>
+        
+        <div class="accordion" id="githubGuide">
+            
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#generateToken">
+                        1. Generar un Token de Acceso Personal en GitHub
+                    </button>
+                </h2>
+                <div id="generateToken" class="accordion-collapse collapse show" data-bs-parent="#githubGuide">
+                    <div class="accordion-body">
+                        <ol>
+                            <li>Accede a <a href="https://github.com/settings/tokens" target="_blank">GitHub Developer Settings</a>.</li>
+                            <li>Haz clic en <strong>Generate new token</strong> (classic).</li>
+                            <li>Asigna un nombre al token y selecciona la fecha de expiración.</li>
+                            <li>En los permisos, selecciona:
+                                <ul>
+                                    <li><strong>repo</strong> → full control of private repositories.</li>
+                                    <li><strong>delete_repo</strong> → para eliminar repositorios.</li>
+                                </ul>
+                            </li>
+                            <li>Haz clic en <strong>Generate Token</strong> y copia el token generado.</li>
+                            <li>Guarda el token en un lugar seguro, ya que no podrás verlo nuevamente.</li>
+                        </ol>
+                        <div class="alert alert-warning">
+                            <strong>Importante:</strong> No compartas tu token con nadie. Úsalo solo en entornos seguros.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#deleteRepo">
+                        2. Eliminar un repositorio en GitHub desde Postman
+                    </button>
+                </h2>
+                <div id="deleteRepo" class="accordion-collapse collapse" data-bs-parent="#githubGuide">
+                    <div class="accordion-body">
+                        <ol>
+                            <li>Abre Postman y crea una nueva colección llamada "GitHub API".</li>
+                            <li>Dentro de la colección, crea una nueva solicitud con los siguientes parámetros:</li>
+                        </ol>
+                        <pre><code>
+Método: DELETE
+URL: https://api.github.com/repos/{TU_USUARIO}/para_borrar
+Headers:
+  Authorization: Bearer {TU_TOKEN}
+  Accept: application/vnd.github.v3+json
+                        </code></pre>
+                        <ol start="3">
+                            <li>Reemplaza <code>{TU_USUARIO}</code> por tu nombre de usuario de GitHub.</li>
+                            <li>Reemplaza <code>{TU_TOKEN}</code> por el token generado previamente.</li>
+                            <li>Haz clic en <strong>Send</strong> y verifica la respuesta.</li>
+                        </ol>
+                        <div class="alert alert-info">
+                            Si la solicitud fue exitosa, el repositorio "para_borrar" será eliminado.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#otherExamples">
+                        3. Otros Ejercicios Prácticos con GitHub API
+                    </button>
+                </h2>
+                <div id="otherExamples" class="accordion-collapse collapse" data-bs-parent="#githubGuide">
+                    <div class="accordion-body">
+                        <h5>📌 Crear un repositorio</h5>
+                        <pre><code>
+Método: POST
+URL: https://api.github.com/user/repos
+Headers:
+  Authorization: Bearer {TU_TOKEN}
+  Accept: application/vnd.github.v3+json
+Body (JSON):
+{
+  "name": "mi_nuevo_repo",
+  "description": "Repositorio de prueba",
+  "private": false
+}
+                        </code></pre>
+                        <hr>
+                        <h5>📌 Listar todos tus repositorios</h5>
+                        <pre><code>
+Método: GET
+URL: https://api.github.com/user/repos
+Headers:
+  Authorization: Bearer {TU_TOKEN}
+  Accept: application/vnd.github.v3+json
+                        </code></pre>
+                        <hr>
+                        <h5>📌 Actualizar la descripción de un repositorio</h5>
+                        <pre><code>
+Método: PATCH
+URL: https://api.github.com/repos/{TU_USUARIO}/mi_nuevo_repo
+Headers:
+  Authorization: Bearer {TU_TOKEN}
+  Accept: application/vnd.github.v3+json
+Body (JSON):
+{
+  "description": "Descripción actualizada desde Postman"
+}
+                        </code></pre>
+                        <hr>
+                        <h5>📌 Crear un issue en un repositorio</h5>
+                        <pre><code>
+Método: POST
+URL: https://api.github.com/repos/{TU_USUARIO}/mi_nuevo_repo/issues
+Headers:
+  Authorization: Bearer {TU_TOKEN}
+  Accept: application/vnd.github.v3+json
+Body (JSON):
+{
+  "title": "Error en el código",
+  "body": "Hay un bug en la función principal."
+}
+                        </code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

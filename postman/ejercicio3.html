@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica 3: Consumo de la API de AEMET con Postman</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        code {
+            color: #d63384;
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        .accordion-button:focus {
+            box-shadow: none;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .alert {
+            margin-top: 10px;
+        }
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Práctica 3: Consumo de la API de AEMET con Postman</h1>
+        
+        <!-- Introducción -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2>Introducción</h2>
+                <p>
+                    En esta práctica, aprenderás a consumir la API de AEMET (Agencia Estatal de Meteorología de España) utilizando Postman. Realizarás solicitudes HTTP para obtener datos meteorológicos, escribirás pruebas automatizadas y crearás un flujo de trabajo con múltiples solicitudes.
+                </p>
+                <p>
+                    <strong>Requisitos:</strong>
+                </p>
+                <ul>
+                    <li>Una API Key de AEMET. Regístrate en <a href="https://opendata.aemet.es/centrodedescargas/inicio" target="_blank">AEMET OpenData</a>.</li>
+                    <li>Postman instalado en tu computadora.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Acordeón de pasos -->
+        <div class="accordion" id="aemetGuide">
+            
+            <!-- Paso 1: Configurar la API de AEMET -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#configAEMET" aria-expanded="true" aria-controls="configAEMET">
+                        1. Configurar la API de AEMET
+                    </button>
+                </h2>
+                <div id="configAEMET" class="accordion-collapse collapse show" data-bs-parent="#aemetGuide">
+                    <div class="accordion-body">
+                        <p>
+                            Para interactuar con la API de AEMET, necesitas una <strong>API Key</strong>. Sigue estos pasos para configurarla en Postman:
+                        </p>
+                        <ol>
+                            <li>Regístrate en <a href="https://opendata.aemet.es/centrodedescargas/inicio" target="_blank">AEMET OpenData</a> y obtén tu API Key.</li>
+                            <li>Abre Postman y crea una nueva variable de entorno llamada <code>api_key</code>.</li>
+                            <li>Asigna tu API Key a la variable <code>api_key</code>.</li>
+                        </ol>
+                        <div class="alert alert-warning">
+                            <strong>Importante:</strong> No compartas tu API Key con nadie. Úsala solo en entornos seguros.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Paso 2: Obtener datos meteorológicos -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#getWeatherData" aria-expanded="false" aria-controls="getWeatherData">
+                        2. Obtener datos meteorológicos
+                    </button>
+                </h2>
+                <div id="getWeatherData" class="accordion-collapse collapse" data-bs-parent="#aemetGuide">
+                    <div class="accordion-body">
+                        <p>
+                            Realiza una solicitud GET para obtener la predicción meteorológica de un municipio.
+                        </p>
+                        <ol>
+                            <li>Crea una nueva solicitud en Postman con los siguientes parámetros:</li>
+                        </ol>
+                        <pre><code>
+Método: GET
+URL: https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/{codigo_municipio}?api_key={{api_key}}
+Headers:
+  cache-control: no-cache
+                        </code></pre>
+                        <ol start="2">
+                            <li>Reemplaza <code>{codigo_municipio}</code> por el código de un municipio (por ejemplo, <code>28079</code> para Madrid).</li>
+                            <li>Haz clic en <strong>Send</strong> y verifica la respuesta.</li>
+                        </ol>
+                        <div class="alert alert-info">
+                            La respuesta incluirá una URL para acceder a los datos meteorológicos en formato JSON.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Paso 3: Escribir pruebas automatizadas -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#writeTests" aria-expanded="false" aria-controls="writeTests">
+                        3. Escribir pruebas automatizadas
+                    </button>
+                </h2>
+                <div id="writeTests" class="accordion-collapse collapse" data-bs-parent="#aemetGuide">
+                    <div class="accordion-body">
+                        <p>
+                            En la pestaña <strong>Tests</strong> de Postman, escribe el siguiente código para validar la respuesta:
+                        </p>
+                        <pre><code>
+// Verificar que la respuesta tiene un código de estado 200
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+// Verificar que la respuesta contiene datos meteorológicos
+pm.test("Response contains weather data", function () {
+    const response = pm.response.json();
+    pm.expect(response).to.have.property("datos");
+    pm.expect(response.datos).to.include("https://opendata.aemet.es/opendata/sh/");
+});
+
+// Verificar que la respuesta contiene metadatos
+pm.test("Response contains metadata", function () {
+    const response = pm.response.json();
+    pm.expect(response).to.have.property("metadatos");
+    pm.expect(response.metadatos).to.include("https://opendata.aemet.es/opendata/sh/");
+});
+                        </code></pre>
+                        <div class="alert alert-success">
+                            Estas pruebas validan que la respuesta es correcta y contiene los datos esperados.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Paso 4: Crear un flujo de trabajo -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#workflow" aria-expanded="false" aria-controls="workflow">
+                        4. Crear un flujo de trabajo
+                    </button>
+                </h2>
+                <div id="workflow" class="accordion-collapse collapse" data-bs-parent="#aemetGuide">
+                    <div class="accordion-body">
+                        <p>
+                            Crea un flujo de trabajo en Postman que incluya múltiples solicitudes:
+                        </p>
+                        <ol>
+                            <li><strong>Obtener predicción diaria por municipio</strong>:
+                                <pre><code>
+Método: GET
+URL: https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/28079?api_key={{api_key}}
+                                </code></pre>
+                            </li>
+                            <li><strong>Obtener datos de observación</strong>:
+                                <pre><code>
+Método: GET
+URL: https://opendata.aemet.es/opendata/api/observacion/convencional/datos/estacion/3195?api_key={{api_key}}
+                                </code></pre>
+                            </li>
+                            <li><strong>Comparar datos</strong>:
+                                <p>
+                                    Usa scripts en Postman para comparar los datos de predicción y observación.
+                                </p>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
