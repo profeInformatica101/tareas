@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Postman para SWAPI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        code {
+            color: rgb(21, 90, 21);
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        .accordion-button:focus {
+            box-shadow: none;
+        }
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Guía de Postman para consumir SWAPI</h1>
+        
+        <!-- Introducción -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <img src="https://voyager.postman.com/logo/postman-logo-icon-orange.svg">
+                <h2>Introducción</h2>
+                <p>
+                    Postman es una herramienta que te permite interactuar con APIs de manera sencilla. En esta guía, aprenderás a usar Postman para consumir la API de <a href="https://swapi.dev/">Star Wars (SWAPI)</a> y realizar tus primeras solicitudes HTTP.
+                </p>
+                <p>
+                    <strong>Requisitos:</strong>
+                </p>
+                <ul>
+                    <li>Descargar e instalar Postman desde <a href="https://www.postman.com/downloads/" target="_blank">aquí</a>.</li>
+                    <li>Tener una conexión a Internet.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Acordeón de pasos -->
+        <div class="accordion" id="postmanGuide">
+            
+            <!-- Paso 1: Crear una colección -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#step1" aria-expanded="true" aria-controls="step1">
+                        1. Crear una nueva colección en Postman
+                    </button>
+                </h2>
+                <div id="step1" class="accordion-collapse collapse show" data-bs-parent="#postmanGuide">
+                    <div class="accordion-body">
+                        <p>
+                            Las <strong>colecciones</strong> en Postman te permiten organizar tus solicitudes en grupos. Esto es útil cuando trabajas con varias APIs o endpoints.
+                        </p>
+                        <ol>
+                            <li>Abre Postman y selecciona el ícono de <strong>Collections</strong> en la barra lateral.</li>
+                            <li>Haz clic en <strong>New Collection</strong> y asigna un nombre, por ejemplo, "SWAPI Collection".</li>
+                            <li>Guarda la colección.</li>
+                        </ol>
+                        <div class="alert alert-info">
+                            <strong>Tip:</strong> Usa nombres descriptivos para tus colecciones, como "Pruebas SWAPI" o "API de GitHub".
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Paso 2: Definir variables de colección -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step2" aria-expanded="false" aria-controls="step2">
+                        2. Definir variables de colección
+                    </button>
+                </h2>
+                <div id="step2" class="accordion-collapse collapse" data-bs-parent="#postmanGuide">
+                    <div class="accordion-body">
+                        <p>
+                            Las <strong>variables</strong> te permiten reutilizar valores en varias solicitudes. En este caso, definiremos una variable para la URL base de SWAPI.
+                        </p>
+                        <ol>
+                            <li>En la colección, haz clic en los tres puntos y selecciona <strong>Edit</strong>.</li>
+                            <li>Ve a la pestaña <strong>Variables</strong>.</li>
+                            <li>Añade una variable llamada <code>base_url</code> con el valor <code>https://swapi.dev/api</code>.</li>
+                            <li>Guarda los cambios.</li>
+                        </ol>
+                        <div class="alert alert-warning">
+                            <strong>Nota:</strong> Asegúrate de que la URL esté correctamente escrita. Un error común es olvidar la barra final (<code>/</code>) en la URL.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Paso 3: Crear solicitudes para cada recurso de SWAPI -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step3" aria-expanded="false" aria-controls="step3">
+                        3. Crear solicitudes para cada recurso de SWAPI
+                    </button>
+                </h2>
+                <div id="step3" class="accordion-collapse collapse" data-bs-parent="#postmanGuide">
+                    <div class="accordion-body">
+                        <p>
+                            Crea solicitudes GET para cada uno de los siguientes recursos:
+                        </p>
+                        <ul>
+                            <li><strong>Personajes:</strong> <code>{{base_url}}/people/</code></li>
+                            <li><strong>Películas:</strong> <code>{{base_url}}/films/</code></li>
+                            <li><strong>Planetas:</strong> <code>{{base_url}}/planets/</code></li>
+                            <li><strong>Especies:</strong> <code>{{base_url}}/species/</code></li>
+                            <li><strong>Naves espaciales:</strong> <code>{{base_url}}/starships/</code></li>
+                            <li><strong>Vehículos:</strong> <code>{{base_url}}/vehicles/</code></li>
+                        </ul>
+                        <div class="alert alert-success">
+                            <strong>Ejemplo:</strong> Al hacer una solicitud a <code>{{base_url}}/people/1/</code>, obtendrás información sobre Luke Skywalker.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Paso 4: Consultar recursos específicos por ID -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step4" aria-expanded="false" aria-controls="step4">
+                        4. Consultar recursos específicos por ID
+                    </button>
+                </h2>
+                <div id="step4" class="accordion-collapse collapse" data-bs-parent="#postmanGuide">
+                    <div class="accordion-body">
+                        <p>
+                            Para obtener información específica, puedes realizar peticiones GET con un ID:
+                        </p>
+                        <ul>
+                            <li><strong>Personaje por ID:</strong> <code>{{base_url}}/people/{{person_id}}/</code></li>
+                            <li><strong>Película por ID:</strong> <code>{{base_url}}/films/{{film_id}}/</code></li>
+                            <li><strong>Planeta por ID:</strong> <code>{{base_url}}/planets/{{planet_id}}/</code></li>
+                        </ul>
+                        <div class="alert alert-info">
+                            <strong>Práctica:</strong> Cambia el valor de <code>{{person_id}}</code> por un número del 1 al 10 y observa los resultados.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+ 
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
