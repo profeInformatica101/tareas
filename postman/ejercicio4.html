@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postman - Práctica 4: API de ChatGPT</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Postman - Práctica 4: Consumo de la API de ChatGPT</h1>
+        
+        <p class="text-center">Aprende a interactuar con la API de OpenAI para utilizar ChatGPT en Postman.</p>
+        
+        <div class="accordion" id="chatgptGuide">
+            
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#generateAPIKey">
+                        1. Generar una clave API en OpenAI
+                    </button>
+                </h2>
+                <div id="generateAPIKey" class="accordion-collapse collapse show" data-bs-parent="#chatgptGuide">
+                    <div class="accordion-body">
+                        <ol>
+                            <li>Accede a <a href="https://platform.openai.com/signup/" target="_blank">OpenAI Platform</a> y crea una cuenta.</li>
+                            <li>Una vez dentro, ve a <a href="https://platform.openai.com/api-keys/" target="_blank">API Keys</a> en tu perfil.</li>
+                            <li>Haz clic en <strong>Generate new secret key</strong> y copia la clave.</li>
+                            <li>Guarda la clave en un lugar seguro, ya que solo se mostrará una vez.</li>
+                        </ol>
+                        <div class="alert alert-warning">
+                            <strong>Nota:</strong> No compartas tu clave API con nadie y evita exponerla en código público.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#createCollection">
+                        2. Crear una colección en Postman
+                    </button>
+                </h2>
+                <div id="createCollection" class="accordion-collapse collapse" data-bs-parent="#chatgptGuide">
+                    <div class="accordion-body">
+                        <ol>
+                            <li>Abre Postman y ve a la pestaña de <strong>Collections</strong>.</li>
+                            <li>Haz clic en <strong>New Collection</strong> y nómbrala "ChatGPT API".</li>
+                            <li>Guarda la colección para agrupar todas las solicitudes relacionadas con ChatGPT.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#apiEndpoints">
+                        3. Endpoints más útiles de la API de ChatGPT
+                    </button>
+                </h2>
+                <div id="apiEndpoints" class="accordion-collapse collapse" data-bs-parent="#chatgptGuide">
+                    <div class="accordion-body">
+                        <h5>📌 Realizar una consulta a ChatGPT</h5>
+                        <pre><code>
+Método: POST
+URL: https://api.openai.com/v1/chat/completions
+Headers:
+  Authorization: Bearer {TU_CLAVE_API}
+  Content-Type: application/json
+Body (JSON):
+{
+  "model": "gpt-4",
+  "messages": [
+    { "role": "system", "content": "Eres un asistente útil." },
+    { "role": "user", "content": "¿Qué es la inteligencia artificial?" }
+  ],
+  "temperature": 0.7
+}
+                        </code></pre>
+                        <hr>
+                        <h5>📌 Obtener los modelos disponibles</h5>
+                        <pre><code>
+Método: GET
+URL: https://api.openai.com/v1/models
+Headers:
+  Authorization: Bearer {TU_CLAVE_API}
+  Content-Type: application/json
+                        </code></pre>
+                        <hr>
+                        <h5>📌 Obtener el historial de conversaciones</h5>
+                        <pre><code>
+Método: GET
+URL: https://api.openai.com/v1/chat/completions/{ID_CONVERSACION}
+Headers:
+  Authorization: Bearer {TU_CLAVE_API}
+  Content-Type: application/json
+                        </code></pre>
+                        <div class="alert alert-info">
+                            Sustituye <code>{ID_CONVERSACION}</code> por el ID de la conversación que deseas consultar.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#testRequests">
+                        4. Probar las solicitudes en Postman
+                    </button>
+                </h2>
+                <div id="testRequests" class="accordion-collapse collapse" data-bs-parent="#chatgptGuide">
+                    <div class="accordion-body">
+                        <ol>
+                            <li>Crea una nueva solicitud en Postman.</li>
+                            <li>Selecciona el método <strong>POST</strong> e ingresa la URL <code>https://api.openai.com/v1/chat/completions</code>.</li>
+                            <li>En la pestaña de <strong>Headers</strong>, agrega:
+                                <ul>
+                                    <li><code>Authorization: Bearer {TU_CLAVE_API}</code></li>
+                                    <li><code>Content-Type: application/json</code></li>
+                                </ul>
+                            </li>
+                            <li>En la pestaña <strong>Body</strong>, selecciona <strong>raw</strong> y usa el siguiente JSON:</li>
+                        </ol>
+                        <pre><code>
+{
+  "model": "gpt-4",
+  "messages": [
+    { "role": "user", "content": "Dime un chiste sobre programación." }
+  ]
+}
+                        </code></pre>
+                        <ol start="5">
+                            <li>Haz clic en <strong>Send</strong> y revisa la respuesta del asistente.</li>
+                        </ol>
+                        <div class="alert alert-success">
+                            ¡Felicidades! Has enviado tu primera consulta a ChatGPT desde Postman.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
