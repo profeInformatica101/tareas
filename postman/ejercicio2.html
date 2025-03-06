@@ -22,6 +22,7 @@
                     <div class="accordion-body">
                         <ol>
                             <li>Accede a <a href="https://github.com/settings/tokens" target="_blank">GitHub Developer Settings</a>.</li>
+                            <li>Accede a <a href="https://docs.github.com/es/rest/repos/repos?apiVersion=2022-11-28#delete-a-repository" target="_blank">Documentación REST API (delete repository)</a>.</li>
                             <li>Haz clic en <strong>Generate new token</strong> (classic).</li>
                             <li>Asigna un nombre al token y selecciona la fecha de expiración.</li>
                             <li>En los permisos, selecciona:
@@ -80,6 +81,7 @@ Headers:
                 <div id="otherExamples" class="accordion-collapse collapse" data-bs-parent="#githubGuide">
                     <div class="accordion-body">
                         <h5>📌 Crear un repositorio</h5>
+                        <a href="https://docs.github.com/es/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-for-the-authenticated-user" target="_blank">Ver documentación</a>
                         <pre><code>
 Método: POST
 URL: https://api.github.com/user/repos
@@ -95,6 +97,7 @@ Body (JSON):
                         </code></pre>
                         <hr>
                         <h5>📌 Listar todos tus repositorios</h5>
+                        <a href="https://docs.github.com/es/rest/repos/repos?apiVersion=2022-11-28#list-repositories-for-the-authenticated-user" target="_blank">Ver documentación</a>
                         <pre><code>
 Método: GET
 URL: https://api.github.com/user/repos
@@ -104,6 +107,7 @@ Headers:
                         </code></pre>
                         <hr>
                         <h5>📌 Actualizar la descripción de un repositorio</h5>
+                        <a href="https://docs.github.com/es/rest/repos/repos?apiVersion=2022-11-28#update-a-repository" target="_blank">Ver documentación</a>
                         <pre><code>
 Método: PATCH
 URL: https://api.github.com/repos/{TU_USUARIO}/mi_nuevo_repo
@@ -117,6 +121,7 @@ Body (JSON):
                         </code></pre>
                         <hr>
                         <h5>📌 Crear un issue en un repositorio</h5>
+                        <a href="https://docs.github.com/es/rest/issues/issues?apiVersion=2022-11-28#create-an-issue" target="_blank">Ver documentación</a>
                         <pre><code>
 Método: POST
 URL: https://api.github.com/repos/{TU_USUARIO}/mi_nuevo_repo/issues
