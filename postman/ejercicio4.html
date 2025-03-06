@@ -12,8 +12,17 @@
         
         <p class="text-center">Aprende a interactuar con la API de OpenAI para utilizar ChatGPT en Postman.</p>
         
+        <div class="alert alert-warning">
+            <strong>Limitaciones de la API de OpenAI:</strong>
+            <ul>
+                <li>El acceso no es gratuito después de los créditos iniciales.</li>
+                <li>Hay un límite de tokens por consulta y por minuto.</li>
+                <li>Los modelos avanzados (como GPT-4) tienen un costo más alto.</li>
+            </ul>
+            Como alternativa, puedes explorar la <a href="https://platform.deepseek.com/" target="_blank">API de DeepSeek</a>, que ofrece opciones competitivas.
+        </div>
+        
         <div class="accordion" id="chatgptGuide">
-            
             <div class="accordion-item">
                 <h2 class="accordion-header">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#generateAPIKey">
@@ -34,7 +43,6 @@
                     </div>
                 </div>
             </div>
-            
             <div class="accordion-item">
                 <h2 class="accordion-header">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#createCollection">
@@ -51,7 +59,6 @@
                     </div>
                 </div>
             </div>
-            
             <div class="accordion-item">
                 <h2 class="accordion-header">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#apiEndpoints">
@@ -61,6 +68,7 @@
                 <div id="apiEndpoints" class="accordion-collapse collapse" data-bs-parent="#chatgptGuide">
                     <div class="accordion-body">
                         <h5>📌 Realizar una consulta a ChatGPT</h5>
+                        <a href="https://platform.openai.com/docs/api-reference/chat/create" target="_blank">Ver documentación</a>
                         <pre><code>
 Método: POST
 URL: https://api.openai.com/v1/chat/completions
@@ -79,6 +87,7 @@ Body (JSON):
                         </code></pre>
                         <hr>
                         <h5>📌 Obtener los modelos disponibles</h5>
+                        <a href="https://platform.openai.com/docs/api-reference/models/list" target="_blank">Ver documentación</a>
                         <pre><code>
 Método: GET
 URL: https://api.openai.com/v1/models
@@ -88,6 +97,7 @@ Headers:
                         </code></pre>
                         <hr>
                         <h5>📌 Obtener el historial de conversaciones</h5>
+                        <a href="https://platform.openai.com/docs/api-reference/chat/retrieve" target="_blank">Ver documentación</a>
                         <pre><code>
 Método: GET
 URL: https://api.openai.com/v1/chat/completions/{ID_CONVERSACION}
@@ -97,43 +107,6 @@ Headers:
                         </code></pre>
                         <div class="alert alert-info">
                             Sustituye <code>{ID_CONVERSACION}</code> por el ID de la conversación que deseas consultar.
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#testRequests">
-                        4. Probar las solicitudes en Postman
-                    </button>
-                </h2>
-                <div id="testRequests" class="accordion-collapse collapse" data-bs-parent="#chatgptGuide">
-                    <div class="accordion-body">
-                        <ol>
-                            <li>Crea una nueva solicitud en Postman.</li>
-                            <li>Selecciona el método <strong>POST</strong> e ingresa la URL <code>https://api.openai.com/v1/chat/completions</code>.</li>
-                            <li>En la pestaña de <strong>Headers</strong>, agrega:
-                                <ul>
-                                    <li><code>Authorization: Bearer {TU_CLAVE_API}</code></li>
-                                    <li><code>Content-Type: application/json</code></li>
-                                </ul>
-                            </li>
-                            <li>En la pestaña <strong>Body</strong>, selecciona <strong>raw</strong> y usa el siguiente JSON:</li>
-                        </ol>
-                        <pre><code>
-{
-  "model": "gpt-4",
-  "messages": [
-    { "role": "user", "content": "Dime un chiste sobre programación." }
-  ]
-}
-                        </code></pre>
-                        <ol start="5">
-                            <li>Haz clic en <strong>Send</strong> y revisa la respuesta del asistente.</li>
-                        </ol>
-                        <div class="alert alert-success">
-                            ¡Felicidades! Has enviado tu primera consulta a ChatGPT desde Postman.
                         </div>
                     </div>
                 </div>
