@@ -187,11 +187,15 @@ springdoc.swagger-ui.supportedSubmitMethods="get", "put", "post", "delete", "opt
           <code>http://localhost:8081/h2-console</code> para la consola de H2.
         </li>
       </ol>
-      <div class="alert alert-info">
+      <div class="alert alert-warning">
         <strong>Tip:</strong> Recuerda que, al usar H2 en memoria, su contenido 
         se pierde al reiniciar la aplicación. Si deseas conectarte desde DBeaver 
         u otras herramientas, habilita el modo Server de H2 y ajusta la URL 
         (por ejemplo, <code>jdbc:h2:tcp://localhost:9092/mem:jabonesdb</code>).
+      </div>
+      <div class="alert alert-success">
+        <strong>Tip:</strong>  Puedes usar SQLite como motor de base de datos que no necesita un servidor <a href="https://docs.google.com/document/d/e/2PACX-1vTsHheOdPwgIyS20Up-tLKeBivJ5ISSLQAcv21DhR1cDOSgHYNfjpYdoFd5D_UCAk_m3N5sgZgaiM1j/pub">sigue estos pasos</a>
+        (por ejemplo, en fichero configuración de Spring Boot <code>spring.datasource.url=jdbc:sqlite:/home/ehko/Documentos/git_projects/API_Jabones/src/main/resources/jabonesdb.sqlite</code>).
       </div>
     </div>
   </div>
