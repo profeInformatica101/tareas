@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Práctica 5: Documentar y Ampliar API_Jabones</title>
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+
+  <style>
+    code {
+      color: brown;
+      background-color: #f8f9fa;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+    .accordion-button:focus {
+      box-shadow: none;
+    }
+    pre {
+      background-color: #f8f9fa;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+    .alert {
+      margin-top: 10px;
+    }
+    .rojo {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-5">
+  <h1 class="text-center mb-4">
+    Práctica 5: Documentar y Ampliar <code>API_Jabones</code> con Postman
+  </h1>
+
+  <!-- Tarjeta de Objetivos -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h2>Objetivos</h2>
+      <ul>
+        <li>
+          Importar el proyecto de GitHub:
+          <code>
+            <a href="https://github.com/profeInformatica101/API_Jabones" target="_blank" rel="noopener noreferrer">
+              Código API
+            </a>
+          </code>
+        </li>
+        <li>Documentar la API con Postman y compartir la documentación.</li>
+        <li>Implementar un <strong class="rojo">nuevo endpoint</strong> que consuma una API externa (ej.: clima).</li>
+        <li>Crear y ejecutar <strong>pruebas unitarias</strong> para comprobar la nueva funcionalidad.</li>
+      </ul>
+      <p>
+        <strong class="rojo">nuevo endpoint</strong>:
+        Aunque existen traducciones al español como “punto final” o “extremo”,
+        en contextos técnicos es frecuente y aceptado utilizar el término “endpoint”
+        en su forma original en inglés.
+      </p>
+      <div class="alert alert-warning">
+        <strong>Nota:</strong> Asegúrate de tener instalado
+        <code>
+          <img
+            src="https://voyager.postman.com/logo/postman-logo-icon-orange.svg"
+            alt="Postman logo"
+            style="height:16px;"
+          />
+          <a href="https://www.postman.com/downloads/" target="_blank" rel="noopener noreferrer">
+            Postman
+          </a>
+        </code>,
+        <code>Java 17</code> (‘Project’ → ‘Properties’ → ‘Java Compiler’) y acceso
+        a Internet para la API externa.
+      </div>
+    </div>
+  </div>
+
+  <!-- Acordeón principal -->
+  <div class="accordion" id="accordionPractice5">
+
+  <!-- Dentro de tu acordeón o sección de ejecución, puedes actualizar el contenido así: -->
+
+<div class="accordion-item">
+  <h2 class="accordion-header" id="headingOne">
+    <button
+      class="accordion-button"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#importProject"
+      aria-expanded="true"
+      aria-controls="importProject"
+    >
+      1. Importar y ejecutar el proyecto <code>API_Jabones</code>
+    </button>
+  </h2>
+  <div
+    id="importProject"
+    class="accordion-collapse collapse show"
+    aria-labelledby="headingOne"
+    data-bs-parent="#accordionPractice5"
+  >
+    <div class="accordion-body">
+      <ol>
+        <li>
+          <p>
+            <strong>
+              <i class="fa-solid fa-code-fork"></i> Realiza un Fork, 
+              <i class="fa-solid fa-clone"></i> clona en local, 
+              <i class="fa-solid fa-code-branch"></i> crea una rama <code>dev/hlc</code>
+            </strong>
+          </p>del repositorio  
+          <a href="https://github.com/profeInformatica101/API_Jabones" target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>.
+        </li>
+        <li>Abre el proyecto en tu IDE favorito (Eclipse, IntelliJ, VSCode con extensión de Java, etc.).</li>
+        <li>
+          Comprueba que usas <code>Java 17</code> (o la versión adecuada). Ajusta 
+          el <code>pom.xml</code> si fuera necesario.
+        </li>
+        <li>
+          <p>Para la configuración por defecto en <code>application.properties</code>:</p>
+          <pre><code class="language-properties">
+server.port=8081
+
+# H2 Database
+spring.datasource.url=jdbc:h2:mem:jabonesdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+
+# H2 console
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+# Spring Boot DevTools
+spring.devtools.restart.enabled=true
+spring.devtools.livereload.enabled=true
+
+# Documentación
+springdoc.packagesToScan=com.dwes.api.controladores
+springdoc.pathsToMatch=/api/v1/jabones/**
+springdoc.swagger-ui.path=/swagger-ui.html
+springdoc.swagger-ui.supportedSubmitMethods="get", "put", "post", "delete", "options", "head", "patch", "trace"
+          </code></pre>
+          <p>
+            Con esto, la aplicación se levantará en el <strong>puerto 8081</strong>,
+            y la consola de H2 estará en
+            <code>http://localhost:8081/h2-console</code>.
+          </p>
+        </li>
+        <li>
+          <p>Añade permisos de ejecución en Unix/Linux/macOS:</p>
+          <pre><code>chmod +x mvnw</code></pre>
+          <p>
+            Si necesitas volver a generar el Maven Wrapper, revisa la 
+            <a href="https://maven.apache.org/wrapper/" target="_blank" rel="noopener noreferrer">
+              documentación oficial
+            </a>.
+          </p>
+          <p>Para arrancar el proyecto, ejecuta:</p>
+          <pre><code>./mvnw spring-boot:run</code></pre>
+          <p>o bien:</p>
+          <pre><code>mvn spring-boot:run</code></pre>
+          <p>Si estás en Windows y no tienes Maven instalado, usa:</p>
+          <pre><code>mvnw.cmd spring-boot:run</code></pre>
+        </li>
+        <li>
+          Si te aparece un error de que el <strong>puerto 8081</strong> está 
+          ocupado, localiza qué proceso lo usa (por ejemplo, en Linux/macOS):
+          <pre><code>lsof -i :8081</code></pre>
+          Luego termina el proceso con:
+          <pre><code>kill -9 PID</code></pre>
+        </li>
+        <li>
+          Cuando todo inicie correctamente, abre 
+          <code>http://localhost:8081/api/v1/jabones</code> para ver la API, o
+          <code>http://localhost:8081/h2-console</code> para la consola de H2.
+        </li>
+      </ol>
+      <div class="alert alert-info">
+        <strong>Tip:</strong> Recuerda que, al usar H2 en memoria, su contenido 
+        se pierde al reiniciar la aplicación. Si deseas conectarte desde DBeaver 
+        u otras herramientas, habilita el modo Server de H2 y ajusta la URL 
+        (por ejemplo, <code>jdbc:h2:tcp://localhost:9092/mem:jabonesdb</code>).
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <!-- Sección 2: Documentar con Postman -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingTwo">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#documentPostman"
+          aria-expanded="false"
+          aria-controls="documentPostman"
+        >
+          2. Documentar la API en Postman y compartir
+        </button>
+      </h2>
+      <div
+        id="documentPostman"
+        class="accordion-collapse collapse"
+        aria-labelledby="headingTwo"
+        data-bs-parent="#accordionPractice5"
+      >
+        <div class="accordion-body">
+          <ol>
+            <li>
+              <strong>Crea una colección</strong> en Postman llamada
+              <code>API_Jabones</code>.
+            </li>
+            <li>
+              Dentro de la colección, añade las solicitudes
+              <code>GET /api/v1/jabones</code>,
+              <code>GET /api/v1/jabones/{id}</code>,
+              <code>POST /api/v1/jabones</code>, etc.
+              <div class="alert alert-info">
+                <strong>Tip:</strong> Usa variables de entorno o de colección
+                para la URL base (por ejemplo, <code>{{baseUrl}} = http://localhost:8080</code>).
+              </div>
+            </li>
+            <li>
+              En cada solicitud, completa la descripción, ejemplos de
+              <em>request</em> y <em>response</em> (en formato JSON),
+              y añade <strong>Tests</strong> para validar estados 200, 201, etc.
+            </li>
+            <li>
+              Finalmente, <strong>publica la documentación</strong> desde Postman.
+              Puedes usar la opción <code>View in web</code> y luego
+              <code>Share Collection</code> para obtener un enlace público (o
+              compartirlo dentro de tu organización).
+            </li>
+          </ol>
+          <pre><code>// Ejemplo de test en Postman (pestaña Tests)
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+          </code></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección 3: Nueva funcionalidad con otra API -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingThree">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#newFunctionality"
+          aria-expanded="false"
+          aria-controls="newFunctionality"
+        >
+          3. Añadir un endpoint que consuma otra API
+        </button>
+      </h2>
+      <div
+        id="newFunctionality"
+        class="accordion-collapse collapse"
+        aria-labelledby="headingThree"
+        data-bs-parent="#accordionPractice5"
+      >
+        <div class="accordion-body">
+          <p>
+            Vamos a simular que cada <code>Jabon</code> tiene una ubicación
+            y queremos consultar el clima (por ejemplo) desde
+            <a
+              href="https://www.weatherapi.com/"
+              target="_blank" rel="noopener noreferrer"
+            >
+              WeatherAPI
+            </a>
+            o cualquier otro servicio gratuito de clima.
+          </p>
+          <ol>
+            <li>
+              <strong>Regístrate</strong> (si hace falta) y obtén tu clave API
+              en el proveedor del servicio externo (p. ej., WeatherAPI).
+            </li>
+            <li>
+              Añade un <code>location</code> o <code>localizacion</code> al
+              <code>Jabon</code> o crea un nuevo campo en tu entidad/DTO con
+              el nombre de la ciudad.
+            </li>
+            <li>
+              Crea un nuevo endpoint, por ejemplo
+              <code>/api/v1/jabones/{id}/clima</code>, que:
+              <ul>
+                <li>Recupere el <code>Jabon</code> por <code>id</code>.</li>
+                <li>Lea la ciudad/ubicación del jabón.</li>
+                <li>Consuma la API externa para obtener el clima.</li>
+                <li>Devuelva un JSON con la info del jabón y la temperatura actual.</li>
+              </ul>
+            </li>
+          </ol>
+          <strong>Ejemplo de código (Controlador simplificado):</strong>
+          <pre><code>
+@GetMapping("/{id}/clima")
+public ResponseEntity&lt;Map&lt;String, Object>> obtenerClimaDeJabon(@PathVariable Long id) {
+    // 1) Buscar el Jabon
+    Jabon jabon = jabonService.findById(id)
+        .orElseThrow(() -> new JabonNotFoundException("No existe el jabón con id " + id));
+
+    // 2) Supongamos que 'jabon' tiene un campo 'ciudad' con el valor "Madrid"
+    String ciudad = jabon.getCiudad();
+
+    // 3) Llamada HTTP a la API externa (WeatherAPI) con RestTemplate o WebClient:
+    //    Por simplicidad, pseudo-código:
+    String apiKey = "TU_API_KEY";
+    String url = "http://api.weatherapi.com/v1/current.json?key=" + apiKey + "&q=" + ciudad;
+
+    RestTemplate restTemplate = new RestTemplate();
+    Map respClima = restTemplate.getForObject(url, Map.class);
+
+    // 4) Construir la respuesta
+    Map&lt;String, Object> resultado = new HashMap&lt;&gt;();
+    resultado.put("jabonId", jabon.getId());
+    resultado.put("nombre", jabon.getNombre());
+    resultado.put("ciudad", ciudad);
+    resultado.put("infoClima", respClima);
+
+    return ResponseEntity.ok(resultado);
+}
+          </code></pre>
+          <div class="alert alert-info">
+            <strong>Tip:</strong> En un proyecto real, manejarías
+            <em>excepciones</em>, <em>time-outs</em>, y almacenarías la
+            configuración (API Key, URL) en <code>application.properties</code>.
+          </div>
+        </div>
+
+        <div class="alert alert-success mt-3">
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/uDvsAISl-vM?si=NN79s5_ZHrifEdgS"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección 4: Pruebas unitarias -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingFour">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#unitTests"
+          aria-expanded="false"
+          aria-controls="unitTests"
+        >
+          4. Crear pruebas unitarias para tu nueva funcionalidad
+        </button>
+      </h2>
+      <div
+        id="unitTests"
+        class="accordion-collapse collapse"
+        aria-labelledby="headingFour"
+        data-bs-parent="#accordionPractice5"
+      >
+        <div class="accordion-body">
+          <p>
+            Para asegurar la calidad del código, implementa <strong>pruebas unitarias</strong>
+            (JUnit / Mockito) que validen tu nueva lógica.
+          </p>
+          <ol>
+            <li>
+              Crea una clase de prueba, por ejemplo
+              <code>JabonServiceTest.java</code> en <code>src/test/java</code>.
+            </li>
+            <li>
+              Simula (mockea) la llamada al repositorio
+              <code>JabonRepository</code> y (si deseas) la llamada HTTP externa.
+            </li>
+            <li>
+              Verifica que, dado un <code>id</code> y una ciudad, tu método retorne
+              los datos del clima esperados o lance la excepción
+              <code>JabonNotFoundException</code> si no existe.
+            </li>
+          </ol>
+          <pre><code>
+@SpringBootTest
+@ExtendWith(MockitoExtension.class)
+class JabonServiceTest {
+
+    @Mock
+    private JabonRepository jabonRepository;
+
+    @InjectMocks
+    private JabonServiceImpl jabonService;
+
+    @Test
+    void testObtenerClimaDeJabon_FuncionaOK() {
+        // Arrange
+        Jabon jabon = new Jabon();
+        jabon.setId(1L);
+        jabon.setNombre("Jabón de Prueba");
+        jabon.setCiudad("Madrid");
+
+        Mockito.when(jabonRepository.findById(1L)).thenReturn(Optional.of(jabon));
+
+        // Act
+        // Supón que tu servicio tiene un método getClima(...)
+        // que internamente llama a la API externa.
+        ClimaDto respuesta = jabonService.getClima(1L);
+
+        // Assert
+        assertNotNull(respuesta);
+        assertEquals("Madrid", respuesta.getCiudad());
+        // etc...
+    }
+
+    @Test
+    void testObtenerClimaDeJabon_NotFound() {
+        // Arrange
+        Mockito.when(jabonRepository.findById(99L)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(JabonNotFoundException.class, () -> {
+            jabonService.getClima(99L);
+        });
+    }
+}
+          </code></pre>
+          <div class="alert alert-success">
+            <strong>Éxito:</strong> Si todos los tests pasan, significa que tu
+            lógica de negocio y tu nuevo endpoint se comportan como esperas.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /accordion -->
+
+  <!-- Conclusión -->
+  <div class="card mt-4">
+    <div class="card-body">
+      <h2>Conclusión</h2>
+      <p>
+        Con esta práctica, has visto cómo integrar <strong>API_Jabones</strong>
+        con Postman para documentarla, y cómo ampliar su funcionalidad invocando
+        <strong>APIs externas</strong>. Además, has añadido
+        <em>pruebas unitarias</em> para garantizar la calidad y robustez de tu
+        nueva funcionalidad.
+      </p>
+      <p>
+        <strong>Entrega final:</strong>
+      </p>
+      <ul>
+        <li>Un enlace público a la colección de Postman documentada.</li>
+        <li>El proyecto Java (o repositorio Git) con el nuevo endpoint y sus
+            pruebas unitarias.</li>
+        <li>Capturas o logs que demuestren la ejecución satisfactoria de los
+            tests.</li>
+      </ul>
+      <p>
+        ¡Enhorabuena! Continúa practicando la integración de APIs y el uso de
+        Postman para desarrollar aplicaciones <strong>limpias</strong> y
+        <strong>mantenibles</strong>.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+</script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apache Maven Wrapper</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container py-5">
+    <div class="text-center mb-5">
+      <img src="https://maven.apache.org/images/maven-logo-black-on-white.png" alt="Maven Logo" class="img-fluid mb-3" style="max-width: 200px;">
+      <h1 class="display-4">Apache Maven Wrapper</h1>
+      <p class="lead">Simplifica la gestión de versiones de Maven en tus proyectos.</p>
+      <a href="https://maven.apache.org/wrapper/" class="btn btn-primary btn-lg" target="_blank">Documentación Oficial</a>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h2 class="card-title">¿Qué es Maven Wrapper?</h2>
+            <p class="card-text">
+              El <strong>Maven Wrapper</strong> es una herramienta que garantiza que los usuarios de tu proyecto tengan la versión correcta de Maven para ejecutar builds, sin necesidad de instalarla manualmente. Es especialmente útil para proyectos que requieren una versión específica de Maven.
+            </p>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-body">
+            <h2 class="card-title">¿Por qué usar Maven Wrapper?</h2>
+            <p class="card-text">
+              Aunque Maven es estable y está ampliamente disponible, el Wrapper simplifica la configuración al descargar e instalar automáticamente la versión correcta de Maven. Esto evita problemas de compatibilidad y asegura builds consistentes.
+            </p>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-body">
+            <h2 class="card-title">Cómo configurar Maven Wrapper</h2>
+            <p class="card-text">
+              Para agregar el Maven Wrapper a tu proyecto, ejecuta el siguiente comando:
+            </p>
+            <pre class="bg-dark text-white p-3 rounded"><code>mvn wrapper:wrapper</code></pre>
+            <p class="card-text">
+              Esto generará los archivos necesarios, incluyendo los scripts <code>mvnw</code> (para Unix) y <code>mvnw.cmd</code> (para Windows).
+            </p>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-body">
+            <h2 class="card-title">Uso del Wrapper</h2>
+            <p class="card-text">
+              En lugar de usar <code>mvn</code>, los usuarios pueden ejecutar:
+            </p>
+            <pre class="bg-dark text-white p-3 rounded"><code>./mvnw clean install</code></pre>
+            <p class="card-text">
+              O en Windows:
+            </p>
+            <pre class="bg-dark text-white p-3 rounded"><code>mvnw.cmd clean install</code></pre>
+            <p class="card-text">
+              Si la versión de Maven especificada no está instalada, el Wrapper la descargará automáticamente.
+            </p>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-body">
+            <h2 class="card-title">Sistemas compatibles</h2>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Linux (Ubuntu, CentOS, etc.)</li>
+              <li class="list-group-item">macOS</li>
+              <li class="list-group-item">Windows</li>
+              <li class="list-group-item">Solaris (10 y 11)</li>
+              <li class="list-group-item">BSD</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-body">
+            <h2 class="card-title">Modo detallado</h2>
+            <p class="card-text">
+              Para activar el modo detallado, configura la variable de entorno:
+            </p>
+            <pre class="bg-dark text-white p-3 rounded"><code>export MVNW_VERBOSE=true</code></pre>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-body">
+            <h2 class="card-title">Descarga con autenticación</h2>
+            <p class="card-text">
+              Si tu repositorio requiere autenticación, usa las variables de entorno:
+            </p>
+            <pre class="bg-dark text-white p-3 rounded"><code>export MVNW_USERNAME=usuario
+export MVNW_PASSWORD=contraseña</code></pre>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-body">
+            <h2 class="card-title">Verificación de integridad</h2>
+            <p class="card-text">
+              Para evitar descargas corruptas, puedes especificar sumas de comprobación SHA-256 en <code>maven-wrapper.properties</code>:
+            </p>
+            <pre class="bg-dark text-white p-3 rounded"><code>wrapperSha256Sum=abc123...
+distributionSha256Sum=def456...</code></pre>
+          </div>
+        </div>
+
+        <div class="text-center mt-5">
+          <p class="text-muted">© 2013–2024 The Apache Software Foundation</p>
+          <a href="https://maven.apache.org/wrapper/" class="btn btn-outline-primary" target="_blank">Visita la documentación oficial</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
