@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registrar Historias Clínicas</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      padding: 40px;
+      color: #333;
+    }
+
+    h1, h2 {
+      color: #004080;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 30px 0;
+      background-color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 12px 15px;
+      border: 1px solid #ccc;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background-color: #007acc;
+      color: #fff;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f8ff;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .section {
+      margin-bottom: 50px;
+    }
+
+    .actividad {
+      background-color: #ffffff;
+      padding: 20px;
+      border-left: 5px solid #007acc;
+      margin-top: 40px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .actividad p {
+      margin: 0 0 10px;
+    }
+
+    .actividad ul {
+      margin-top: 0;
+      padding-left: 20px;
+    }
+
+    .actividad li {
+      margin-bottom: 8px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>Detalle del Caso de Uso: Registrar Historias Clínicas</h1>
+
+  <table>
+    <tr><th>Nombre del Caso de Uso</th><td>Registrar Historias Clínicas</td></tr>
+    <tr><th>ID del Caso de Uso</th><td>UC1</td></tr>
+    <tr><th>Precondición</th><td>El veterinario debe estar autenticado en el sistema.</td></tr>
+    <tr><th>Postcondición</th><td>La historia clínica del paciente está actualizada y almacenada en la base de datos.</td></tr>
+    <tr><th>Descripción</th><td>Este caso de uso permite a los veterinarios registrar las historias clínicas de los pacientes, incluyendo información como diagnósticos y tratamientos administrados durante cada visita.</td></tr>
+    <tr>
+      <th>Flujo Principal</th>
+      <td>
+        <ul>
+          <li>El veterinario inicia sesión en el sistema.</li>
+          <li>El veterinario selecciona la opción de crear nueva historia clínica.</li>
+          <li>El veterinario completa los campos requeridos (datos del paciente, diagnóstico, tratamiento).</li>
+          <li>El veterinario envía la información para su almacenamiento.</li>
+          <li>El sistema confirma que la historia clínica ha sido registrada correctamente.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <th>Caminos Alternativos</th>
+      <td>
+        <ul>
+          <li><strong>A1 (Paso 3):</strong> Si falta información esencial, el sistema muestra un mensaje de error y solicita los datos faltantes.</li>
+          <li><strong>A2 (Paso 4):</strong> Si el sistema no puede almacenar la información, se notifica al veterinario y se solicita un nuevo intento.</li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+
+  <div class="actividad">
+    <h2>Descripción de la Actividad</h2>
+    <p><strong>Descripción del Caso de Uso:</strong><br>
+    "Programar Recordatorios" es un caso de uso crucial que permite al personal administrativo y a los veterinarios configurar recordatorios para citas futuras, vacunaciones, revisiones de salud y otros tratamientos necesarios para las mascotas. Los recordatorios son esenciales para garantizar el cumplimiento del plan de tratamiento de cada mascota y para mantener informados a los propietarios sobre los cuidados necesarios.</p>
+
+    <p><strong>Tareas:</strong></p>
+    <ul>
+      <li><strong>Crear una Tabla Detallada:</strong> Utilizando el formato proporcionado en la actividad 1, desarrolla una tabla para el caso de uso "Programar Recordatorios". La tabla debe incluir los siguientes elementos:
+        <ul>
+          <li>Nombre del Caso de Uso</li>
+          <li>ID del Caso de Uso</li>
+          <li>Precondición</li>
+          <li>Postcondición</li>
+          <li>Descripción</li>
+          <li>Flujo Principal</li>
+          <li>Caminos Alternativos (indicando con qué paso del flujo principal se relaciona cada uno)</li>
+        </ul>
+      </li>
+      <li><strong>Descripción del Flujo Principal:</strong> Describe paso a paso las acciones que realiza el actor principal para completar el caso de uso, incluyendo las interacciones con el sistema y las respuestas del sistema en cada paso.</li>
+      <li><strong>Identificar Caminos Alternativos:</strong> Considera posibles situaciones que puedan alterar el flujo principal y describe cómo el sistema debería manejar estas situaciones.</li>
+    </ul>
+  </div>
+
+</body>
+</html>
