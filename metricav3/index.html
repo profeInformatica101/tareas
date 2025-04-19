@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Proyecto integrado - [Entornos de Desarrollo, Programación, BBDD]</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      background-color: #f9f9f9;
+    }
+    h1, h2 {
+      color: #1f4e79;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #cccccc;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background-color: #e3f2fd;
+    }
+    tr:nth-child(even) {
+      background-color: #f1f1f1;
+    }
+    .footer {
+      margin-top: 30px;
+      font-size: 0.9em;
+      color: #555;
+    }
+    .video-container {
+      margin: 20px 0;
+      text-align: center;
+    }
+    iframe {
+      width: 90%;
+      height: 400px;
+      border: none;
+    }
+    .alerta {
+      background-color: #fff3cd;
+      border-left: 6px solid #ffca2c;
+      padding: 15px;
+      margin: 20px 0;
+    }
+    .pae {
+      background-color: #f0f8ff;
+      border-left: 6px solid #0077b6;
+      padding: 15px;
+      margin: 20px 0;
+    }
+    .pae img {
+      height: 40px;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+    ul.iconos li::before {
+      content: "🔧 ";
+    }
+    ul.repo li::before {
+      content: "📁 ";
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧩 Rúbrica de Evaluación Final</h1>
+  <h2>💻 Proyecto integrado 1º Técnico Superior en Desarrollo de Aplicaciones Web</h2>
+  <p><strong>Herramientas:</strong> ☕ Java, 🐬 SQLite, 🧰 DBeaver, 🧱 Umbrello, 🌐 GitHub, 📦 Maven, 🧪 JUnit 5</p>
+
+  <div class="alerta">
+    <h3>📋 Entregas obligatorias dentro del marco MÉTRICA v3 - ISO/IEC 12207</h3>
+    <ul class="iconos">
+      <li><strong>Estudio de viabilidad</strong> <a href="asi.html">(fase PSI)</a></li>
+      <li><strong>Especificación de requisitos y análisis</strong> (fase ASI)</li>
+      <li><strong>Diseño técnico</strong>: diagrama de clases y comportamiento (fase DSI + CSI)</li>
+      <li><strong>Implementación</strong>, pruebas y documentación técnica (fase IAS)</li>
+      <li><strong>Informe de calidad</strong> y checklist final (verificabilidad y mantenibilidad)</li>
+    </ul>
+    <p>Estas entregas deben estar documentadas en un <strong>repositorio GitHub</strong> personal:<br>
+    Realizar <strong>fork</strong> desde: <a href="https://github.com/profeInformatica101/metrica_proyecto"><code>https://github.com/profeInformatica101/metrica_proyecto</code></a></p>
+    <p><strong>Trabajo en equipo:</strong> colaborativo, pero con repositorios individuales evaluables.</p>
+  </div>
+
+  <div class="video-container">
+    <h3>🎥 Vídeo de referencia: MÉTRICA v3 y su integración en ISO/IEC 12207</h3>
+    <iframe src="https://www.youtube.com/embed/BfQUKChuMTc?si=gshXnA2kyPmi1wnI&amp;controls=0" title="YouTube video player" allowfullscreen></iframe>
+  </div>
+
+  <div class="pae">
+    <h3>📘 Enlace oficial a MÉTRICA V3</h3>
+    <img src="https://administracionelectronica.gob.es/resources/templating-kit/themes/pae/images/general/header/logo_gobierno.png" alt="Logo Gobierno">
+    <a href="https://administracionelectronica.gob.es/pae_Home/pae_Documentacion/pae_Metodolog/pae_Metrica_v3.html" target="_blank">Métrica v.3 - Administración Electrónica</a>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>📌 Factor de Calidad</th>
+        <th>📏 Métrica / Indicador</th>
+        <th>✅ Excelente (10-9)</th>
+        <th>🟡 Aceptable (8-6)</th>
+        <th>❌ Mejorable (5 o menos)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>🎯 Funcionalidad</td>
+        <td>Cumplimiento de requisitos funcionales definidos en ASI</td>
+        <td>Todos los requisitos cubiertos, sin errores</td>
+        <td>Faltan detalles menores o errores aislados</td>
+        <td>Funcionalidades incompletas o fallidas</td>
+      </tr>
+      <tr>
+        <td>🔒 Fiabilidad</td>
+        <td>Pruebas y estabilidad del sistema</td>
+        <td>Sin errores, manejo de excepciones correcto</td>
+        <td>Errores menores, comportamiento predecible</td>
+        <td>Errores graves, mal manejo de excepciones</td>
+      </tr>
+      <tr>
+        <td>🧱 Diseño lógico</td>
+        <td>Diagrama de clases en Umbrello</td>
+        <td>Completo, relaciones correctas y claras</td>
+        <td>Algunas omisiones o errores leves</td>
+        <td>Falta estructura o coherencia</td>
+      </tr>
+      <tr>
+        <td>🗄️ Acceso a datos</td>
+        <td>Integración Java + SQLite vía JDBC</td>
+        <td>CRUD funcional y probado en DBeaver</td>
+        <td>CRUD parcial o errores menores</td>
+        <td>No hay conexión funcional o errores graves</td>
+      </tr>
+      <tr>
+        <td>🧪 Verificabilidad</td>
+        <td>Pruebas unitarias automatizadas (JUnit5) con cobertura ≥ 50%</td>
+        <td>JUnit con mínimo 50% de cobertura, uso de dobles de prueba</td>
+        <td>Pruebas básicas, automatización parcial, cobertura baja</td>
+        <td>Sin pruebas o sin automatización</td>
+      </tr>
+      <tr>
+        <td>📚 Documentación</td>
+        <td>README, Javadoc, comentarios</td>
+        <td>Documentación clara y completa</td>
+        <td>Documentación funcional pero breve</td>
+        <td>Documentación incompleta o inexistente</td>
+      </tr>
+      <tr>
+        <td>🔁 Control de versiones</td>
+        <td>Uso de Git y GitHub</td>
+        <td>Repositorios con commits claros y ramas</td>
+        <td>Uso básico de Git con seguimiento razonable</td>
+        <td>Repositorios sin estructura o mal uso</td>
+      </tr>
+      <tr>
+        <td>🧹 Optimización</td>
+        <td>Refactorización y organización del código</td>
+        <td>Código limpio, modular y mantenible</td>
+        <td>Organización aceptable, con mejoras posibles</td>
+        <td>Código confuso o duplicado</td>
+      </tr>
+      <tr>
+        <td>🎤 Presentación final</td>
+        <td>Exposición del proyecto</td>
+        <td>Claridad, dominio técnico y visualización eficaz</td>
+        <td>Explicación aceptable con dudas menores</td>
+        <td>Poca claridad o desorganización en la exposición</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <p><strong>📊 Evaluación total:</strong> hasta 90 puntos (rúbrica técnica) + 10 puntos (presentación oral).<br>
+    <strong>📎 Entrega final:</strong> Repositorio GitHub + PDF de memoria + demo funcional + entregas según MÉTRICA v3 e ISO 12207.<br>
+    <strong>📦 Maven:</strong> uso obligatorio de `pom.xml` para la gestión de dependencias.<br>
+    <strong>🧪 Pruebas:</strong> obligatorio usar <strong>JUnit 5</strong> con al menos un 50% de cobertura en clases funcionales clave.</p>
+  </div>
+
+</body>
+</html>
