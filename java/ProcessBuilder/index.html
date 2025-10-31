@@ -726,81 +726,6 @@ for (Process p : procesos) {
   <h2 class="accordion-header" id="h17">
     <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#c17">
       <span class="icon-wrap"><i class="bi bi-code-square"></i></span>
-      <strong>Ejercicio 17:</strong> <span class="subtitle">Script Bash con parámetros y ejecución desde Java.</span>
-    </button>
-  </h2>
-  <div id="c17" class="accordion-collapse collapse" data-bs-parent="#accPB">
-    <div class="accordion-body">
-      Crea un script <code>util-simple.sh</code> que demuestre cómo se controlan los <strong>parámetros y opciones</strong> en Bash, y ejecútalo desde Java con <code>ProcessBuilder</code>.  
-      El script deberá:
-      <ul>
-        <li>Recibir un <strong>nombre</strong> como primer argumento y mostrar <em>“Hola, &lt;nombre&gt;”</em>.</li>
-        <li>Aceptar <code>--upper</code> para mostrar el saludo en MAYÚSCULAS.</li>
-        <li>Aceptar <code>--count &lt;carpeta&gt;</code> para mostrar cuántos ficheros contiene esa carpeta.</li>
-        <li>Si no se pasa nombre, leerlo desde <strong>stdin</strong> (permite <code>echo Ana | ./util-simple.sh --upper</code>).</li>
-        <li>Usar códigos de salida:
-          <ul>
-            <li><code>0</code> → todo correcto</li>
-            <li><code>1</code> → argumentos inválidos</li>
-            <li><code>2</code> → carpeta inexistente</li>
-          </ul>
-        </li>
-      </ul>
-
-      <div class="accordion accordion-flush inner-acc mt-3 bg-light rounded" id="sub17">
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed small" data-bs-toggle="collapse" data-bs-target="#i17">
-              Indicaciones para resolverlo
-            </button>
-          </h2>
-          <div id="i17" class="accordion-collapse collapse" data-bs-parent="#sub17">
-            <div class="accordion-body small">
-              - Crea el script con cabecera <code>#!/usr/bin/env bash</code> y marca permisos de ejecución (<code>chmod +x util-simple.sh</code>).<br><br>
-
-              <strong>Control de parámetros en Bash:</strong><br>
-              En los scripts Bash, los parámetros se controlan mediante variables automáticas:
-              <ul>
-                <li><code>$0</code> → nombre del script</li>
-                <li><code>$1, $2, $3...</code> → argumentos posicionales</li>
-                <li><code>$#</code> → número de argumentos pasados</li>
-                <li><code>$@</code> → todos los argumentos (como lista)</li>
-                <li><code>$*</code> → todos los argumentos en una sola cadena</li>
-                <li><code>shift</code> → avanza los argumentos (útil para recorrerlos en bucles)</li>
-              </ul>
-
-              Ejemplo básico de control manual:
-              <pre class="bg-light p-2 rounded"><code>while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --upper) MAYUS=1 ;;
-    --count) CARPETA="$2"; shift ;;
-    *) NOMBRE="$1" ;;
-  esac
-  shift
-done</code></pre>
-
-              - Valida si <code>$NOMBRE</code> está vacío; si lo está, léelo desde stdin con <code>read NOMBRE</code>.<br>
-              - Si la opción <code>--count</code> está activa, usa <code>ls -1 "$CARPETA" | wc -l</code> para contar ficheros.<br>
-              - En modo <code>--upper</code>, transforma la cadena con <code>echo "$NOMBRE" | tr '[:lower:]' '[:upper:]'</code>.<br>
-              - Devuelve el código de salida adecuado con <code>exit 0</code>, <code>exit 1</code> o <code>exit 2</code> según corresponda.<br><br>
-
-              <strong>Integración desde Java:</strong><br>
-              - Lanza el script con <code>new ProcessBuilder("./util-simple.sh","--upper","Pepe")</code> o con redirección de entrada (<code>echo Ana | ./util-simple.sh</code>).<br>
-              - Captura <em>stdout</em> y <em>stderr</em> para mostrar resultados y errores.<br>
-              - Muestra el <code>exit code</code> con <code>process.waitFor()</code> y explica su significado.<br>
-              - Usa <code>ProcessBuilder.Redirect.INHERIT</code> si quieres que el script escriba directamente en la consola de Java.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- 17 -->
-<div class="accordion-item">
-  <h2 class="accordion-header" id="h17">
-    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#c17">
-      <span class="icon-wrap"><i class="bi bi-code-square"></i></span>
       <strong>Ejercicio 17:</strong> <span class="subtitle">Ejecución de un script Bash con variables de entorno y control de parámetros.</span>
     </button>
   </h2>
@@ -914,6 +839,7 @@ echo "Autor: $AUTHOR"</code></pre>
     </div>
   </div>
 </div>
+
 
   </div>
 
