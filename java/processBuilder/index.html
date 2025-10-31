@@ -1,0 +1,940 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UD1 — ProcessBuilder (Java, Linux)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body{background:#f8f9fa}
+    code{color:#b45309;background:#fff7ed;padding:.1rem .35rem;border-radius:.35rem}
+    .subtitle{color:#6c757d;font-size:.95rem;font-weight:400}
+    .icon-wrap{width:2rem;height:2rem;display:inline-flex;align-items:center;justify-content:center;border-radius:.5rem;background:#e9ecef;margin-right:.5rem}
+    .inner-acc .accordion-button{font-size:.95rem}
+    .inner-acc .accordion-item{border-left:.25rem solid #ffc107}
+    .inner-acc .accordion-body{background:#f8f9fa}
+    footer{color:#6c757d}
+  </style>
+</head>
+<body>
+<div class="container py-4">
+
+  <header class="mb-4">
+    <h1 class="h3 mb-1">UD1 · ProcessBuilder (Java, Linux)</h1>
+    <p class="text-muted mb-0">Unidad 1 — Ejercicios sencillos para ejecutar y gestionar procesos del sistema con Java.</p>
+  </header>
+<!-- =========================================
+     ENTREGA · Fork y orden de actividades
+========================================== -->
+<section class="my-5" id="entrega">
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+      <div class="d-flex align-items-start justify-content-between flex-wrap gap-3">
+        <div>
+          <h2 class="h5 mb-1"><i class="bi bi-git me-2"></i>Entrega de la UD1 · ProcessBuilder</h2>
+          <p class="text-secondary mb-3">
+            Sube tus soluciones en un <strong>fork</strong> del repositorio oficial y entrega el enlace cuando finalices.
+          </p>
+        </div>
+        <div class="text-end">
+          <a class="btn btn-primary" target="_blank" rel="noopener"
+             href="https://github.com/profeInformatica101/actividadesPSP">
+            <i class="bi bi-box-arrow-up-right me-1"></i>Repositorio oficial
+          </a>
+        </div>
+      </div>
+
+      <div class="alert alert-warning mt-2 mb-4" role="alert">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        <strong>Obligatorio:</strong> trabaja siempre en tu <em>fork</em> y conserva la estructura y nombres indicados abajo.
+      </div>
+
+      <div class="row g-4">
+        <!-- Pasos de entrega -->
+        <div class="col-lg-6">
+          <h3 class="h6 text-uppercase text-secondary mb-2">Pasos para la entrega</h3>
+          <ol class="mb-0">
+            <li>Haz <strong>Fork</strong> de <code>profeInformatica101/actividadesPSP</code>.</li>
+            <li>Clona tu fork: <code>git clone &lt;URL-de-tu-fork&gt;</code></li>
+            <li>Crea la carpeta <code>ud1-processbuilder</code>.</li>
+            <li>Crea una subcarpeta por ejercicio (ej01, ej02, ... ej10).</li>
+            <li>(Opcional) Incluye código fuente y un <code>README.md</code> breve por ejercicio.</li>
+            <li>Haz commits descriptivos (p. ej., <code>feat: ej03 captura stderr</code>).</li>
+            <li>Sube los cambios con <code>git push origin main</code>.</li>
+          </ol>
+        </div>
+
+        <!-- Estructura tipo tree -->
+        <div class="col-lg-6">
+          <h3 class="h6 text-uppercase text-secondary mb-2">Orden y estructura de carpetas</h3>
+          <p class="small text-secondary mb-2">Ejemplo de estructura esperada en tu fork:</p>
+          <pre class="bg-light p-3 rounded"><code>actividadesPSP/
+└── ud1-processbuilder/
+    ├── ej01-echo/
+    │   ├── Main.java
+    │   └── README.md
+    ├── ej02-ls-salida/
+    ├── ej03-ls-error/
+    ├── ej04-inherit-io/
+    ├── ej05-directory/
+    ├── ej06-environment/
+    ├── ej07-pipe/
+    ├── ej08-timeout/
+    ├── ej09-redirect/
+    └── ej10-script-args/
+</code></pre>
+        </div>
+      </div>
+
+      <div class="alert alert-info mt-4 mb-0" role="alert">
+        <i class="bi bi-info-circle me-2"></i>
+        <strong>Sugerencia:</strong> añade un <code>README.md</code> general en <code>ud1-processbuilder/</code> con una tabla índice enlazando cada ejercicio.
+      </div>
+    </div>
+  </div>
+</section>
+
+  <div class="accordion accordion-flush" id="accPB">
+
+    <!-- 1 -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="h1">
+        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#c1">
+          <span class="icon-wrap"><i class="bi bi-play-circle"></i></span>
+          <strong>Ejercicio 1:</strong> <span class="subtitle">Lanza un comando simple: <code>echo</code>.</span>
+        </button>
+      </h2>
+      <div id="c1" class="accordion-collapse collapse" data-bs-parent="#accPB">
+        <div class="accordion-body">
+          Crea un programa que ejecute <code>echo</code> con un mensaje y verifica que el proceso termina con código <code>0</code>.
+          <div class="accordion accordion-flush inner-acc mt-3 bg-light rounded" id="sub1">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed small" data-bs-toggle="collapse" data-bs-target="#i1">Indicaciones para resolverlo</button>
+              </h2>
+              <div id="i1" class="accordion-collapse collapse" data-bs-parent="#sub1">
+                <div class="accordion-body small">
+                  Usa <code>new ProcessBuilder("bash","-lc","echo 'Hola UD1'")</code>, <code>start()</code> y <code>waitFor()</code>.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="h2">
+        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#c2">
+          <span class="icon-wrap"><i class="bi bi-list"></i></span>
+          <strong>Ejercicio 2:</strong> <span class="subtitle">Captura la salida de <code>ls -l</code>.</span>
+        </button>
+      </h2>
+      <div id="c2" class="accordion-collapse collapse" data-bs-parent="#accPB">
+        <div class="accordion-body">
+          Ejecuta <code>ls -l</code>, lee <em>stdout</em> del proceso y muéstralo por consola Java.
+          <div class="accordion accordion-flush inner-acc mt-3 bg-light rounded" id="sub2">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed small" data-bs-toggle="collapse" data-bs-target="#i2">Indicaciones para resolverlo</button>
+              </h2>
+              <div id="i2" class="accordion-collapse collapse" data-bs-parent="#sub2">
+                <div class="accordion-body small">
+                  <code>Process p = new ProcessBuilder("bash","-lc","ls -l").start();</code><br>
+                  Lee <code>p.getInputStream()</code> con <code>BufferedReader</code>.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="h3">
+        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#c3">
+          <span class="icon-wrap"><i class="bi bi-exclamation-triangle"></i></span>
+          <strong>Ejercicio 3:</strong> <span class="subtitle">Captura errores (stderr) con <code>ls</code> a un directorio que no existe.</span>
+        </button>
+      </h2>
+      <div id="c3" class="accordion-collapse collapse" data-bs-parent="#accPB">
+        <div class="accordion-body">
+          Lanza <code>ls /ruta/que/no/existe</code> y muestra el mensaje de error de <em>stderr</em>.
+          <div class="accordion accordion-flush inner-acc mt-3 bg-light rounded" id="sub3">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed small" data-bs-toggle="collapse" data-bs-target="#i3">Indicaciones para resolverlo</button>
+              </h2>
+              <div id="i3" class="accordion-collapse collapse" data-bs-parent="#sub3">
+                <div class="accordion-body small">
+                  Usa <code>p.getErrorStream()</code>. No mezcles con <code>redirectErrorStream(true)</code> para verlos por separado.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="h4">
+        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#c4">
+          <span class="icon-wrap"><i class="bi bi-box-arrow-in-right"></i></span>
+          <strong>Ejercicio 4:</strong> <span class="subtitle">Hereda E/S de la consola con <code>inheritIO()</code>.</span>
+        </button>
+      </h2>
+      <div id="c4" class="accordion-collapse collapse" data-bs-parent="#accPB">
+        <div class="accordion-body">
+          Ejecuta <code>top -b -n1</code> heredando la salida directamente a tu terminal.
+          <div class="accordion accordion-flush inner-acc mt-3 bg-light rounded" id="sub4">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed small" data-bs-toggle="collapse" data-bs-target="#i4">Indicaciones para resolverlo</button>
+              </h2>
+              <div id="i4" class="accordion-collapse collapse" data-bs-parent="#sub4">
+                <div class="accordion-body small">
+                  <code>new ProcessBuilder("bash","-lc","top -b -n1").inheritIO().start().waitFor();</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="h5">
+        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#c5">
+          <span class="icon-wrap"><i class="bi bi-folder2-open"></i></span>
+          <strong>Ejercicio 5:</strong> <span class="subtitle">Cambia el directorio de trabajo con <code>directory()</code>.</span>
+        </button>
+      </h2>
+      <div id="c5" class="accordion-collapse collapse" data-bs-parent="#accPB">
+        <div class="accordion-body">
+          Ejecuta <code>pwd</code> desde un directorio distinto al actual (por ejemplo, <code>/tmp</code>).
+          <div class="accordion accordion-flush inner-acc mt-3 bg-light rounded" id="sub5">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed small" data-bs-toggle="collapse" data-bs-target="#i5">Indicaciones para resolverlo</button>
+              </h2>
+              <div id="i5" class="accordion-collapse collapse" data-bs-parent="#sub5">
+                <div class="accordion-body small">
+                  <code>new ProcessBuilder("bash","-lc","pwd").directory(new File("/tmp")).start();</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="h6">
+        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#c6">
+          <span class="icon-wrap"><i class="bi bi-sliders"></i></span>
+          <strong>Ejercicio 6:</strong> <span class="subtitle">Variables de entorno con <code>environment()</code>.</span>
+        </button>
+      </h2>
+      <div id="c6" class="accordion-collapse collapse" data-bs-parent="#accPB">
+        <div class="accordion-body">
+          Define una variable de entorno (p. ej. <code>MI_VAR=UD1</code>) y verifica su valor con <code>printenv</code>.
+          <div class="accordion accordion-flush inner-acc mt-3 bg-light rounded" id="sub6">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed small" data-bs-toggle="collapse" data-bs-target="#i6">Indicaciones para resolverlo</button>
+              </h2>
+              <div id="i6" class="accordion-collapse collapse" data-bs-parent="#sub6">
+                <div class="accordion-body small">
+                  <code>ProcessBuilder pb = new ProcessBuilder("bash","-lc","printenv MI_VAR");</code><br>
+                  <code>pb.environment().put("MI_VAR","UD1");</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="h7">
+        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#c7">
+          <span class="icon-wrap"><i class="bi bi-pipe"></i></span>
+          <strong>Ejercicio 7:</strong> <span class="subtitle">Simula un “pipe” (ej. <code>echo 'hola mundo' | wc -w</code>).</span>
+        </button>
+      </h2>
+      <div id="c7" class="accordion-collapse collapse" data-bs-parent="#accPB">
+        <div class="accordion-body">
+          Crea dos procesos y conecta la salida del primero con la entrada del segundo desde Java.
+          <div class="accordion accordion-flush inner-acc mt-3 bg-light rounded" id="sub7">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed small" data-bs-toggle="collapse" data-bs-target="#i7">Indicaciones para resolverlo</button>
+              </h2>
+              <div id="i7" class="accordion-collapse collapse" data-bs-parent="#sub7">
+                <div class="accordion-body small">
+                  Lanza <code>p1 = new ProcessBuilder("bash","-lc","echo 'hola mundo'").start()</code> y <code>p2 = new ProcessBuilder("bash","-lc","wc -w").start()</code>.<br>
+                  Pasa bytes de <code>p1.getInputStream()</code> a <code>p2.getOutputStream()</code> con un buffer y cierra <em>out</em> de <code>p2</code>.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="h8">
+        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#c8">
+          <span class="icon-wrap"><i class="bi bi-hourglass-split"></i></span>
+          <strong>Ejercicio 8:</strong> <span class="subtitle">Tiempo máximo de espera y cancelación.</span>
+        </button>
+      </h2>
+      <div id="c8" class="accordion-collapse collapse" data-bs-parent="#accPB">
+        <div class="accordion-body">
+          Ejecuta <code>sleep 10</code> y finalízalo si tarda más de 2 segundos.
+          <div class="accordion accordion-flush inner-acc mt-3 bg-light rounded" id="sub8">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed small" data-bs-toggle="collapse" data-bs-target="#i8">Indicaciones para resolverlo</button>
+              </h2>
+              <div id="i8" class="accordion-collapse collapse" data-bs-parent="#sub8">
+                <div class="accordion-body small">
+                  Usa <code>p.waitFor(2, TimeUnit.SECONDS)</code>; si devuelve <code>false</code>, llama a <code>p.destroy()</code> o <code>destroyForcibly()</code>.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="h9">
+        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#c9">
+          <span class="icon-wrap"><i class="bi bi-save"></i></span>
+          <strong>Ejercicio 9:</strong> <span class="subtitle">Redirección a ficheros con <code>redirectOutput</code>/<code>redirectError</code>.</span>
+        </button>
+      </h2>
+      <div id="c9" class="accordion-collapse collapse" data-bs-parent="#accPB">
+        <div class="accordion-body">
+          Ejecuta <code>dmesg</code> guardando la salida en <code>salida.txt</code> y los errores en <code>errores.txt</code>.
+          <div class="accordion accordion-flush inner-acc mt-3 bg-light rounded" id="sub9">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed small" data-bs-toggle="collapse" data-bs-target="#i9">Indicaciones para resolverlo</button>
+              </h2>
+              <div id="i9" class="accordion-collapse collapse" data-bs-parent="#sub9">
+                <div class="accordion-body small">
+                  <code>pb.redirectOutput(new File("salida.txt"))</code> y <code>pb.redirectError(new File("errores.txt"))</code>.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="h10">
+        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#c10">
+          <span class="icon-wrap"><i class="bi bi-filetype-sh"></i></span>
+          <strong>Ejercicio 10:</strong> <span class="subtitle">Ejecuta un script <code>.sh</code> con argumentos.</span>
+        </button>
+      </h2>
+      <div id="c10" class="accordion-collapse collapse" data-bs-parent="#accPB">
+        <div class="accordion-body">
+          Crea un script <code>hola.sh</code> que reciba nombre y muestre un saludo. Ejecútalo con <code>ProcessBuilder</code>.
+          <div class="accordion accordion-flush inner-acc mt-3 bg-light rounded" id="sub10">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed small" data-bs-toggle="collapse" data-bs-target="#i10">Indicaciones para resolverlo</button>
+              </h2>
+              <div id="i10" class="accordion-collapse collapse" data-bs-parent="#sub10">
+                <div class="accordion-body small">
+                  Crea <code>hola.sh</code>: <code>#!/usr/bin/env bash</code> + <code>echo "Hola $1"</code> y dale permisos: <code>chmod +x hola.sh</code>.<br>
+                  Lánzalo con <code>new ProcessBuilder("bash","-lc","./hola.sh Ana")</code> o <code>./hola.sh</code> directo si PATH/dir lo permite.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- 11 -->
+<div class="accordion-item">
+  <h2 class="accordion-header" id="h11">
+    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#c11">
+      <span class="icon-wrap"><i class="bi bi-shield-lock"></i></span>
+      <strong>Ejercicio 11:</strong> <span class="subtitle">Calcula <code>md5sum</code> leyendo texto por entrada estándar.</span>
+    </button>
+  </h2>
+  <div id="c11" class="accordion-collapse collapse" data-bs-parent="#accPB">
+    <div class="accordion-body">
+      Crea un programa que muestre el prompt <code>md5txt&gt;</code>, lea líneas desde la entrada estándar y, para cada línea no vacía, ejecute <code>md5sum</code> sobre ese texto y muestre el hash resultante (igual que <code>echo hola | md5sum</code>). La ejecución termina cuando se introduce una línea vacía.<br>
+      <strong>Requisito:</strong> hazlo de la forma más sencilla posible usando <code>redirectOutput(...)</code> y <code>redirectError(...)</code>.<br><br>
+      <em>Clase de utilidad sugerida:</em>
+<pre class="mb-0"><code>public class Utils {
+    public static String Consola() {
+        String linea = null;
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            while (true) {
+                System.out.print("consola&gt; ");
+                linea = br.readLine();
+                // Fin: línea vacía o comando de salida
+                if (linea.isBlank()) break;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return linea;
+    }
+}
+</code></pre>
+      <div class="accordion accordion-flush inner-acc mt-3 bg-light rounded" id="sub11">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed small" data-bs-toggle="collapse" data-bs-target="#i11">Indicaciones para resolverlo</button>
+          </h2>
+          <div id="i11" class="accordion-collapse collapse" data-bs-parent="#sub11">
+            <div class="accordion-body small">
+              - Implementa un bucle que lea texto desde la consola mediante el método de utilidad.<br>
+              - Finaliza la lectura cuando se introduzca una línea vacía.<br>
+              - Usa <code>ProcessBuilder</code> para ejecutar el comando <code>md5sum</code> del sistema.<br>
+              - Redirige la salida estándar y los errores hacia la consola con los métodos adecuados.<br>
+              - Envía la cadena introducida al proceso hijo y espera su finalización.<br>
+              - Comprueba que la salida generada coincida con la del comando <code>echo texto | md5sum</code> ejecutado manualmente en Linux.<br>
+              - No es necesario manejar excepciones de forma compleja; basta con capturar errores básicos de entrada/salida.<br>
+              - Procura que el código sea lo más claro y minimalista posible.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 12 -->
+<div class="accordion-item">
+  <h2 class="accordion-header" id="h12">
+    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#c12">
+      <span class="icon-wrap"><i class="bi bi-cloud-check"></i></span>
+      <strong>Ejercicio 12:</strong> <span class="subtitle">Consulta tu IP pública y privada usando procesos externos.</span>
+    </button>
+  </h2>
+  <div id="c12" class="accordion-collapse collapse" data-bs-parent="#accPB">
+    <div class="accordion-body">
+      Desarrolla un programa que muestre tanto la <strong>IP pública</strong> como la <strong>IP privada</strong> del equipo, utilizando procesos externos con <code>ProcessBuilder</code>.  
+      Para la IP pública, deberás consultar la API gratuita <code>https://api.ipify.org?format=json</code> usando el comando <code>curl</code>.  
+      Para la IP privada, ejecuta un comando del sistema como <code>hostname -I</code> (en Linux) o un equivalente que devuelva la dirección local.  
+      El programa mostrará además el PID de cada proceso, el tiempo de ejecución medido con <code>Instant</code> y <code>Duration</code>, y comprobará si ambos procesos finalizan correctamente o deben ser terminados manualmente.<br><br>
+
+      <strong>Requisitos:</strong>
+      <ul>
+        <li>Usar <code>ProcessBuilder</code> para ejecutar los comandos externos necesarios.</li>
+        <li>Leer y mostrar en consola tanto la IP pública (desde la API) como la IP privada (desde el sistema).</li>
+        <li>Medir el tiempo de ejecución de cada proceso usando <code>Instant inicio = Instant.now();</code> y <code>Duration duracion = Duration.between(inicio, Instant.now());</code>.</li>
+        <li>Mostrar el PID de cada proceso y su código de salida.</li>
+        <li>Comprobar si los procesos siguen activos y, si es necesario, destruirlos.</li>
+      </ul>
+
+      <div class="alert alert-secondary small mt-3" role="alert">
+        <strong>Ejemplo de salida esperada:</strong><br>
+        🛰️ Consultando IP pública...<br>
+        PID del proceso: 4218<br>
+        🌐 Respuesta API: {"ip":"83.47.112.21"}<br>
+        Código de salida: 0<br>
+        Duración: 513 ms<br>
+        ✅ Proceso finalizado correctamente.<br><br>
+        💻 Consultando IP privada...<br>
+        PID del proceso: 4220<br>
+        🌐 IP local: 192.168.1.105<br>
+        Código de salida: 0<br>
+        Duración: 48 ms<br>
+        ✅ Proceso finalizado correctamente.
+      </div>
+
+      <div class="accordion accordion-flush inner-acc mt-3 bg-light rounded" id="sub12">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed small" data-bs-toggle="collapse" data-bs-target="#i12">
+              Indicaciones para resolverlo
+            </button>
+          </h2>
+          <div id="i12" class="accordion-collapse collapse" data-bs-parent="#sub12">
+            <div class="accordion-body small">
+              - Define la URL de la API para la IP pública y crea un proceso con <code>curl -s</code> para consultarla.<br>
+              - Guarda el instante de inicio con <code>Instant inicio = Instant.now();</code> justo antes de lanzar el proceso.<br>
+              - Inicia el proceso, muestra su PID e imprime la respuesta JSON que contiene la IP pública.<br>
+              - Espera a que termine y mide la duración con <code>Duration duracion = Duration.between(inicio, Instant.now());</code>.<br>
+              - Lanza un segundo proceso para obtener la IP privada, usando un comando del sistema (<code>hostname -I</code> o similar).<br>
+              - Repite el mismo procedimiento de medición para el segundo proceso.<br>
+              - Captura la salida estándar de ambos procesos sin mezclar errores y salidas.<br>
+              - Comprueba el código de salida de cada proceso y muestra si terminó correctamente o fue interrumpido.<br>
+              - En caso de que algún proceso siga activo, destrúyelo con <code>destroyForcibly()</code>.<br>
+              - Maneja las excepciones de forma simple y muestra mensajes claros para cada parte del proceso.<br>
+              - Presenta los resultados de forma ordenada, indicando claramente el tiempo de ejecución de cada consulta.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 13 -->
+<div class="accordion-item">
+  <h2 class="accordion-header" id="h13">
+    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#c13">
+      <span class="icon-wrap"><i class="bi bi-image"></i></span>
+      <strong>Ejercicio 13:</strong> <span class="subtitle">Imagen aleatoria de perro (API <code>dog.ceo</code>) con apertura en navegador.</span>
+    </button>
+  </h2>
+  <div id="c13" class="accordion-collapse collapse" data-bs-parent="#accPB">
+    <div class="accordion-body">
+      Desarrolla un programa que consulte una imagen aleatoria de la API pública <code>https://dog.ceo/api/breeds/image/random</code> usando un proceso externo con <code>curl</code>.  
+      El programa debe leer la respuesta JSON, extraer la URL de la imagen, mostrarla por consola y abrirla en el navegador predeterminado del sistema.  
+      Además, mostrará el PID del proceso, medirá la duración de la petición y comprobará si el proceso sigue vivo para finalizarlo si fuese necesario.  
+      <br><br>
+
+      <strong>Requisitos:</strong>
+      <ul>
+        <li>Usar <code>ProcessBuilder</code> para lanzar <code>curl</code> en modo silencioso.</li>
+        <li>Unificar salida y error con <code>redirectErrorStream(true)</code> para simplificar la lectura.</li>
+        <li>Leer la salida JSON de la API y extraer la URL del campo <code>message</code>.</li>
+        <li>Medir el tiempo de ejecución con <code>Instant</code> y <code>Duration</code>.</li>
+        <li>Mostrar PID, duración y el código de finalización del proceso.</li>
+        <li>Abrir la URL resultante en el navegador predeterminado (Windows/macOS/Linux).</li>
+        <li>Comprobar si el proceso sigue activo y destruirlo en caso necesario.</li>
+      </ul>
+
+      <div class="alert alert-secondary small mt-3" role="alert">
+        <strong>Ejemplo de salida esperada:</strong><br>
+        🐶 Consultando imagen aleatoria (PID: 7352)...<br>
+        ⏱️ Duración: 187 ms<br>
+        🌐 Imagen: https://images.dog.ceo/breeds/husky/n02110185_1469.jpg<br>
+        🖥️ Abriendo imagen en el navegador...<br>
+        ✅ Proceso finalizado correctamente.
+      </div>
+
+      <p class="small text-muted mb-2">
+        Se recomiendan los siguientes métodos auxiliares para procesar el JSON y abrir la imagen:
+      </p>
+
+<pre class="bg-light p-3 rounded small"><code>// Extrae la URL entre comillas del campo "message"
+private static String extraerURL(String json) {
+    int start = json.indexOf("\"message\":\"");
+    if (start &lt; 0) return null;
+    start += 11;
+    int end = json.indexOf("\"", start);
+    if (end &lt; 0) return null;
+    String raw = json.substring(start, end);
+    return raw.replace("\\/", "/"); // limpiar los escapes
+}
+
+// Abre la URL en el navegador según el sistema operativo
+private static void abrirEnNavegador(String imageUrl) {
+    String os = System.getProperty("os.name").toLowerCase();
+    ProcessBuilder abrir;
+    try {
+        if (os.contains("win")) {
+            abrir = new ProcessBuilder("cmd", "/c", "start", imageUrl);
+        } else if (os.contains("mac")) {
+            abrir = new ProcessBuilder("open", imageUrl);
+        } else {
+            abrir = new ProcessBuilder("xdg-open", imageUrl);
+        }
+        abrir.start();
+        System.out.println("🖥️  Abriendo imagen en el navegador...");
+    } catch (IOException e) {
+        System.err.println("No se pudo abrir la imagen: " + e.getMessage());
+    }
+}
+</code></pre>
+
+      <div class="accordion accordion-flush inner-acc mt-3 bg-light rounded" id="sub13">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed small" data-bs-toggle="collapse" data-bs-target="#i13">
+              Indicaciones para resolverlo
+            </button>
+          </h2>
+          <div id="i13" class="accordion-collapse collapse" data-bs-parent="#sub13">
+            <div class="accordion-body small">
+              - Construye el proceso con <em>curl</em> hacia la URL indicada y activa el modo silencioso.<br>
+              - Unifica <em>stdout</em> y <em>stderr</em> para leer la salida con un único flujo.<br>
+              - Captura el <em>PID</em> mediante la API de procesos y registra el instante de inicio.<br>
+              - Lee la salida completa del proceso; al finalizar, calcula la duración transcurrida.<br>
+              - Usa el método <code>extraerURL()</code> para obtener la URL de la imagen desde el JSON.<br>
+              - Llama a <code>abrirEnNavegador()</code> para abrir la imagen automáticamente.<br>
+              - Si el proceso continuara activo al final, ciérralo de forma controlada y registra el estado.<br>
+              - Muestra mensajes claros y ordenados para cada paso (inicio, duración, URL, apertura, fin).<br>
+              - No es necesario utilizar librerías JSON externas: basta con analizar la cadena manualmente.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 14 -->
+<div class="accordion-item">
+  <h2 class="accordion-header" id="h14">
+    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#c14">
+      <span class="icon-wrap"><i class="bi bi-cpu"></i></span>
+      <strong>Ejercicio 14:</strong> <span class="subtitle">Mini “dashboard” del sistema con procesos encadenados y concurrentes.</span>
+    </button>
+  </h2>
+  <div id="c14" class="accordion-collapse collapse" data-bs-parent="#accPB">
+    <div class="accordion-body">
+      Crea un programa que construya un <strong>informe atractivo del sistema</strong> combinando varios procesos del SO y, al menos en un bloque, un pipeline de comandos.  
+      El informe debe mostrar: versión del kernel, distribución, CPU, memoria, discos, tiempo activo, IP(es) y ubicación aproximada de la IP pública.
+      <br><br>
+
+      <strong>Fuentes sugeridas (Linux):</strong>
+      <ul class="mb-2">
+        <li>🧬 Kernel: <code>uname -srmo</code></li>
+        <li>🎛️ Distro: <code>lsb_release -ds</code> o lectura de <code>/etc/os-release</code> con <code>grep</code></li>
+        <li>🧠 CPU: <code>lscpu</code> filtrado con <code>grep</code>/<code>awk</code></li>
+        <li>💾 Memoria: <code>free -h</code></li>
+        <li>💿 Discos: <code>df -h</code></li>
+        <li>⏱️ Uptime: <code>uptime -p</code> y <code>uptime -s</code></li>
+        <li>🌐 IP privada(s): <code>ip -br a</code> (o <code>hostname -I</code>)</li>
+        <li>🛰️ IP pública: <code>curl -s https://api.ipify.org?format=json</code></li>
+        <li>🗺️ Geo: <code>curl -s https://ipinfo.io/json</code> y extrae ciudad o país.</li>
+      </ul>
+
+      <p class="small text-muted mb-2">
+        Puedes lanzar varios procesos en paralelo para acelerar la recopilación de información.  
+        Este es el patrón básico recomendado:
+      </p>
+
+<pre class="bg-light p-3 rounded small"><code>// Ejemplo de patrón para lanzar y esperar varios procesos
+ProcessBuilder pb1 = new ProcessBuilder("uname", "-srmo");
+ProcessBuilder pb2 = new ProcessBuilder("free", "-h");
+ProcessBuilder pb3 = new ProcessBuilder("curl", "-s", "https://api.ipify.org?format=json");
+
+List&lt;Process&gt; procesos = List.of(pb1.start(), pb2.start(), pb3.start());
+
+// Esperar todos los procesos
+for (Process p : procesos) {
+    p.waitFor();
+}
+
+// Leer salidas
+for (Process p : procesos) {
+    try (var r = new java.io.BufferedReader(
+            new java.io.InputStreamReader(p.getInputStream()))) {
+        r.lines().forEach(System.out::println);
+    }
+}
+</code></pre>
+
+      <div class="accordion accordion-flush inner-acc mt-3 bg-light rounded" id="sub14">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed small" data-bs-toggle="collapse" data-bs-target="#i14">
+              Indicaciones para resolverlo
+            </button>
+          </h2>
+          <div id="i14" class="accordion-collapse collapse" data-bs-parent="#sub14">
+            <div class="accordion-body small">
+              - Construye cada sección del informe con <code>ProcessBuilder</code> y formatea la salida.<br>
+              - Implementa al menos un bloque con <strong>pipeline</strong> (por ejemplo, <code>lscpu | grep</code>).<br>
+              - Usa <code>Instant</code> y <code>Duration</code> para medir el tiempo total.<br>
+              - No mezcles errores con salida estándar: usa <code>getErrorStream()</code> para diagnóstico.<br>
+              - Cierra los flujos de salida de los procesos intermedios para evitar bloqueos.<br>
+              - Presenta el informe con emojis o iconos para hacerlo visualmente atractivo.<br>
+              - Controla los casos sin conexión a Internet y muestra un mensaje claro.<br>
+              - Espera a todos los procesos lanzados antes de finalizar el programa.<br>
+              - Asegúrate de limpiar bien los <em>InputStream</em> y destruir procesos que sigan activos.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 16 -->
+<div class="accordion-item">
+  <h2 class="accordion-header" id="h16">
+    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#c16">
+      <span class="icon-wrap"><i class="bi bi-git"></i></span>
+      <strong>Ejercicio 16:</strong> <span class="subtitle">Subida automática a GitHub: crear rama, <code>add .</code>, <code>commit</code> y <code>push</code> con control de errores.</span>
+    </button>
+  </h2>
+  <div id="c16" class="accordion-collapse collapse" data-bs-parent="#accPB">
+    <div class="accordion-body">
+      Diseña un programa (o script lanzado desde Java con <code>ProcessBuilder</code>) que automatice el flujo básico de subida a GitHub desde un repositorio local:
+      crear una rama nueva, añadir todos los cambios, hacer un commit descriptivo y subir la rama al remoto.  
+      El foco es **automatizar con robustez**: detectar y manejar errores comunes (estado sucio, conflictos, fallos de red, autenticación), informar al usuario y garantizar que **solo** se suban cambios válidos.
+      <br><br>
+
+      <strong>Requisitos mínimos:</strong>
+      <ul>
+        <li>Crear una rama nueva con un nombre seguro (p. ej. <code>feat/tu-nombre-descriptivo</code>), asegurando que no exista previamente en remoto.</li>
+        <li>Comprobar el estado del repositorio (sin merges pendientes, sin índices bloqueados). Si hay cambios no añadidos, informarlo y permitir opción de continuar o abortar.</li>
+        <li>Ejecutar <code>git add .</code> y comprobar su exit code antes de proceder.</li>
+        <li>Generar un <code>commit</code> con un mensaje claro; si no hay cambios a commitear, abortar con aviso (no empujar ramas vacías).</li>
+        <li>Configurar la rama remota/upstream si es la primera vez (p. ej. <code>git push --set-upstream origin &lt;branch&gt;</code>), manejando la salida y errores.</li>
+        <li>Detectar errores comunes al hacer push: autenticación, permisos, divergencia (need pull/merge), tiempos de espera de red. Mostrar mensajes útiles y recomendaciones (pull/rebase, revisar conflictos, comprobar credenciales).</li>
+        <li>Evitar operaciones destructivas automáticas (no usar <code>git push --force</code> automáticamente). Si se propone forzar, pedir confirmación explícita y documentarla en el README del ejercicio.</li>
+        <li>Registrar en consola (y en log opcional) cada paso con PID del proceso, comando ejecutado, exit code y salida estándar/errores breves para diagnóstico.</li>
+      </ul>
+
+      <div class="accordion accordion-flush inner-acc mt-3 bg-light rounded" id="sub16">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed small" data-bs-toggle="collapse" data-bs-target="#i16">Indicaciones para resolverlo</button>
+          </h2>
+          <div id="i16" class="accordion-collapse collapse" data-bs-parent="#sub16">
+            <div class="accordion-body small">
+              - Antes de crear la rama, comprueba que estás en el repositorio correcto y que el directorio de trabajo no está en un estado inconsistente (<code>git status --porcelain</code>).<br>
+              - Genera un nombre de rama seguro y único (incluye prefijo tipo <code>feat/</code> o <code>fix/</code> y una parte descriptiva).<br>
+              - Comprueba si la rama ya existe en remoto (<code>git ls-remote --heads origin &lt;branch&gt;</code>) para evitar colisiones.<br>
+              - Ejecuta los comandos secuencialmente como procesos hijos y **comprueba el código de salida** de cada uno; si uno falla, muestra la salida de error y detén la secuencia.<br>
+              - Antes del <code>push</code>, valida que existe al menos un commit nuevo en la rama (si no, no empujar).<br>
+              - Para el <code>push</code> inicial usa la opción para crear upstream y captura mensajes que pidan autenticación; instruye sobre el uso de SSH keys o tokens personales (no guardar tokens en texto plano).<br>
+              - Implementa reintentos simples con backoff en caso de fallos transitorios de red (p. ej. 3 intentos con espera creciente).<br>
+              - Maneja la divergencia: si el push falla por commits remotos no integrados, muestra instrucciones claras para realizar <code>git pull --rebase</code> o resolver conflictos manualmente; no intentes resolver merges automáticamente sin aviso.<br>
+              - Añade un modo "dry-run" (ejecutar <code>git push --dry-run</code>) para que la herramienta muestre lo que haría sin modificar el remoto, útil para pruebas en clase.<br>
+              - En cuestiones de autenticación, sugiere usar: claves SSH bien configuradas, o el helper de credenciales de Git con un token (y recuerda no almacenar tokens en repositorios ni en el código).<br>
+              - Incluye mensajes finales claros: URL del repositorio remoto + rama subida, o instrucciones de error y próximos pasos si no se pudo completar la subida.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-warning small mt-3" role="alert">
+        <strong>Precauciones de seguridad:</strong> nunca codifiques credenciales en el programa. Para la práctica, recomienda usar claves SSH con passphrase o tokens almacenados en el gestor de credenciales del sistema.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 17 -->
+<div class="accordion-item">
+  <h2 class="accordion-header" id="h17">
+    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#c17">
+      <span class="icon-wrap"><i class="bi bi-code-square"></i></span>
+      <strong>Ejercicio 17:</strong> <span class="subtitle">Script Bash con parámetros y ejecución desde Java.</span>
+    </button>
+  </h2>
+  <div id="c17" class="accordion-collapse collapse" data-bs-parent="#accPB">
+    <div class="accordion-body">
+      Crea un script <code>util-simple.sh</code> que demuestre cómo se controlan los <strong>parámetros y opciones</strong> en Bash, y ejecútalo desde Java con <code>ProcessBuilder</code>.  
+      El script deberá:
+      <ul>
+        <li>Recibir un <strong>nombre</strong> como primer argumento y mostrar <em>“Hola, &lt;nombre&gt;”</em>.</li>
+        <li>Aceptar <code>--upper</code> para mostrar el saludo en MAYÚSCULAS.</li>
+        <li>Aceptar <code>--count &lt;carpeta&gt;</code> para mostrar cuántos ficheros contiene esa carpeta.</li>
+        <li>Si no se pasa nombre, leerlo desde <strong>stdin</strong> (permite <code>echo Ana | ./util-simple.sh --upper</code>).</li>
+        <li>Usar códigos de salida:
+          <ul>
+            <li><code>0</code> → todo correcto</li>
+            <li><code>1</code> → argumentos inválidos</li>
+            <li><code>2</code> → carpeta inexistente</li>
+          </ul>
+        </li>
+      </ul>
+
+      <div class="accordion accordion-flush inner-acc mt-3 bg-light rounded" id="sub17">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed small" data-bs-toggle="collapse" data-bs-target="#i17">
+              Indicaciones para resolverlo
+            </button>
+          </h2>
+          <div id="i17" class="accordion-collapse collapse" data-bs-parent="#sub17">
+            <div class="accordion-body small">
+              - Crea el script con cabecera <code>#!/usr/bin/env bash</code> y marca permisos de ejecución (<code>chmod +x util-simple.sh</code>).<br><br>
+
+              <strong>Control de parámetros en Bash:</strong><br>
+              En los scripts Bash, los parámetros se controlan mediante variables automáticas:
+              <ul>
+                <li><code>$0</code> → nombre del script</li>
+                <li><code>$1, $2, $3...</code> → argumentos posicionales</li>
+                <li><code>$#</code> → número de argumentos pasados</li>
+                <li><code>$@</code> → todos los argumentos (como lista)</li>
+                <li><code>$*</code> → todos los argumentos en una sola cadena</li>
+                <li><code>shift</code> → avanza los argumentos (útil para recorrerlos en bucles)</li>
+              </ul>
+
+              Ejemplo básico de control manual:
+              <pre class="bg-light p-2 rounded"><code>while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --upper) MAYUS=1 ;;
+    --count) CARPETA="$2"; shift ;;
+    *) NOMBRE="$1" ;;
+  esac
+  shift
+done</code></pre>
+
+              - Valida si <code>$NOMBRE</code> está vacío; si lo está, léelo desde stdin con <code>read NOMBRE</code>.<br>
+              - Si la opción <code>--count</code> está activa, usa <code>ls -1 "$CARPETA" | wc -l</code> para contar ficheros.<br>
+              - En modo <code>--upper</code>, transforma la cadena con <code>echo "$NOMBRE" | tr '[:lower:]' '[:upper:]'</code>.<br>
+              - Devuelve el código de salida adecuado con <code>exit 0</code>, <code>exit 1</code> o <code>exit 2</code> según corresponda.<br><br>
+
+              <strong>Integración desde Java:</strong><br>
+              - Lanza el script con <code>new ProcessBuilder("./util-simple.sh","--upper","Pepe")</code> o con redirección de entrada (<code>echo Ana | ./util-simple.sh</code>).<br>
+              - Captura <em>stdout</em> y <em>stderr</em> para mostrar resultados y errores.<br>
+              - Muestra el <code>exit code</code> con <code>process.waitFor()</code> y explica su significado.<br>
+              - Usa <code>ProcessBuilder.Redirect.INHERIT</code> si quieres que el script escriba directamente en la consola de Java.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 17 -->
+<div class="accordion-item">
+  <h2 class="accordion-header" id="h17">
+    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#c17">
+      <span class="icon-wrap"><i class="bi bi-code-square"></i></span>
+      <strong>Ejercicio 17:</strong> <span class="subtitle">Ejecución de un script Bash con variables de entorno y control de parámetros.</span>
+    </button>
+  </h2>
+  <div id="c17" class="accordion-collapse collapse" data-bs-parent="#accPB">
+    <div class="accordion-body">
+      Crea un script <code>util-simple.sh</code> dentro de la carpeta  
+      <code>/home/&lt;usuario&gt;/Documents/scripts/</code>  
+      y ejecútalo desde Java utilizando <code>ProcessBuilder</code>.  
+      Este ejercicio combina el uso de <strong>parámetros</strong> y <strong>variables de entorno</strong> que el script debe leer y mostrar.
+      <br><br>
+
+      <strong>Objetivos del script:</strong>
+      <ul>
+        <li>El script debe ubicarse en <code>/home/&lt;usuario&gt;/Documents/scripts/util-simple.sh</code>.</li>
+        <li>Recibirá un <strong>nombre</strong> como primer argumento y mostrará <em>“Hola, &lt;nombre&gt;”</em>.</li>
+        <li>Aceptará las opciones:
+          <ul>
+            <li><code>--upper</code> → muestra el saludo en mayúsculas.</li>
+            <li><code>--count &lt;carpeta&gt;</code> → muestra cuántos ficheros contiene la carpeta indicada.</li>
+          </ul>
+        </li>
+        <li>Si no se pasa nombre, lo leerá desde <strong>stdin</strong> (por ejemplo: <code>echo Ana | ./util-simple.sh</code>).</li>
+        <li>Usará <strong>variables de entorno</strong> que el programa Java le proporcionará:
+          <ul>
+            <li><code>APP_MODE</code> (por ejemplo: “DEV” o “PROD”)</li>
+            <li><code>AUTHOR</code> (nombre del alumno o creador)</li>
+          </ul>
+          El script debe leerlas y mostrarlas al inicio de su ejecución.
+        </li>
+      </ul>
+
+      <strong>Códigos de salida esperados:</strong>
+      <ul>
+        <li><code>0</code> → todo correcto</li>
+        <li><code>1</code> → argumentos inválidos</li>
+        <li><code>2</code> → carpeta inexistente</li>
+      </ul>
+      <p>
+        El propio <code>util-simple.sh</code> será responsable de determinar y devolver estos códigos:
+      </p>
+      <ul>
+        <li>El código <code>1</code> se devuelve si el usuario no pasa los argumentos esperados o usa una opción incorrecta.  
+          El script puede detectarlo comprobando el número de argumentos (<code>$#</code>) o validando las opciones con un bucle <code>case</code>.</li>
+        <li>El código <code>2</code> se devuelve si la carpeta indicada en <code>--count</code> no existe.  
+          Para ello se usa la comprobación <code>[[ -d "$CARPETA" ]]</code>; si falla, se muestra un mensaje de error por <code>stderr</code> y se hace <code>exit 2</code>.</li>
+        <li>El código <code>0</code> se devuelve cuando todo se ejecuta correctamente (saludo y conteo opcional) sin errores.</li>
+      </ul>
+
+      <div class="accordion accordion-flush inner-acc mt-3 bg-light rounded" id="sub17">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed small" data-bs-toggle="collapse" data-bs-target="#i17">
+              Indicaciones para resolverlo
+            </button>
+          </h2>
+          <div id="i17" class="accordion-collapse collapse" data-bs-parent="#sub17">
+            <div class="accordion-body small">
+              <strong>1. Ubicación y permisos</strong><br>
+              - Crea la carpeta si no existe:  
+                <code>mkdir -p /home/&lt;usuario&gt;/Documents/scripts</code><br>
+              - Crea el script en esa ruta:  
+                <code>nano /home/&lt;usuario&gt;/Documents/scripts/util-simple.sh</code><br>
+              - Asigna permisos de ejecución:  
+                <code>chmod +x /home/&lt;usuario&gt;/Documents/scripts/util-simple.sh</code><br><br>
+
+              <strong>2. Control de parámetros en Bash</strong><br>
+              Bash permite leer parámetros mediante variables especiales:
+              <ul>
+                <li><code>$1, $2, $3...</code> → argumentos posicionales</li>
+                <li><code>$#</code> → número de argumentos</li>
+                <li><code>$@</code> → todos los argumentos como lista</li>
+                <li><code>shift</code> → avanza al siguiente argumento</li>
+              </ul>
+              Ejemplo de análisis con <code>case</code>:
+              <pre class="bg-light p-2 rounded"><code>while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --upper) MAYUS=1 ;;
+    --count) CARPETA="$2"; shift ;;
+    *) NOMBRE="$1" ;;
+  esac
+  shift
+done</code></pre><br>
+
+              <strong>3. Variables de entorno</strong><br>
+              En el script, las variables de entorno enviadas desde Java se leen igual que cualquier otra:
+              <pre class="bg-light p-2 rounded"><code>echo "Modo: $APP_MODE"
+echo "Autor: $AUTHOR"</code></pre>
+              Si alguna no está definida, usa un valor por defecto:
+              <pre class="bg-light p-2 rounded"><code>APP_MODE="${APP_MODE:-DEV}"</code></pre><br>
+
+              <strong>4. Ejecución desde Java (ProcessBuilder)</strong><br>
+              - Indica la ruta absoluta al script:  
+                <code>new ProcessBuilder("bash", "/home/&lt;usuario&gt;/Documents/scripts/util-simple.sh", "--upper", "Pepe")</code><br>
+              - Usa variables de entorno:  
+                <code>pb.environment().put("APP_MODE", "PROD");</code><br>
+                <code>pb.environment().put("AUTHOR", "Alumno1");</code><br>
+              - Captura <em>stdout</em> y <em>stderr</em> para mostrar los mensajes del script.<br>
+              - Muestra el PID y el código de salida con <code>process.toHandle().pid()</code> y <code>process.waitFor()</code>.<br>
+              - Si hay error (código ≠ 0), muestra un mensaje según el valor devuelto.<br><br>
+
+              <strong>5. Buenas prácticas</strong><br>
+              - Usa <code>set -e</code> en el script para detenerlo si hay errores graves.<br>
+              - Comprueba si la carpeta de <code>--count</code> existe con <code>[[ -d "$CARPETA" ]] || exit 2</code>.<br>
+              - Devuelve un código de salida con <code>exit</code> y explica su significado.<br>
+              - Desde Java, mide la duración con <code>Instant inicio = Instant.now()</code> y  
+                <code>Duration.between(inicio, Instant.now())</code> para evaluar el tiempo de ejecución.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+
+  <section class="mt-5">
+    <hr>
+    <h2 class="h6 text-uppercase text-secondary mb-2">Recursos</h2>
+    <a class="btn btn-sm btn-outline-primary me-2" target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/api/java/lang/ProcessBuilder.html">
+      <i class="bi bi-box-arrow-up-right me-1"></i>API · ProcessBuilder
+    </a>
+    <a class="btn btn-sm btn-outline-secondary" target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/api/java/lang/Process.html">
+      <i class="bi bi-box-arrow-up-right me-1"></i>API · Process
+    </a>
+  </section>
+
+  <footer class="mt-5 small">
+    <hr>
+    <p>Plantilla Bootstrap 5 · UD1 — ProcessBuilder (Java, Linux).</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
