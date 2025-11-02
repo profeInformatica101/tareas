@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tutorial Básico de Clases en PHP</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="icon" href="https://www.php.net/images/logos/new-php-logo.svg" type="image/svg+xml" />
+  <style>
+    body { background-color: #f8f9fa; }
+    pre code {
+      background: #272822; color: #f8f8f2; display: block;
+      padding: 1rem; border-radius: .5rem; font-size: .92rem;
+    }
+    mark { background-color: #cfe2ff; padding: .2em .4em; border-radius: .25em; }
+    .example-output {
+      background: #fff; border-left: 4px solid #0d6efd; padding: .75rem 1rem;
+      margin-top: .5rem; border-radius: .25rem; font-style: italic; color: #444;
+    }
+    .section { margin-bottom: 3rem; }
+    .code-badge { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">PHP OOP Tutorial</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#intro">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#propiedades">Propiedades</a></li>
+          <li class="nav-item"><a class="nav-link" href="#herencia">Herencia</a></li>
+          <li class="nav-item"><a class="nav-link" href="#php-vs-java">PHP vs Java</a></li>
+          <li class="nav-item"><a class="nav-link" href="#ejercicios">Ejercicios</a></li>
+          <li class="nav-item"><a class="nav-link" href="#referencias">Referencias</a></li>
+       <li class="nav-item"><a class="nav-link" href="#pilares">Pilares POO</a></li>
+<li class="nav-item"><a class="nav-link" href="#constructores">Constructores</a></li>
+<li class="nav-item"><a class="nav-link" href="#namespaces">Namespaces & Autoload</a></li>
+<li class="nav-item"><a class="nav-link" href="#traits">Traits</a></li>
+<li class="nav-item"><a class="nav-link" href="#excepciones">Excepciones</a></li>
+<li class="nav-item"><a class="nav-link" href="#buenas-practicas">Buenas prácticas</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="bg-light py-5 text-center">
+    <div class="container">
+      <h1 class="fw-bold mb-3">🧱 Tutorial Básico de Clases en PHP</h1>
+      <p class="lead mb-0">Basado en la <a href="https://www.php.net/manual/es/language.oop5.php" target="_blank" rel="noopener">documentación oficial de PHP</a>. Con comparativa rápida con Java y ejercicios.</p>
+    </div>
+  </header>
+
+  <main class="container my-5">
+<section id="pilares" class="section bg-white p-4 rounded shadow-sm">
+  <h2>⚙️ Pilares fundamentales de la POO</h2>
+  <div class="row text-center mt-3">
+    <div class="col-md-3"><h5>🧬 Encapsulación</h5><p class="small">Controla el acceso a datos con public/protected/private.</p></div>
+    <div class="col-md-3"><h5>🧠 Abstracción</h5><p class="small">Interfaces y clases abstractas ocultan detalles.</p></div>
+    <div class="col-md-3"><h5>🧩 Herencia</h5><p class="small">Reutiliza y especializa comportamiento con <code>extends</code>.</p></div>
+    <div class="col-md-3"><h5>🔄 Polimorfismo</h5><p class="small">Una misma interfaz, múltiples implementaciones.</p></div>
+  </div>
+</section>
+    <!-- Introducción -->
+    <section id="intro" class="section">
+      <h2>1️⃣ ¿Qué es una clase?</h2>
+      <p>Una <strong>clase</strong> es una plantilla que define las <mark>propiedades</mark> (atributos) y <mark>métodos</mark> (acciones) que tendrán los objetos creados a partir de ella.</p>
+
+      <button class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#ejemplo1">Mostrar ejemplo</button>
+      <div id="ejemplo1" class="collapse mt-3">
+        <pre><code>&lt;?php
+class Coche {
+  public string $marca;
+  public string $color;
+
+  public function arrancar(): string {
+    return "El coche está arrancando 🚗💨";
+  }
+}
+
+$miCoche = new Coche();
+$miCoche-&gt;marca = "Toyota";
+$miCoche-&gt;color = "Rojo";
+
+echo $miCoche-&gt;arrancar();
+?&gt;</code></pre>
+        <div class="example-output">Salida: El coche está arrancando 🚗💨</div>
+      </div>
+    </section>
+
+    <!-- Propiedades y métodos -->
+    <section id="propiedades" class="section">
+      <h2>2️⃣ Propiedades y métodos</h2>
+      <p>Las <strong>propiedades</strong> son variables internas de la clase y los <strong>métodos</strong> son funciones que pueden usar o modificar esas propiedades.</p>
+
+      <button class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#ejemplo2">Mostrar ejemplo</button>
+      <div id="ejemplo2" class="collapse mt-3">
+        <pre><code>&lt;?php
+class Persona {
+  public string $nombre;
+  public int $edad;
+
+  public function saludar(): string {
+    return "Hola, me llamo {$this-&gt;nombre} y tengo {$this-&gt;edad} años.";
+  }
+}
+
+$p = new Persona();
+$p-&gt;nombre = "Laura";
+$p-&gt;edad = 25;
+
+echo $p-&gt;saludar();
+?&gt;</code></pre>
+        <div class="example-output">Salida: Hola, me llamo Laura y tengo 25 años.</div>
+      </div>
+    </section>
+<section id="constructores" class="section">
+  <h2>🧱 Constructores y promoción de propiedades</h2>
+  <p>PHP permite declarar y asignar propiedades directamente en el constructor (desde PHP 8).</p>
+  <pre><code>&lt;?php
+declare(strict_types=1);
+
+class Coche {
+  public function __construct(
+    public string $marca,
+    public string $color = 'Blanco'
+  ) {}
+  public function descripcion(): string {
+    return "{$this-&gt;marca} ({$this-&gt;color})";
+  }
+}
+
+$c = new Coche('Toyota', 'Rojo');
+echo $c-&gt;descripcion();</code></pre>
+</section>
+    <!-- Modificadores -->
+    <section class="section">
+      <h2>3️⃣ Modificadores de acceso</h2>
+      <table class="table table-bordered table-hover">
+        <thead class="table-primary text-center">
+          <tr><th>Modificador</th><th>Acceso permitido</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>public</code></td><td>Desde cualquier parte</td></tr>
+          <tr><td><code>protected</code></td><td>Desde la clase o sus hijas</td></tr>
+          <tr><td><code>private</code></td><td>Solo desde la misma clase</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Herencia -->
+    <section id="herencia" class="section">
+      <h2>4️⃣ Herencia</h2>
+      <p>Una clase puede heredar de otra usando <code>extends</code>, reutilizando y personalizando sus métodos.</p>
+
+      <button class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#ejemplo3">Mostrar ejemplo</button>
+      <div id="ejemplo3" class="collapse mt-3">
+        <pre><code>&lt;?php
+class Animal {
+  public function hacerSonido(): string {
+    return "Sonido genérico 🐾";
+  }
+}
+
+class Perro extends Animal {
+  public function hacerSonido(): string {
+    return "Guau guau 🐶";
+  }
+}
+
+$miPerro = new Perro();
+echo $miPerro-&gt;hacerSonido();
+?&gt;</code></pre>
+        <div class="example-output">Salida: Guau guau 🐶</div>
+      </div>
+    </section>
+
+    <!-- Estáticos -->
+    <section class="section">
+      <h2>5️⃣ Métodos estáticos</h2>
+      <p>Los métodos <code>static</code> pertenecen a la clase y no al objeto. No necesitas crear una instancia para usarlos.</p>
+
+      <button class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#ejemplo4">Mostrar ejemplo</button>
+      <div id="ejemplo4" class="collapse mt-3">
+        <pre><code>&lt;?php
+class Utilidades {
+  public static function saludar(string $nombre): string {
+    return "Hola, $nombre 👋";
+  }
+}
+
+echo Utilidades::saludar("Marta");
+?&gt;</code></pre>
+        <div class="example-output">Salida: Hola, Marta 👋</div>
+      </div>
+    </section>
+
+    <!-- PHP vs Java -->
+    <section id="php-vs-java" class="section">
+      <h2>🆚 PHP vs Java (POO): diferencias rápidas</h2>
+
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <div class="card h-100">
+            <div class="card-header bg-secondary text-white fw-bold">Conceptos clave</div>
+            <div class="card-body">
+              <ul class="mb-0">
+                <li><strong>Tipado:</strong> Java es estáticamente tipado; PHP es dinámico, pero puede ser estricto con <span class="code-badge">declare(strict_types=1)</span>.</li>
+                <li><strong>Archivos:</strong> Java usa <em>packages</em> y compila a bytecode; PHP se ejecuta como script sin compilación previa.</li>
+                <li><strong>Constructores:</strong> Java tiene sobrecarga; en PHP no existe sobrecarga nativa (se emula con parámetros opcionales).</li>
+                <li><strong>Interfaces/Abstract:</strong> Ambos soportan <em>interface</em> y clases abstractas; PHP además tiene <strong>traits</strong>.</li>
+                <li><strong>Visibilidad y estáticos:</strong> Muy similar; en PHP se usan <code>public/protected/private</code> y <code>static</code> igual que en Java.</li>
+                <li><strong>Espacios de nombres:</strong> Java usa <em>packages</em>; PHP usa <strong>namespaces</strong> y PSR-4 con Composer.</li>
+                <li><strong>Excepciones:</strong> Java tiene checked/unchecked; en PHP todas son unchecked (no requieren <code>throws</code> en firma).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="card h-100">
+            <div class="card-header bg-secondary text-white fw-bold">Mini comparativa de código</div>
+            <div class="card-body">
+              <p class="mb-2 fw-semibold">Clase simple</p>
+              <pre class="mb-3"><code>// Java
+class Persona {
+  private String nombre;
+  public Persona(String n){ this.nombre = n; }
+  public String saludar(){ return "Hola " + nombre; }
+}
+
+// PHP
+class Persona {
+  public function __construct(private string $nombre) {}
+  public function saludar(): string { return "Hola {$this->nombre}"; }
+}</code></pre>
+
+              <p class="mb-2 fw-semibold">Interfaces</p>
+              <pre class="mb-0"><code>// Java
+interface Autenticable { boolean login(String u, String p); }
+
+// PHP
+interface Autenticable { public function login(string $u, string $p): bool; }</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-info mt-4">
+        <strong>Nota:</strong> el objetivo del curso es PHP, pero estas diferencias te ayudarán a trasladar lo que ya conoces de Java.
+      </div>
+    </section>
+<section id="namespaces" class="section bg-light p-4 rounded">
+  <h2>📦 Namespaces & Autoload con Composer</h2>
+  <ol>
+    <li>Crea <code>composer.json</code> en la raíz:</li>
+  </ol>
+  <pre><code>{
+  "autoload": { "psr-4": { "App\\": "src/" } }
+}</code></pre>
+  <ol start="2"><li>Ejecuta: <code>composer dump-autoload</code></li></ol>
+  <ol start="3"><li>Usa tus clases:</li></ol>
+  <pre><code>&lt;?php
+require __DIR__.'/vendor/autoload.php';
+
+namespace App\Modelo;
+
+class Usuario { public function __construct(public string $nombre) {} }</code></pre>
+  <div class="alert alert-info mt-3">Ventajas: menos <code>require</code>, estructura clara, compatible con PSR-4 y herramientas modernas.</div>
+</section>
+    <!-- Instalación de Composer -->
+    <section id="composer" class="section bg-white p-4 rounded shadow-sm">
+      <h2>🧰 Instalación de Composer (Windows y Linux)</h2>
+      <p>Composer es el <strong>gestor de dependencias</strong> estándar de PHP. Permite instalar librerías, configurar el autoload (PSR-4)
+      y manejar proyectos modernos. Es recomendable tenerlo instalado antes de iniciar los ejercicios.</p>
+
+      <h5 class="mt-3">💻 En Windows</h5>
+      <ol>
+        <li>Descarga el instalador desde 
+          <a href="https://getcomposer.org/Composer-Setup.exe" target="_blank" rel="noopener">getcomposer.org/Composer-Setup.exe</a>
+        </li>
+        <li>Ejecuta el instalador y selecciona la ruta de <code>php.exe</code> (por ejemplo: <code>C:\xampp\php\php.exe</code>).</li>
+        <li>El instalador agregará Composer al <strong>PATH</strong> automáticamente. Abre una nueva terminal y ejecuta:
+          <pre><code>composer --version</code></pre>
+        </li>
+      </ol>
+
+      <h5 class="mt-4">🐧 En Linux / WSL (con verificación de firma)</h5>
+      <p>Instalación global verificada desde terminal:</p>
+      <pre><code># Requisitos
+sudo apt update
+sudo apt install -y php-cli unzip curl
+
+# Descargar instalador y su firma esperada
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "copy('https://composer.github.io/installer.sig', 'composer-setup.sig');"
+
+# Verificar firma (SHA384)
+php -r "$sig=file_get_contents('composer-setup.sig'); $hash=hash_file('sha384','composer-setup.php'); exit($hash===trim($sig)?0:1);"
+if [ $? -ne 0 ]; then echo '⚠️ Verificación fallida'; rm composer-setup.php composer-setup.sig; exit 1; fi
+
+# Instalar como binario global
+sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+# Limpiar
+rm composer-setup.php composer-setup.sig
+
+# Comprobar
+composer --version
+</code></pre>
+
+      <div class="alert alert-info mt-3">
+        <strong>Consejo:</strong> Si obtienes <code>composer: command not found</code>, verifica que <code>/usr/local/bin</code> esté en tu <code>PATH</code>
+        o ejecuta Composer con <code>php composer.phar</code>.
+      </div>
+
+      <h5 class="mt-4">🔗 Uso básico</h5>
+      <p>Para inicializar un proyecto con Composer:</p>
+      <pre><code># Crea el archivo composer.json interactivo
+composer init
+
+# Instala dependencias (ejemplo: PHPUnit)
+composer require phpunit/phpunit --dev
+
+# Genera el autoload automático
+composer dump-autoload
+
+# Incluye el autoload en tu código PHP
+require __DIR__ . '/vendor/autoload.php';
+</code></pre>
+
+      <p class="small text-muted mt-3 mb-0">
+        💡 Con Composer puedes usar <strong>namespaces</strong> y <strong>autoload PSR-4</strong> sin necesidad de incluir manualmente archivos.
+      </p>
+    </section>
+
+<section id="excepciones" class="section">
+  <h2>🚨 Excepciones</h2>
+  <p>En PHP todas las excepciones son “unchecked” (no se declaran en la firma).</p>
+  <pre><code>&lt;?php
+declare(strict_types=1);
+
+class Division {
+  public static function entre(int $a, int $b): float {
+    if ($b === 0) { throw new InvalidArgumentException('División por cero'); }
+    return $a / $b;
+  }
+}
+
+try {
+  echo Division::entre(10, 0);
+} catch (InvalidArgumentException $e) {
+  echo "Error: ".$e-&gt;getMessage();
+}</code></pre>
+</section>
+<section id="buenas-practicas" class="section bg-white p-4 rounded shadow-sm">
+  <h2>✅ Buenas prácticas</h2>
+  <ul class="mb-3">
+    <li><strong>declare(strict_types=1);</strong> al inicio de cada archivo.</li>
+    <li>PSR-12: sangría, llaves, <em>camelCase</em> en métodos, <em>StudlyCaps</em> en clases.</li>
+    <li>Tipos de retorno y parámetros (string|int|float|array|object|callable|bool|mixed|never).</li>
+    <li>DocBlocks <code>/** ... */</code> con <code>@param</code>, <code>@return</code>, <code>@throws</code>.</li>
+    <li>Evita estado global; inyección de dependencias (p.ej. <code>PDO</code> en el constructor).</li>
+  </ul>
+  <pre><code>&lt;?php
+declare(strict_types=1);
+/**
+ * @param int $a
+ * @param int $b
+ * @return int
+ * @throws InvalidArgumentException
+ */
+function sumar(int $a, int $b): int {
+  if ($a &lt; 0 || $b &lt; 0) throw new InvalidArgumentException('Solo positivos');
+  return $a + $b;
+}</code></pre>
+</section>
+    <!-- Ejercicios -->
+    <section id="ejercicios" class="section">
+      <h2>📝 Ejercicios prácticos (5 retos)</h2>
+      <p class="text-muted">Cada ejercicio incluye un enunciado y una pista con código inicial. Puedes ejecutar en tu servidor PHP local.</p>
+
+      <!-- Ejercicio 1 -->
+      <div class="card mb-3">
+        <div class="card-header fw-bold">1) Clase <em>Rectangulo</em> con área y perímetro</div>
+        <div class="card-body">
+          <p><strong>Enunciado:</strong> Crea una clase <code>Rectangulo</code> con ancho y alto (float). Implementa <code>area()</code> y <code>perimetro()</code>. Añade un constructor y validaciones simples (&gt; 0).</p>
+          <button class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#ej1">Ver pista</button>
+          <div id="ej1" class="collapse mt-3">
+            <pre><code>&lt;?php
+declare(strict_types=1);
+
+class Rectangulo {
+  public function __construct(private float $ancho, private float $alto) {
+    if ($ancho &lt;= 0 || $alto &lt;= 0) {
+      throw new InvalidArgumentException("Dimensiones inválidas");
+    }
+  }
+  public function area(): float { return $this-&gt;ancho * $this-&gt;alto; }
+  public function perimetro(): float { return 2 * ($this-&gt;ancho + $this-&gt;alto); }
+}
+
+$r = new Rectangulo(3.5, 2.0);
+echo $r-&gt;area();</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ejercicio 2 -->
+      <div class="card mb-3">
+        <div class="card-header fw-bold">2) Herencia: <em>Figura</em> (abstract) y <em>Circulo</em></div>
+        <div class="card-body">
+          <p><strong>Enunciado:</strong> Define una clase abstracta <code>Figura</code> con método abstracto <code>area()</code>. Implementa <code>Circulo</code> que la extienda y calcule el área.</p>
+          <button class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#ej2">Ver pista</button>
+          <div id="ej2" class="collapse mt-3">
+            <pre><code>&lt;?php
+declare(strict_types=1);
+
+abstract class Figura { abstract public function area(): float; }
+class Circulo extends Figura {
+  public function __construct(private float $radio) {}
+  public function area(): float { return M_PI * $this-&gt;radio ** 2; }
+}
+
+$f = new Circulo(2.5);
+echo $f-&gt;area();</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ejercicio 3 -->
+      <div class="card mb-3">
+        <div class="card-header fw-bold">3) Interface: <em>Autenticable</em> y clase <em>Usuario</em></div>
+        <div class="card-body">
+          <p><strong>Enunciado:</strong> Crea una <code>interface Autenticable</code> con <code>login(string $u, string $p): bool</code>. Implementa <code>Usuario</code> que valide usuario=admin y pass=1234.</p>
+          <button class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#ej3">Ver pista</button>
+          <div id="ej3" class="collapse mt-3">
+            <pre><code>&lt;?php
+declare(strict_types=1);
+
+interface Autenticable { public function login(string $u, string $p): bool; }
+class Usuario implements Autenticable {
+  public function __construct(private string $usuario, private string $password) {}
+  public function login(string $u, string $p): bool {
+    return $u === $this-&gt;usuario &amp;&amp; $p === $this-&gt;password;
+  }
+}
+
+$u = new Usuario('admin','1234');
+var_dump($u-&gt;login('admin','1234'));</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ejercicio 4 -->
+      <div class="card mb-3">
+        <div class="card-header fw-bold">4) <em>Carrito</em> con métodos estáticos</div>
+        <div class="card-body">
+          <p><strong>Enunciado:</strong> Crea una clase <code>Carrito</code> con una propiedad estática que acumule importes y un método estático <code>total()</code>. Añade <code>agregar(float $precio)</code>.</p>
+          <button class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#ej4">Ver pista</button>
+          <div id="ej4" class="collapse mt-3">
+            <pre><code>&lt;?php
+declare(strict_types=1);
+
+class Carrito {
+  private static float $acumulado = 0.0;
+  public static function agregar(float $precio): void { self::$acumulado += $precio; }
+  public static function total(): float { return self::$acumulado; }
+}
+
+Carrito::agregar(9.99);
+Carrito::agregar(3.50);
+echo Carrito::total();</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ejercicio 5 -->
+      <div class="card mb-3">
+        <div class="card-header fw-bold">5) <em>Repositorio</em> simple (mock) con tipado estricto</div>
+        <div class="card-body">
+          <p><strong>Enunciado:</strong> Simula un repositorio en memoria para <code>Producto</code> con métodos <code>guardar</code>, <code>buscarPorId</code> y <code>listar</code>. Usa arrays y tipos estrictos.</p>
+          <button class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#ej5">Ver pista</button>
+          <div id="ej5" class="collapse mt-3">
+            <pre><code>&lt;?php
+declare(strict_types=1);
+
+class Producto {
+  public function __construct(
+    public int $id, public string $nombre, public float $precio
+  ) {}
+}
+
+class ProductoRepo {
+  /** @var array&lt;int,Producto&gt; */
+  private array $datos = [];
+
+  public function guardar(Producto $p): void { $this-&gt;datos[$p-&gt;id] = $p; }
+  public function buscarPorId(int $id): ?Producto { return $this-&gt;datos[$id] ?? null; }
+  /** @return Producto[] */
+  public function listar(): array { return array_values($this-&gt;datos); }
+}
+
+$r = new ProductoRepo();
+$r-&gt;guardar(new Producto(1, 'Pan', 1.2));
+var_dump($r-&gt;buscarPorId(1));</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Referencias -->
+    <section id="referencias" class="section">
+      <h2>📚 Referencias oficiales</h2>
+      <ul>
+        <li><a href="https://www.php.net/manual/es/language.oop5.php" target="_blank" rel="noopener">Clases y Objetos en PHP</a></li>
+        <li><a href="https://www.php.net/manual/es/language.oop5.basic.php" target="_blank" rel="noopener">Definición de clases</a></li>
+        <li><a href="https://www.php.net/manual/es/language.oop5.properties.php" target="_blank" rel="noopener">Propiedades</a></li>
+        <li><a href="https://www.php.net/manual/es/language.oop5.methods.php" target="_blank" rel="noopener">Métodos</a></li>
+        <li><a href="https://www.php.net/manual/es/language.oop5.inheritance.php" target="_blank" rel="noopener">Herencia</a></li>
+        <li><a href="https://www.php.net/manual/es/language.oop5.visibility.php" target="_blank" rel="noopener">Visibilidad</a></li>
+        <li><a href="https://www.php.net/manual/es/language.oop5.interfaces.php" target="_blank" rel="noopener">Interfaces</a></li>
+        <li><a href="https://www.php.net/manual/es/language.oop5.abstract.php" target="_blank" rel="noopener">Clases abstractas</a></li>
+        <li><a href="https://www.php.net/manual/es/language.oop5.traits.php" target="_blank" rel="noopener">Traits</a></li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer class="bg-primary text-light py-3 text-center">
+    <div class="container">
+      <small>Recurso educativo · © 2025 · PHP OOP</small>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Scroll suave
+    document.querySelectorAll('a.nav-link').forEach(link => {
+      link.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          e.preventDefault();
+          const target = document.querySelector(href);
+          if (target) target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
