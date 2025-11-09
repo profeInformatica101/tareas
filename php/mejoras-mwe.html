@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tareas · Producto (Stock/Descripción) + Detalle + Selección de compra</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+      body { background: #f8f9fa; }
+      .icon-wrap {
+        width: 2.25rem; height: 2.25rem;
+        display: inline-flex; align-items: center; justify-content: center;
+        border-radius: .75rem; background: #e9ecef; margin-right: .5rem;
+      }
+      .exercise-card { border: none; }
+      .accordion-button .subtitle { font-weight: 400; color: #6c757d; font-size: .95rem; }
+      footer { color:#6c757d; }
+      .inner-acc .accordion-button { font-size: .95rem; }
+      .inner-acc .accordion-item { border-left: .25rem solid #0d6efd; }
+      .inner-acc .accordion-body { background: #f8f9fa; }
+      .badge-soft { background: #eef2ff; color:#3b5bdb; }
+    </style>
+  </head>
+  <body>
+    <div class="container py-4">
+
+      <header class="mb-4">
+        <h1 class="h3 mb-1">Tareas · Gestión de Productos (PHP + Bootstrap)</h1>
+        <p class="text-muted mb-0">
+          Repositorio base: <span class="badge rounded-pill text-bg-light">profeInformatica101/mi_sitio_dinamico</span>
+          · Rama docente: <span class="badge rounded-pill text-bg-light">ProductoDAO_Manager</span>
+        </p>
+      </header>
+
+      <!-- PREVIO -->
+      <section class="my-4" id="previo">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-start justify-content-between flex-wrap gap-3">
+              <div>
+                <h2 class="h5 mb-1">
+                  <i class="bi bi-rocket-takeoff me-2"></i>Previo · Preparación del entorno
+                </h2>
+                <p class="text-secondary mb-3">
+                  Antes de comenzar, asegúrate de tener el remoto del profesor configurado y de estar trabajando sobre la rama <strong>ProductoDAO_Manager</strong>.
+                </p>
+                <ul class="mb-0">
+                  <li>Comprueba que tu fork está actualizado con la rama del profesor.</li>
+                  <li>Trabaja siempre en ramas nuevas creadas desde <em>ProductoDAO_Manager</em>.</li>
+                  <li>No es necesario abrir Pull Request para estas tareas.</li>
+                </ul>
+              </div>
+              <div class="text-end">
+                <span class="badge rounded-pill text-bg-light"><i class="bi bi-git me-1"></i> Git</span>
+                <span class="badge rounded-pill text-bg-light"><i class="bi bi-shield-lock me-1"></i> Buenas prácticas</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+<!-- =======================
+     PREVIO · Traer rama docente
+======================== -->
+<section class="my-4" id="previo">
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+      <div class="d-flex align-items-start justify-content-between flex-wrap gap-3">
+        <div>
+          <h2 class="h5 mb-1">
+            <i class="bi bi-git me-2"></i>Traer la rama <code>ProductoDAO_Manager</code> desde el repositorio del profesor
+          </h2>
+          <p class="text-secondary mb-3">
+            Si ya hiciste <strong>fork</strong> de <code>profeInformatica101/mi_sitio_dinamico</code>, sigue estos pasos para preparar tu entorno.
+          </p>
+        </div>
+        <div class="text-end">
+          <span class="badge rounded-pill text-bg-light"><i class="bi bi-diagram-3 me-1"></i> Git</span>
+          <span class="badge rounded-pill text-bg-light"><i class="bi bi-rocket-takeoff me-1"></i> Setup</span>
+        </div>
+      </div>
+
+      <hr class="my-3">
+
+      <ol class="steps mb-0">
+        <li class="mb-3"><strong>Comprobar remotos</strong>
+          <div class="codebox mt-2">
+            <button class="copy-btn" data-copy="git remote -v">Copiar</button>
+            <pre><code>git remote -v</code></pre>
+          </div>
+        </li>
+        <li class="mb-3"><strong>Añadir el remoto <em>upstream</em> (solo la primera vez)</strong>
+          <div class="codebox mt-2">
+            <button class="copy-btn" data-copy="git remote add upstream https://github.com/profeInformatica101/mi_sitio_dinamico.git">Copiar</button>
+            <pre><code>git remote add upstream https://github.com/profeInformatica101/mi_sitio_dinamico.git</code></pre>
+          </div>
+          <div class="codebox mt-2">
+            <button class="copy-btn" data-copy="git remote -v">Copiar</button>
+            <pre><code>git remote -v</code></pre>
+          </div>
+        </li>
+        <li class="mb-3"><strong>Descargar ramas nuevas del profesor</strong>
+          <div class="codebox mt-2">
+            <button class="copy-btn" data-copy="git fetch upstream">Copiar</button>
+            <pre><code>git fetch upstream</code></pre>
+          </div>
+        </li>
+        <li class="mb-3"><strong>Crear tu rama local basada en <code>upstream/ProductoDAO_Manager</code></strong>
+          <div class="codebox mt-2">
+            <button class="copy-btn" data-copy="git checkout -b ProductoDAO_Manager upstream/ProductoDAO_Manager">Copiar</button>
+            <pre><code>git checkout -b ProductoDAO_Manager upstream/ProductoDAO_Manager</code></pre>
+          </div>
+        </li>
+        <li class="mb-3"><strong>(Opcional) Subir tu rama a tu fork</strong>
+          <div class="codebox mt-2">
+            <button class="copy-btn" data-copy="git push origin ProductoDAO_Manager">Copiar</button>
+            <pre><code>git push origin ProductoDAO_Manager</code></pre>
+          </div>
+        </li>
+      </ol>
+
+      <details class="mt-3">
+        <summary>Resumen rápido</summary>
+        <div class="codebox mt-2">
+          <button class="copy-btn" data-copy="git remote add upstream https://github.com/profeInformatica101/mi_sitio_dinamico.git
+git fetch upstream
+git checkout -b ProductoDAO_Manager upstream/ProductoDAO_Manager
+git push origin ProductoDAO_Manager">Copiar</button>
+          <pre><code>git remote add upstream https://github.com/profeInformatica101/mi_sitio_dinamico.git
+git fetch upstream
+git checkout -b ProductoDAO_Manager upstream/ProductoDAO_Manager
+git push origin ProductoDAO_Manager</code></pre>
+        </div>
+      </details>
+
+      <div class="alert alert-light border mt-3 mb-0" role="alert">
+        <strong>Nota:</strong> si ya tenías el remoto <code>upstream</code> configurado, puedes saltarte el paso de <em>add upstream</em>. Ejecuta los comandos dentro de la carpeta del proyecto.
+      </div>
+    </div>
+  </div>
+</section>
+
+      <!-- TAREAS -->
+      <div class="accordion accordion-flush" id="accordionTareas">
+
+        <!-- TAREA 1 -->
+        <div class="accordion-item exercise-card">
+          <h2 class="accordion-header" id="headingT1">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseT1" aria-expanded="false" aria-controls="collapseT1">
+              <span class="icon-wrap me-2"><i class="bi bi-plus-square-dotted"></i></span>
+              <span><strong>Tarea 1:</strong> <span class="subtitle">Añadir campos de producto <em>stock</em> y <em>descripción</em></span></span>
+            </button>
+          </h2>
+          <div id="collapseT1" class="accordion-collapse collapse" aria-labelledby="headingT1" data-bs-parent="#accordionTareas">
+            <div class="accordion-body">
+              <div class="row g-4">
+                <div class="col-lg-7">
+                  <div class="card shadow-sm">
+                    <div class="card-body">
+                      <h3 class="h6 text-uppercase text-secondary mb-3">Objetivo</h3>
+                      <p class="mb-3">Incorporar a la entidad Producto los campos <strong>stock</strong> (entero ≥ 0, por defecto 0) y <strong>descripcion</strong> (texto), reflejándolos en todas las capas de la aplicación y maquetando los formularios con Bootstrap.</p>
+
+                      <h3 class="h6 text-uppercase text-secondary mt-4 mb-2">Rama de trabajo</h3>
+                      <span class="badge badge-soft rounded-pill">feature/producto-stock-descripcion</span>
+
+                      <h3 class="h6 text-uppercase text-secondary mt-4 mb-2">Qué hacer</h3>
+                      <ul class="mb-0">
+                        <li>Actualizar la base de datos para añadir ambos campos a la tabla de productos.</li>
+                        <li>Extender el modelo con las nuevas propiedades y sus métodos de acceso.</li>
+                        <li>Incluir los campos en el DAO para altas, modificaciones y lecturas.</li>
+                        <li>Validar en el controlador:
+                          <ul>
+                            <li><strong>stock</strong>: entero y ≥ 0.</li>
+                            <li><strong>descripcion</strong>: longitud razonable (define un máximo).</li>
+                          </ul>
+                        </li>
+                        <li>Formularios (Bootstrap):
+                          <ul>
+                            <li>Campo numérico para <em>stock</em> con validación visual.</li>
+                            <li><em>Textarea</em> para <em>descripcion</em> con mensajes de error.</li>
+                          </ul>
+                        </li>
+                        <li>Listado:
+                          <ul>
+                            <li>Mostrar columna <strong>Stock</strong> (destacar bajo stock con una <em>badge</em>).</li>
+                            <li>Mostrar <strong>Descripción</strong> truncada.</li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-5">
+                  <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                      <h3 class="h6 text-uppercase text-secondary mb-3">Criterios de aceptación</h3>
+                      <ul class="mb-3">
+                        <li>Se crean/actualizan productos con <em>stock</em> y <em>descripcion</em>.</li>
+                        <li>Validaciones activas y mensajes visibles.</li>
+                        <li>Listado y formulario con maquetación Bootstrap correcta.</li>
+                      </ul>
+                      <h3 class="h6 text-uppercase text-secondary mb-2">Checklist de seguridad</h3>
+                      <ul class="small mb-0">
+                        <li>Validación en servidor de todos los campos.</li>
+                        <li>Consultas preparadas en el DAO.</li>
+                        <li>Escape al renderizar (XSS).</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- /row -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAREA 2 -->
+        <div class="accordion-item exercise-card">
+          <h2 class="accordion-header" id="headingT2">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseT2" aria-expanded="false" aria-controls="collapseT2">
+              <span class="icon-wrap me-2"><i class="bi bi-eye"></i></span>
+              <span><strong>Tarea 2:</strong> <span class="subtitle">Botón “Detalle” y vista de detalle del producto</span></span>
+            </button>
+          </h2>
+          <div id="collapseT2" class="accordion-collapse collapse" aria-labelledby="headingT2" data-bs-parent="#accordionTareas">
+            <div class="accordion-body">
+              <div class="row g-4">
+                <div class="col-lg-7">
+                  <div class="card shadow-sm">
+                    <div class="card-body">
+                      <h3 class="h6 text-uppercase text-secondary mb-3">Objetivo</h3>
+                      <p class="mb-3">Añadir un botón <strong>Detalle</strong> en el listado que permita abrir una vista con toda la información del producto, incluyendo <em>stock</em> y <em>descripcion</em>, maquetada con Bootstrap.</p>
+
+                      <h3 class="h6 text-uppercase text-secondary mt-4 mb-2">Rama de trabajo</h3>
+                      <span class="badge badge-soft rounded-pill">feature/producto-detalle-boton</span>
+
+                      <h3 class="h6 text-uppercase text-secondary mt-4 mb-2">Qué hacer</h3>
+                      <ul class="mb-3">
+                        <li>Agregar en el listado un botón <strong>Detalle</strong> por cada producto.</li>
+                        <li>Implementar una acción de controlador para mostrar el detalle:
+                          <ul>
+                            <li>Validar parámetro <em>id</em> (entero válido).</li>
+                            <li>Manejar errores: 400 (parámetro inválido) y 404 (no encontrado).</li>
+                          </ul>
+                        </li>
+                        <li>Crear una vista de detalle (Bootstrap) que muestre:
+                          <ul>
+                            <li>Nombre, precio, categoría.</li>
+                            <li><strong>Stock</strong> con badge (destacar valores bajos).</li>
+                            <li><strong>Descripción</strong> con saltos de línea.</li>
+                          </ul>
+                        </li>
+                        <li>Incluir acciones: <em>Editar</em> y <em>Volver</em>.</li>
+                      </ul>
+
+                      <!-- SUBACORDEÓN: Idea de implementación 404 -->
+                      <div class="accordion accordion-flush inner-acc mt-3 bg-light rounded" id="innerAcc404">
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="innerHeading404">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#innerCollapse404" aria-expanded="false" aria-controls="innerCollapse404">
+                              <i class="bi bi-exclamation-triangle me-2"></i> Idea de implementación: 404 (Not Found)
+                            </button>
+                          </h2>
+                          <div id="innerCollapse404" class="accordion-collapse collapse" aria-labelledby="innerHeading404" data-bs-parent="#innerAcc404">
+                            <div class="accordion-body small">
+                              <ol class="mb-3 ps-3">
+                                <li><strong>Flujo en el controlador (detalle):</strong> tras validar el <em>id</em> y consultar BD, si el producto no existe, establecer el código HTTP 404, cargar una vista de error y <em>no</em> continuar con la vista normal.</li>
+                                <li><strong>Vista 404 reutilizable:</strong> crear una plantilla sencilla con Bootstrap que muestre un título (“Producto no encontrado”), un texto breve, y botones para “Volver al listado” y “Ir al inicio”. Reutilízala para otros 404 de la app.</li>
+                                <li><strong>Mensajería consistente:</strong> evita mensajes técnicos; usa textos claros y educados para el usuario. Mantén el mismo layout (cabecera/menú) que el resto del sitio.</li>
+                                <li><strong>Registro opcional:</strong> anota el intento (id solicitado y timestamp) en el log de la aplicación para diagnóstico (sin datos personales).</li>
+                                <li><strong>Pruebas rápidas:</strong> comprueba:
+                                  <ul>
+                                    <li>Acceso con <code>id</code> inexistente devuelve 404 y muestra la vista de error.</li>
+                                    <li>El encabezado HTTP es 404 (verificable con herramientas del navegador).</li>
+                                    <li>Los enlaces de la página de error funcionan (“Volver” y “Inicio”).</li>
+                                  </ul>
+                                </li>
+                                <li><strong>Buenas prácticas:</strong> no redirijas silenciosamente al listado sin informar; si decides redirigir, muestra un aviso (“El producto no existe”). Mantén la accesibilidad (roles/aria) en la vista 404.</li>
+                              </ol>
+                              <div class="alert alert-info mb-0" role="alert">
+                                Consejo: centraliza la vista 404 en una ruta común (p. ej., <em>vistas/error/404.php</em>) y reutilízala en todo el enrutado para recursos que falten.
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- /SUBACORDEÓN 404 -->
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-5">
+                  <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                      <h3 class="h6 text-uppercase text-secondary mb-3">Criterios de aceptación</h3>
+                      <ul class="mb-3">
+                        <li>El botón <em>Detalle</em> funciona desde el listado.</li>
+                        <li>La vista muestra todos los campos de producto.</li>
+                        <li>Errores 400/404 correctamente gestionados.</li>
+                      </ul>
+                      <h3 class="h6 text-uppercase text-secondary mb-2">Checklist de seguridad</h3>
+                      <ul class="small mb-0">
+                        <li>Validación de <em>id</em> con control de errores.</li>
+                        <li>Escape al renderizar el detalle.</li>
+                        <li>Sin datos sensibles en la URL más allá del <em>id</em>.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- /row -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAREA 3 -->
+        <div class="accordion-item exercise-card">
+          <h2 class="accordion-header" id="headingT3">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseT3" aria-expanded="false" aria-controls="collapseT3">
+              <span class="icon-wrap me-2"><i class="bi bi-cart-check"></i></span>
+              <span><strong>Tarea 3:</strong> <span class="subtitle">Selección de productos para comprar (carrito en sesión)</span></span>
+            </button>
+          </h2>
+          <div id="collapseT3" class="accordion-collapse collapse" aria-labelledby="headingT3" data-bs-parent="#accordionTareas">
+            <div class="accordion-body">
+              <div class="row g-4">
+                <div class="col-lg-7">
+                  <div class="card shadow-sm">
+                    <div class="card-body">
+                      <h3 class="h6 text-uppercase text-secondary mb-3">Objetivo</h3>
+                      <p class="mb-3">Permitir seleccionar varios productos desde el listado, indicar cantidades y visualizar un resumen de carrito almacenado en sesión con subtotales y total.</p>
+
+                      <h3 class="h6 text-uppercase text-secondary mt-4 mb-2">Rama de trabajo</h3>
+                      <span class="badge badge-soft rounded-pill">feature/seleccion-compra</span>
+
+                      <h3 class="h6 text-uppercase text-secondary mt-4 mb-2">Qué hacer</h3>
+                      <ul class="mb-0">
+                        <li><strong>Listado:</strong> habilitar selección de productos (marcar elementos) y campo de cantidad por fila; incluir un botón “Añadir al carrito”.</li>
+                        <li><strong>Controlador (sesión):</strong>
+                          <ul>
+                            <li>Acción para agregar al carrito: validar ids y cantidades; recuperar precio/stock reales desde BD; sumar cantidades sin superar el stock.</li>
+                            <li>Acciones para ver el carrito y vaciarlo.</li>
+                          </ul>
+                        </li>
+                        <li><strong>Vista de carrito (Bootstrap):</strong> tabla con producto, precio, cantidad, subtotal y total; acciones “Seguir comprando” y “Vaciar”.</li>
+                        <li><strong>Mensajería:</strong> avisos claros si no hay stock suficiente o si no se seleccionó nada.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-5">
+                  <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                      <h3 class="h6 text-uppercase text-secondary mb-3">Criterios de aceptación</h3>
+                      <ul class="mb-3">
+                        <li>Se pueden seleccionar varios productos con cantidades válidas.</li>
+                        <li>El carrito muestra ítems, subtotales y total.</li>
+                        <li>No permite exceder el stock disponible.</li>
+                        <li>Flujo básico completo: listar → seleccionar → carrito → vaciar.</li>
+                      </ul>
+                      <h3 class="h6 text-uppercase text-secondary mb-2">Checklist de seguridad</h3>
+                      <ul class="small mb-0">
+                        <li>Validar en servidor ids y cantidades.</li>
+                        <li>Obtener precio/stock desde BD (no desde el cliente).</li>
+                        <li>Escapar al renderizar nombres y mensajes.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- /row -->
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /accordion -->
+
+      <footer class="mt-5 small">
+        <hr>
+        <p class="mb-1">Plantilla con Bootstrap 5 e iconos de Bootstrap Icons.</p>
+        <p class="mb-0">Entrega: indicar rama utilizada, archivos modificados, pasos para probar y capturas (formulario, detalle, carrito).</p>
+      </footer>
+
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
