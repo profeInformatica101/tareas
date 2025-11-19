@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tareas: Debugger en Java (Ejemplo 4 Avanzado)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            background-color: #6f42c1; /* Color distinto para el ejemplo 4 */
+            color: white;
+            font-weight: bold;
+        }
+
+        .card-header i {
+            margin-right: 10px;
+        }
+
+        .list-group-item i {
+            margin-right: 10px;
+        }
+
+        .objective {
+            background-color: #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        pre {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">
+        Tareas para Probar el Debugger (Ejemplo 4 Avanzado)
+        <i class="bi bi-bug-fill"></i>
+    </h1>
+
+    <!-- CÓDIGO JAVA DEL EJEMPLO 4 -->
+    <div class="card shadow-lg">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-code-square"></i> Código Java con varios métodos y errores lógicos</span>
+            <!-- Botón de descarga del .java -->
+            <a href="src/Ejemplo4.java" download="Ejemplo4.java" class="btn btn-sm btn-light">
+                <i class="bi bi-download"></i> Descargar Ejemplo4.java
+            </a>
+        </div>
+        <div class="card-body">
+<pre>
+package com.ejemplos.debugger;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Ejemplo4 {
+    public static void main(String[] args) {
+        List&lt;Integer&gt; numeros = new ArrayList&lt;&gt;();
+        for (int i = 1; i &lt;= 10; i++) {
+            numeros.add(i);
+        }
+
+        Ejemplo4 ejemplo = new Ejemplo4();
+        ejemplo.procesarNumeros(numeros);
+    }
+
+    public void procesarNumeros(List&lt;Integer&gt; numeros) {
+        int sumaPares = 0;
+        int sumaImpares = 0;
+
+        // BUG 1: límite incorrecto (<= provoca índice fuera de rango)
+        for (int i = 0; i &lt;= numeros.size(); i++) {
+            int n = numeros.get(i);
+
+            if (esPar(n)) {
+                sumaPares += n;
+            } else {
+                sumaImpares += n;
+            }
+        }
+
+        int cantidadPares = contarPares(numeros);
+        int cantidadImpares = contarImpares(numeros);
+
+        double mediaPares = calcularMedia(sumaPares, cantidadPares);
+        double mediaImpares = calcularMedia(sumaImpares, cantidadImpares);
+
+        System.out.println("Suma pares = " + sumaPares);
+        System.out.println("Suma impares = " + sumaImpares);
+        System.out.println("Media pares = " + mediaPares);
+        System.out.println("Media impares = " + mediaImpares);
+    }
+
+    private boolean esPar(int n) {
+        return n % 2 == 0;
+    }
+
+    private int contarPares(List&lt;Integer&gt; numeros) {
+        int contador = 0;
+        // BUG 2: se ignora el último elemento (&lt; numeros.size() - 1)
+        for (int i = 0; i &lt; numeros.size() - 1; i++) {
+            if (esPar(numeros.get(i))) {
+                contador++;
+            }
+        }
+        return contador;
+    }
+
+    private int contarImpares(List&lt;Integer&gt; numeros) {
+        int contador = 0;
+        for (int i = 0; i &lt; numeros.size(); i++) {
+            if (!esPar(numeros.get(i))) {
+                contador++;
+            }
+        }
+        return contador;
+    }
+
+    private double calcularMedia(int suma, int cantidad) {
+        // BUG 3: posible división entera + no se controla cantidad = 0
+        return suma / cantidad;
+    }
+}
+</pre>
+        </div>
+    </div>
+
+    <!-- BLOQUE 1: PUNTO DE ENTRADA Y PILA DE LLAMADAS -->
+    <div class="card shadow-lg">
+        <div class="card-header">
+            <i class="bi bi-play-circle-fill"></i> 1. Analizar el flujo general y la pila de llamadas
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <i class="bi bi-arrow-right"></i>
+                    Establece un breakpoint en la línea donde se llama a
+                    <code>ejemplo.procesarNumeros(numeros);</code> en <code>main</code>.
+                </li>
+                <li class="list-group-item">
+                    <i class="bi bi-arrow-right"></i>
+                    Ejecuta el programa en modo depuración y usa
+                    <strong>Step Into</strong> para entrar en el método <code>procesarNumeros</code>.
+                </li>
+                <li class="list-group-item">
+                    <i class="bi bi-arrow-right"></i>
+                    Observa la <strong>pila de llamadas</strong> (Call Stack) y comprueba que ahora estás
+                    dentro de <code>procesarNumeros</code> pero sigues teniendo a <code>main</code> debajo.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- BLOQUE 2, 3, 4, 5 y Objetivo General se mantienen igual que te pasé,
+         simplemente los pegas aquí debajo tal cual si quieres toda la ficha completa -->
+
+</div>
+</body>
+</html>
