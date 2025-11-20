@@ -1,0 +1,1628 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Ejercicios Thymeleaf con Spring Boot</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons (para iconos) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f5f7fb;
+    }
+    .badge-tag {
+      font-size: 0.8rem;
+      margin-right: 0.25rem;
+    }
+    .ej-card {
+      border-radius: 1rem;
+      border: none;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+    .ej-header {
+      border-radius: 1rem 1rem 0 0 !important;
+    }
+    code{
+        color:purple;
+    }
+    .text-muted{color:black;}
+  </style>
+</head>
+<body>
+<div class="container my-5">
+  <div class="text-center mb-4">
+    <h1 class="fw-bold">
+      <i class="bi bi-code-slash text-primary"></i>
+      Ejercicios Thymeleaf con Spring Boot
+    </h1>
+    <p class="text-muted">
+      De <span class="text-success fw-semibold">básico</span> a 
+      <span class="text-danger fw-semibold">avanzado</span>, usando 
+      <span class="badge bg-primary-subtle text-primary border border-primary">Thymeleaf</span>
+      y <span class="badge bg-success-subtle text-success border border-success">Spring Boot</span>.
+    </p>
+  </div>
+
+  <!-- SECCIÓN REPOSITORIO GITHUB -->
+  <div class="card mb-4 border-0 shadow-sm">
+    <div class="card-body d-flex flex-column flex-md-row align-items-md-center">
+      <div class="me-md-4 mb-3 mb-md-0">
+        <h2 class="h5 fw-bold mb-1">
+          <i class="bi bi-github me-2"></i>
+          Repositorio para hacer <span class="text-primary">fork</span>
+        </h2>
+        <p class="mb-1">
+          El punto de partida de todos los ejercicios es el repositorio base:
+        </p>
+        <p class="mb-1">
+          <!-- Repositorio original del profesor -->
+          <a href="https://github.com/profeInformatica101/SpringBootApp" target="_blank" class="link-dark">
+            <i class="bi bi-box-arrow-up-right me-1"></i>
+            <code>https://github.com/profeInformatica101/SpringBootApp</code>
+          </a>
+        </p>
+        <p class="mb-2 small text-muted">
+          Tras hacer <strong>fork</strong>, tu repositorio quedará como:
+          <code>https://github.com/&lt;tu_usuario&gt;/SpringBootApp</code>
+        </p>
+        <p class="mb-0 small">
+          <i class="bi bi-node-plus me-1 text-success"></i>
+          A partir de <code>main</code> crearás <strong>ramas por ejercicio</strong> y, cuando estén terminadas,
+          se irán <span class="fw-semibold">fusionando en una rama final de integración</span>.
+        </p>
+      </div>
+      <div class="ms-md-auto">
+        <p class="mb-1 fw-semibold">
+          <i class="bi bi-diagram-3 me-1 text-success"></i>
+          Ramas de trabajo
+        </p>
+        <ul class="list-unstyled mb-0 small">
+          <li class="mb-1">
+            <span class="badge bg-dark me-1">main</span>
+            <span class="text-muted">– Código base del proyecto (no tocar).</span>
+          </li>
+          <li class="mb-1">
+            <span class="badge bg-success me-1">final-thymeleaf</span>
+            <span class="text-muted">– Rama <strong>final</strong> donde se van mergeando todos los ejercicios.</span>
+          </li>
+          <li class="mb-1">
+            <span class="badge bg-primary me-1">ejercicios-thymeleaf</span>
+            <span class="text-muted">– (Opcional) Rama de apoyo para ir probando en clase.</span>
+          </li>
+          <li class="mb-1">
+            <span class="badge bg-success me-1">soluciones-thymeleaf</span>
+            <span class="text-muted">– Posibles soluciones de referencia (del profesor).</span>
+          </li>
+          <li class="mb-1">
+            <span class="badge bg-info text-dark me-1">formularios-thymeleaf</span>
+            <span class="text-muted">– Ejemplos de formularios con envío y procesado.</span>
+          </li>
+          <li class="mt-2">
+            <i class="bi bi-git-branch me-1"></i>
+            Cada ejercicio se hace en su propia rama (por ejemplo:
+            <code>ej01-hola-thymeleaf</code>, <code>ej02-tabla-productos</code>, ..., 
+            <code>ej16-select-etiquetas</code>) y luego se fusiona a
+            <span class="badge bg-success">final-thymeleaf</span> mediante <strong>merge</strong> o Pull Request.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- FIN SECCIÓN REPOSITORIO GITHUB -->
+
+  <!-- Acordeón principal de ejercicios -->
+  <div class="accordion" id="accordionEjercicios">
+
+    <!-- EJERCICIO 1 -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="heading1">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+          <span class="me-2 badge bg-success"><i class="bi bi-1-circle"></i></span>
+          <span class="fw-semibold">Hola Thymeleaf: mostrar datos del modelo</span>
+          <span class="ms-auto">
+            <span class="badge bg-primary badge-tag">th:text</span>
+            <span class="badge bg-info text-dark badge-tag">${}</span>
+          </span>
+        </button>
+      </h2>
+      <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="heading1" data-bs-parent="#accordionEjercicios">
+        <div class="accordion-body">
+          <p>
+            Crea una vista Thymeleaf que muestre un mensaje de bienvenida y el nombre de un usuario
+            enviado desde el controlador. El mensaje debe aparecer dentro de un 
+            <code>&lt;h1&gt;</code> y el nombre del usuario dentro de un <code>&lt;span&gt;</code>.
+          </p>
+
+          <!-- Acordeón interno de pistas -->
+          <div class="accordion accordion-flush mt-3" id="pistas1">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas1-header1">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#pistas1-col1" aria-expanded="false" aria-controls="pistas1-col1">
+                  <i class="bi bi-lightbulb me-2 text-warning"></i> Pistas sobre etiquetas
+                </button>
+              </h2>
+              <div id="pistas1-col1" class="accordion-collapse collapse" aria-labelledby="pistas1-header1" data-bs-parent="#pistas1">
+                <div class="accordion-body">
+                  <ul>
+                    <li>
+                      Usa <span class="badge bg-primary badge-tag">th:text</span> para reemplazar el contenido de una etiqueta HTML:
+                      <code>th:text="${mensaje}"</code>.
+                    </li>
+                    <li>
+                      En el controlador, añade atributos al modelo con 
+                      <span class="badge bg-success-subtle text-success border badge-tag">model.addAttribute("nombre", "Ana")</span>.
+                    </li>
+                    <li>
+                      En la plantilla, recupera el atributo con 
+                      <code>${nombre}</code> dentro de <span class="badge bg-info text-dark badge-tag">th:text</span>.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas1-header2">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#pistas1-col2" aria-expanded="false" aria-controls="pistas1-col2">
+                  <i class="bi bi-gear me-2 text-primary"></i> Orientaciones para resolver
+                </button>
+              </h2>
+              <div id="pistas1-col2" class="accordion-collapse collapse" aria-labelledby="pistas1-header2" data-bs-parent="#pistas1">
+                <div class="accordion-body">
+                  <ol>
+                    <li>Crea un método en tu controlador que devuelva un <code>String</code> con el nombre de la vista.</li>
+                    <li>En ese método, añade <code>mensaje</code> y <code>nombre</code> al <code>Model</code>.</li>
+                    <li>En la vista, usa <code>&lt;h1 th:text="${mensaje}"&gt;...&lt;/h1&gt;</code> y <code>&lt;span th:text="${nombre}"&gt;...&lt;/span&gt;</code>.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin pistas1 -->
+
+          <!-- RAMA GIT EJERCICIO 1 -->
+          <div class="accordion accordion-flush mt-3" id="rama1">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="rama1-header">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#rama1-col1" aria-expanded="false" aria-controls="rama1-col1">
+                  <i class="bi bi-git me-2 text-danger"></i> Rama Git para este ejercicio
+                </button>
+              </h2>
+              <div id="rama1-col1" class="accordion-collapse collapse" aria-labelledby="rama1-header" data-bs-parent="#rama1">
+                <div class="accordion-body small">
+                  <ul>
+                    <li>Rama de trabajo: <code>ej01-hola-thymeleaf</code></li>
+                    <li>Crear a partir de <code>main</code>:
+                      <br><code>git checkout main</code>
+                      <br><code>git checkout -b ej01-hola-thymeleaf</code>
+                    </li>
+                    <li>Tras terminar, subir la rama:
+                      <br><code>git push origin ej01-hola-thymeleaf</code>
+                    </li>
+                    <li>Fusionar en <code>final-thymeleaf</code> mediante <code>merge</code> o Pull Request.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin rama1 -->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- EJERCICIO 2 -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="heading2">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+          <span class="me-2 badge bg-success"><i class="bi bi-2-circle"></i></span>
+          <span class="fw-semibold">Listado de productos con tabla</span>
+          <span class="ms-auto">
+            <span class="badge bg-primary badge-tag">th:each</span>
+            <span class="badge bg-secondary badge-tag">th:text</span>
+          </span>
+        </button>
+      </h2>
+      <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="heading2" data-bs-parent="#accordionEjercicios">
+        <div class="accordion-body">
+          <p>
+            Crea una tabla que muestre una lista de productos (nombre, precio, categoría) que recibes desde el controlador
+            como una lista de objetos. Cada fila debe representar un producto.
+          </p>
+
+          <!-- Pistas ejercicio 2 -->
+          <div class="accordion accordion-flush mt-3" id="pistas2">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas2-header1">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#pistas2-col1" aria-expanded="false" aria-controls="pistas2-col1">
+                  <i class="bi bi-lightbulb me-2 text-warning"></i> Pistas sobre etiquetas
+                </button>
+              </h2>
+              <div id="pistas2-col1" class="accordion-collapse collapse" aria-labelledby="pistas2-header1" data-bs-parent="#pistas2">
+                <div class="accordion-body">
+                  <ul>
+                    <li>
+                      Utiliza <span class="badge bg-primary badge-tag">th:each</span> para iterar:
+                      <code>&lt;tr th:each="producto : ${listaProductos}"&gt;</code>.
+                    </li>
+                    <li>
+                      Dentro de la fila, usa <span class="badge bg-secondary badge-tag">th:text</span> para mostrar atributos:
+                      <code>th:text="${producto.nombre}"</code>, <code>th:text="${producto.precio}"</code>.
+                    </li>
+                    <li>
+                      En el controlador devuelve una <span class="badge bg-info text-dark badge-tag">List&lt;Producto&gt;</span> en el modelo.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas2-header2">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#pistas2-col2" aria-expanded="false" aria-controls="pistas2-col2">
+                  <i class="bi bi-gear me-2 text-primary"></i> Orientaciones para resolver
+                </button>
+              </h2>
+              <div id="pistas2-col2" class="accordion-collapse collapse" aria-labelledby="pistas2-header2" data-bs-parent="#pistas2">
+                <div class="accordion-body">
+                  <ol>
+                    <li>Crea la clase <code>Producto</code> con <code>nombre</code>, <code>precio</code>, <code>categoria</code>.</li>
+                    <li>En el controlador, crea una lista de objetos y pásala al <code>Model</code> como <code>listaProductos</code>.</li>
+                    <li>En la vista, crea la tabla con encabezados y usa <code>th:each</code> en el <code>&lt;tr&gt;</code> para generar las filas.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin pistas2 -->
+
+          <!-- RAMA GIT EJERCICIO 2 -->
+          <div class="accordion accordion-flush mt-3" id="rama2">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="rama2-header">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#rama2-col1" aria-expanded="false" aria-controls="rama2-col1">
+                  <i class="bi bi-git me-2 text-danger"></i> Rama Git para este ejercicio
+                </button>
+              </h2>
+              <div id="rama2-col1" class="accordion-collapse collapse" aria-labelledby="rama2-header" data-bs-parent="#rama2">
+                <div class="accordion-body small">
+                  <ul>
+                    <li>Rama de trabajo: <code>ej02-tabla-productos</code></li>
+                    <li><code>git checkout main</code><br><code>git checkout -b ej02-tabla-productos</code></li>
+                    <li><code>git push origin ej02-tabla-productos</code></li>
+                    <li>Merge a <code>final-thymeleaf</code> al terminar.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin rama2 -->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- EJERCICIO 3 -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="heading3">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+          <span class="me-2 badge bg-warning text-dark"><i class="bi bi-3-circle"></i></span>
+          <span class="fw-semibold">Mostrar mensajes condicionales</span>
+          <span class="ms-auto">
+            <span class="badge bg-danger badge-tag">th:if</span>
+            <span class="badge bg-dark badge-tag">th:unless</span>
+          </span>
+        </button>
+      </h2>
+      <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3" data-bs-parent="#accordionEjercicios">
+        <div class="accordion-body">
+          <p>
+            Diseña una vista que muestre un mensaje de alerta si la lista de productos está vacía
+            y, en caso contrario, muestre la tabla de productos.
+          </p>
+
+          <!-- Pistas ejercicio 3 -->
+          <div class="accordion accordion-flush mt-3" id="pistas3">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas3-header1">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#pistas3-col1" aria-expanded="false" aria-controls="pistas3-col1">
+                  <i class="bi bi-lightbulb me-2 text-warning"></i> Pistas sobre etiquetas
+                </button>
+              </h2>
+              <div id="pistas3-col1" class="accordion-collapse collapse" aria-labelledby="pistas3-header1" data-bs-parent="#pistas3">
+                <div class="accordion-body">
+                  <ul>
+                    <li>
+                      Usa <span class="badge bg-danger badge-tag">th:if</span> para mostrar contenido solo cuando se cumpla una condición:
+                      <code>th:if="${listaProductos.size() == 0}"</code>.
+                    </li>
+                    <li>
+                      Usa <span class="badge bg-dark badge-tag">th:unless</span> para la condición contraria:
+                      <code>th:unless="${listaProductos.isEmpty()}"</code>.
+                    </li>
+                    <li>
+                      Combina <span class="badge bg-danger badge-tag">th:if</span> con componentes de Bootstrap como
+                      <code>.alert</code> para mostrar mensajes visuales.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas3-header2">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#pistas3-col2" aria-expanded="false" aria-controls="pistas3-col2">
+                  <i class="bi bi-gear me-2 text-primary"></i> Orientaciones para resolver
+                </button>
+              </h2>
+              <div id="pistas3-col2" class="accordion-collapse collapse" aria-labelledby="pistas3-header2" data-bs-parent="#pistas3">
+                <div class="accordion-body">
+                  <ol>
+                    <li>En el controlador, pasa siempre <code>listaProductos</code> (aunque esté vacía).</li>
+                    <li>En la vista, crea un bloque <code>&lt;div class="alert alert-warning"&gt;</code> con <code>th:if</code> si la lista está vacía.</li>
+                    <li>Envuelve la tabla de productos en un <code>div</code> con <code>th:unless</code> para mostrarla solo cuando haya elementos.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin pistas3 -->
+
+          <!-- RAMA GIT EJERCICIO 3 -->
+          <div class="accordion accordion-flush mt-3" id="rama3">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="rama3-header">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#rama3-col1" aria-expanded="false" aria-controls="rama3-col1">
+                  <i class="bi bi-git me-2 text-danger"></i> Rama Git para este ejercicio
+                </button>
+              </h2>
+              <div id="rama3-col1" class="accordion-collapse collapse" aria-labelledby="rama3-header" data-bs-parent="#rama3">
+                <div class="accordion-body small">
+                  <ul>
+                    <li>Rama de trabajo: <code>ej03-condicionales</code></li>
+                    <li><code>git checkout main</code><br><code>git checkout -b ej03-condicionales</code></li>
+                    <li><code>git push origin ej03-condicionales</code></li>
+                    <li>Fusionar después en <code>final-thymeleaf</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin rama3 -->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- EJERCICIO 4 -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="heading4">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+          <span class="me-2 badge bg-warning text-dark"><i class="bi bi-4-circle"></i></span>
+          <span class="fw-semibold">Enlaces y navegación entre vistas</span>
+          <span class="ms-auto">
+            <span class="badge bg-info text-dark badge-tag">th:href</span>
+            <span class="badge bg-primary badge-tag">@{}</span>
+          </span>
+        </button>
+      </h2>
+      <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="heading4" data-bs-parent="#accordionEjercicios">
+        <div class="accordion-body">
+          <p>
+            Añade a cada fila de la tabla de productos un botón "Ver detalle" que lleve a una página
+            de detalle del producto usando su <code>id</code> en la URL.
+          </p>
+
+          <!-- Pistas ejercicio 4 -->
+          <div class="accordion accordion-flush mt-3" id="pistas4">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas4-header1">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#pistas4-col1" aria-expanded="false" aria-controls="pistas4-col1">
+                  <i class="bi bi-lightbulb me-2 text-warning"></i> Pistas sobre etiquetas
+                </button>
+              </h2>
+              <div id="pistas4-col1" class="accordion-collapse collapse" aria-labelledby="pistas4-header1" data-bs-parent="#pistas4">
+                <div class="accordion-body">
+                  <ul>
+                    <li>
+                      Usa <span class="badge bg-info text-dark badge-tag">th:href</span> para generar URLs dinámicas:
+                      <code>th:href="@{/productos/{id}(id=${producto.id})}"</code>.
+                    </li>
+                    <li>
+                      El patrón <span class="badge bg-primary badge-tag">@{}</span> permite construir rutas usando path variables y parámetros.
+                    </li>
+                    <li>
+                      Combina esto con un botón Bootstrap:
+                      <code>&lt;a class="btn btn-sm btn-outline-primary" ...&gt;</code>.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas4-header2">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#pistas4-col2" aria-expanded="false" aria-controls="pistas4-col2">
+                  <i class="bi bi-gear me-2 text-primary"></i> Orientaciones para resolver
+                </button>
+              </h2>
+              <div id="pistas4-col2" class="accordion-collapse collapse" aria-labelledby="pistas4-header2" data-bs-parent="#pistas4">
+                <div class="accordion-body">
+                  <ol>
+                    <li>Define una ruta en el controlador como <code>@GetMapping("/productos/{id}")</code>.</li>
+                    <li>En el método, busca el producto por su <code>id</code> y pásalo al modelo.</li>
+                    <li>En la tabla, añade una última columna con un enlace que use <code>th:href</code> y la expresión <code>@{...}</code> para construir la URL.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin pistas4 -->
+
+          <!-- RAMA GIT EJERCICIO 4 -->
+          <div class="accordion accordion-flush mt-3" id="rama4">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="rama4-header">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#rama4-col1" aria-expanded="false" aria-controls="rama4-col1">
+                  <i class="bi bi-git me-2 text-danger"></i> Rama Git para este ejercicio
+                </button>
+              </h2>
+              <div id="rama4-col1" class="accordion-collapse collapse" aria-labelledby="rama4-header" data-bs-parent="#rama4">
+                <div class="accordion-body small">
+                  <ul>
+                    <li>Rama de trabajo: <code>ej04-enlaces-detalle</code></li>
+                    <li><code>git checkout main</code><br><code>git checkout -b ej04-enlaces-detalle</code></li>
+                    <li><code>git push origin ej04-enlaces-detalle</code></li>
+                    <li>Merge a <code>final-thymeleaf</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin rama4 -->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- EJERCICIO 5 -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="heading5">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+          <span class="me-2 badge bg-danger"><i class="bi bi-5-circle"></i></span>
+          <span class="fw-semibold">Formulario de alta de producto</span>
+          <span class="ms-auto">
+            <span class="badge bg-success badge-tag">th:object</span>
+            <span class="badge bg-warning text-dark badge-tag">th:field</span>
+          </span>
+        </button>
+      </h2>
+      <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="heading5" data-bs-parent="#accordionEjercicios">
+        <div class="accordion-body">
+          <p>
+            Crea un formulario para dar de alta un producto con campos: nombre, precio y categoría.
+            El formulario debe estar vinculado a un objeto del modelo y debe enviarse a un endpoint <code>POST</code>.
+          </p>
+
+          <!-- Pistas ejercicio 5 -->
+          <div class="accordion accordion-flush mt-3" id="pistas5">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas5-header1">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#pistas5-col1" aria-expanded="false" aria-controls="pistas5-col1">
+                  <i class="bi bi-lightbulb me-2 text-warning"></i> Pistas sobre etiquetas
+                </button>
+              </h2>
+              <div id="pistas5-col1" class="accordion-collapse collapse" aria-labelledby="pistas5-header1" data-bs-parent="#pistas5">
+                <div class="accordion-body">
+                  <ul>
+                    <li>
+                      Usa <span class="badge bg-success badge-tag">th:object</span> en el formulario:
+                      <code>&lt;form th:object="${producto}" ...&gt;</code>.
+                    </li>
+                    <li>
+                      Vincula los campos con <span class="badge bg-warning text-dark badge-tag">th:field</span>:
+                      <code>&lt;input th:field="*{nombre}" /&gt;</code>.
+                    </li>
+                    <li>
+                      La expresión <code>*{...}</code> se refiere al objeto definido en <span class="badge bg-success badge-tag">th:object</span>.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas5-header2">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#pistas5-col2" aria-expanded="false" aria-controls="pistas5-col2">
+                  <i class="bi bi-gear me-2 text-primary"></i> Orientaciones para resolver
+                </button>
+              </h2>
+              <div id="pistas5-col2" class="accordion-collapse collapse" aria-labelledby="pistas5-header2" data-bs-parent="#pistas5">
+                <div class="accordion-body">
+                  <ol>
+                    <li>En la ruta GET de alta, añade al modelo un nuevo <code>Producto()</code> como <code>producto</code>.</li>
+                    <li>En la vista, declara <code>th:object="${producto}"</code> en el formulario.</li>
+                    <li>Define <code>th:field</code> para cada campo: nombre, precio y categoría.</li>
+                    <li>Crea una ruta <code>@PostMapping</code> para recibir el objeto completado y guardarlo.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin pistas5 -->
+
+          <!-- RAMA GIT EJERCICIO 5 -->
+          <div class="accordion accordion-flush mt-3" id="rama5">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="rama5-header">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#rama5-col1" aria-expanded="false" aria-controls="rama5-col1">
+                  <i class="bi bi-git me-2 text-danger"></i> Rama Git para este ejercicio
+                </button>
+              </h2>
+              <div id="rama5-col1" class="accordion-collapse collapse" aria-labelledby="rama5-header" data-bs-parent="#rama5">
+                <div class="accordion-body small">
+                  <ul>
+                    <li>Rama de trabajo: <code>ej05-form-alta-producto</code></li>
+                    <li><code>git checkout main</code><br><code>git checkout -b ej05-form-alta-producto</code></li>
+                    <li><code>git push origin ej05-form-alta-producto</code></li>
+                    <li>Merge en <code>final-thymeleaf</code> cuando esté probado.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin rama5 -->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- EJERCICIO 6 -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="heading6">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+          <span class="me-2 badge bg-danger"><i class="bi bi-6-circle"></i></span>
+          <span class="fw-semibold">Validación y mensajes de error</span>
+          <span class="ms-auto">
+            <span class="badge bg-danger badge-tag">th:errors</span>
+            <span class="badge bg-secondary badge-tag">#fields</span>
+          </span>
+        </button>
+      </h2>
+      <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="heading6" data-bs-parent="#accordionEjercicios">
+        <div class="accordion-body">
+          <p>
+            Añade validación al formulario de producto (por ejemplo: nombre obligatorio, precio &gt; 0)
+            y muestra mensajes de error junto a cada campo cuando haya errores de validación.
+          </p>
+
+          <!-- Pistas ejercicio 6 -->
+          <div class="accordion accordion-flush mt-3" id="pistas6">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas6-header1">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#pistas6-col1" aria-expanded="false" aria-controls="pistas6-col1">
+                  <i class="bi bi-lightbulb me-2 text-warning"></i> Pistas sobre etiquetas
+                </button>
+              </h2>
+              <div id="pistas6-col1" class="accordion-collapse collapse" aria-labelledby="pistas6-header1" data-bs-parent="#pistas6">
+                <div class="accordion-body">
+                  <ul>
+                    <li>
+                      Usa <span class="badge bg-danger badge-tag">th:errors</span> para mostrar mensajes:
+                      <code>&lt;div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"&gt;&lt;/div&gt;</code>.
+                    </li>
+                    <li>
+                      La utilidad <span class="badge bg-secondary badge-tag">#fields</span> permite comprobar si un campo tiene errores.
+                    </li>
+                    <li>
+                      Decora los mensajes con <code>class="text-danger small"</code> para que encajen con Bootstrap.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas6-header2">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#pistas6-col2" aria-expanded="false" aria-controls="pistas6-col2">
+                  <i class="bi bi-gear me-2 text-primary"></i> Orientaciones para resolver
+                </button>
+              </h2>
+              <div id="pistas6-col2" class="accordion-collapse collapse" aria-labelledby="pistas6-header2" data-bs-parent="#pistas6">
+                <div class="accordion-body">
+                  <ol>
+                    <li>Anota la clase <code>Producto</code> con validaciones (<code>@NotBlank</code>, <code>@Positive</code>, etc.).</li>
+                    <li>En el <code>@PostMapping</code>, usa <code>@Valid</code> y <code>BindingResult</code>.</li>
+                    <li>Si hay errores, devuelve la misma vista del formulario con esos errores.</li>
+                    <li>En la vista, añade bloques <code>th:errors</code> junto a cada campo.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin pistas6 -->
+
+          <!-- RAMA GIT EJERCICIO 6 -->
+          <div class="accordion accordion-flush mt-3" id="rama6">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="rama6-header">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#rama6-col1" aria-expanded="false" aria-controls="rama6-col1">
+                  <i class="bi bi-git me-2 text-danger"></i> Rama Git para este ejercicio
+                </button>
+              </h2>
+              <div id="rama6-col1" class="accordion-collapse collapse" aria-labelledby="rama6-header" data-bs-parent="#rama6">
+                <div class="accordion-body small">
+                  <ul>
+                    <li>Rama de trabajo: <code>ej06-validacion-errores</code></li>
+                    <li><code>git checkout main</code><br><code>git checkout -b ej06-validacion-errores</code></li>
+                    <li><code>git push origin ej06-validacion-errores</code></li>
+                    <li>Merge en <code>final-thymeleaf</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin rama6 -->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- EJERCICIO 7 -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="heading7">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+          <span class="me-2 badge bg-dark"><i class="bi bi-7-circle"></i></span>
+          <span class="fw-semibold">Fragmentos reutilizables y layout</span>
+          <span class="ms-auto">
+            <span class="badge bg-secondary badge-tag">th:fragment</span>
+            <span class="badge bg-info text-dark badge-tag">th:replace</span>
+          </span>
+        </button>
+      </h2>
+      <div id="collapse7" class="accordion-collapse collapse" aria-labelledby="heading7" data-bs-parent="#accordionEjercicios">
+        <div class="accordion-body">
+          <p>
+            Crea un layout base con cabecera y pie de página como fragmentos Thymeleaf, 
+            y úsalo en al menos dos vistas diferentes (listado y detalle de productos).
+          </p>
+
+          <!-- Pistas ejercicio 7 -->
+          <div class="accordion accordion-flush mt-3" id="pistas7">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas7-header1">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#pistas7-col1" aria-expanded="false" aria-controls="pistas7-col1">
+                  <i class="bi bi-lightbulb me-2 text-warning"></i> Pistas sobre etiquetas
+                </button>
+              </h2>
+              <div id="pistas7-col1" class="accordion-collapse collapse" aria-labelledby="pistas7-header1" data-bs-parent="#pistas7">
+                <div class="accordion-body">
+                  <ul>
+                    <li>
+                      Declara un fragmento con <span class="badge bg-secondary badge-tag">th:fragment</span>:
+                      <code>&lt;header th:fragment="cabecera"&gt;...&lt;/header&gt;</code>.
+                    </li>
+                    <li>
+                      Inserta el fragmento en otras vistas con 
+                      <span class="badge bg-info text-dark badge-tag">th:replace</span>:
+                      <code>&lt;div th:replace="fragments/layout :: cabecera"&gt;&lt;/div&gt;</code>.
+                    </li>
+                    <li>
+                      Organiza tus plantillas en una carpeta <code>fragments</code> para mantener el proyecto limpio.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas7-header2">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#pistas7-col2" aria-expanded="false" aria-controls="pistas7-col2">
+                  <i class="bi bi-gear me-2 text-primary"></i> Orientaciones para resolver
+                </button>
+              </h2>
+              <div id="pistas7-col2" class="accordion-collapse collapse" aria-labelledby="pistas7-header2" data-bs-parent="#pistas7">
+                <div class="accordion-body">
+                  <ol>
+                    <li>Crea una plantilla <code>layout.html</code> con los fragmentos de cabecera y pie.</li>
+                    <li>En las vistas de listado y detalle, sustituye las secciones repetidas usando <code>th:replace</code>.</li>
+                    <li>Asegúrate de que las rutas a los fragmentos se corresponden con la estructura de carpetas de <code>templates</code>.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin pistas7 -->
+
+          <!-- RAMA GIT EJERCICIO 7 -->
+          <div class="accordion accordion-flush mt-3" id="rama7">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="rama7-header">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#rama7-col1" aria-expanded="false" aria-controls="rama7-col1">
+                  <i class="bi bi-git me-2 text-danger"></i> Rama Git para este ejercicio
+                </button>
+              </h2>
+              <div id="rama7-col1" class="accordion-collapse collapse" aria-labelledby="rama7-header" data-bs-parent="#rama7">
+                <div class="accordion-body small">
+                  <ul>
+                    <li>Rama de trabajo: <code>ej07-fragmentos-layout</code></li>
+                    <li><code>git checkout main</code><br><code>git checkout -b ej07-fragmentos-layout</code></li>
+                    <li><code>git push origin ej07-fragmentos-layout</code></li>
+                    <li>Merge a <code>final-thymeleaf</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin rama7 -->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- EJERCICIO 8 (medio) -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="heading8">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
+          <span class="me-2 badge bg-primary"><i class="bi bi-8-circle"></i></span>
+          <span class="fw-semibold">Formulario de búsqueda de productos (GET)</span>
+          <span class="ms-auto">
+            <span class="badge bg-info text-dark badge-tag">th:action</span>
+            <span class="badge bg-secondary badge-tag">th:method</span>
+          </span>
+        </button>
+      </h2>
+
+      <div id="collapse8" class="accordion-collapse collapse" aria-labelledby="heading8" data-bs-parent="#accordionEjercicios">
+        <div class="accordion-body">
+          <p>
+            Crea un formulario con método <strong class="text-success">GET</strong> para buscar productos por nombre.
+            El controlador debe recibir el parámetro <code>query</code> y devolver una vista con los resultados filtrados.
+          </p>
+
+          <!-- Acordeón interno de pistas -->
+          <div class="accordion accordion-flush mt-3" id="pistas8">
+
+            <!-- Pistas sobre etiquetas -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas8-header1">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#pistas8-col1" aria-expanded="false" aria-controls="pistas8-col1">
+                  <i class="bi bi-lightbulb me-2 text-warning"></i> Pistas sobre etiquetas
+                </button>
+              </h2>
+              <div id="pistas8-col1" class="accordion-collapse collapse" aria-labelledby="pistas8-header1" data-bs-parent="#pistas8">
+                <div class="accordion-body">
+                  <ul>
+                    <li>Usa <span class="badge bg-info text-dark badge-tag">th:action="@{/productos/buscar}"</span>.</li>
+                    <li>Método GET: <span class="badge bg-secondary badge-tag">th:method="get"</span>.</li>
+                    <li>Puedes usar <code>name="query"</code> o un objeto con <span class="badge bg-primary badge-tag">th:field</span>.</li>
+                    <li>Recoge el parámetro con <code>@RequestParam String query</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Orientaciones -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas8-header2">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#pistas8-col2" aria-expanded="false" aria-controls="pistas8-col2">
+                  <i class="bi bi-gear me-2 text-primary"></i> Orientaciones para resolver
+                </button>
+              </h2>
+              <div id="pistas8-col2" class="accordion-collapse collapse" aria-labelledby="pistas8-header2" data-bs-parent="#pistas8">
+                <div class="accordion-body">
+                  <ol>
+                    <li>Crea el formulario con un input de texto para <code>query</code>.</li>
+                    <li>En el controlador, aplica un filtro (real o simulado).</li>
+                    <li>Devuelve la vista mostrando los resultados o un mensaje si no hay coincidencias.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- fin pistas8 -->
+
+          <!-- RAMA GIT EJERCICIO 8 -->
+          <div class="accordion accordion-flush mt-3" id="rama8">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="rama8-header">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#rama8-col1" aria-expanded="false" aria-controls="rama8-col1">
+                  <i class="bi bi-git me-2 text-danger"></i> Rama Git para este ejercicio
+                </button>
+              </h2>
+              <div id="rama8-col1" class="accordion-collapse collapse" aria-labelledby="rama8-header" data-bs-parent="#rama8">
+                <div class="accordion-body small">
+                  <ul>
+                    <li>Rama de trabajo: <code>ej08-busqueda-get</code></li>
+                    <li><code>git checkout main</code><br><code>git checkout -b ej08-busqueda-get</code></li>
+                    <li><code>git push origin ej08-busqueda-get</code></li>
+                    <li>Merge a <code>final-thymeleaf</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin rama8 -->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- EJERCICIO 9 (medio) -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="heading9">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse9" aria-expanded="false" aria-controls="collapse9">
+          <span class="me-2 badge bg-success"><i class="bi bi-9-circle"></i></span>
+          <span class="fw-semibold">Conversor de temperatura (POST)</span>
+          <span class="ms-auto">
+            <span class="badge bg-warning text-dark badge-tag">th:field</span>
+            <span class="badge bg-primary badge-tag">th:action</span>
+          </span>
+        </button>
+      </h2>
+
+      <div id="collapse9" class="accordion-collapse collapse" aria-labelledby="heading9" data-bs-parent="#accordionEjercicios">
+        <div class="accordion-body">
+          <p>
+            Diseña un formulario que envíe una temperatura y el tipo de conversión.  
+            El controlador debe procesar los valores y devolver el resultado convertido.
+          </p>
+
+          <!-- Acordeón interno de pistas -->
+          <div class="accordion accordion-flush mt-3" id="pistas9">
+
+            <!-- Pistas sobre etiquetas -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas9-header1">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#pistas9-col1" aria-expanded="false" aria-controls="pistas9-col1">
+                  <i class="bi bi-lightbulb me-2 text-warning"></i> Pistas sobre etiquetas
+                </button>
+              </h2>
+              <div id="pistas9-col1" class="accordion-collapse collapse" aria-labelledby="pistas9-header1" data-bs-parent="#pistas9">
+                <div class="accordion-body">
+                  <ul>
+                    <li>Usa <span class="badge bg-primary badge-tag">th:action="@{/conversor}"</span>.</li>
+                    <li>Indica <span class="badge bg-success badge-tag">th:method="post"</span>.</li>
+                    <li>Vincula los inputs con <code>th:field="*{valor}"</code> y <code>th:field="*{tipoConversion}"</code>.</li>
+                    <li>Procesa el cálculo en un método con <code>@PostMapping</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Orientaciones -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas9-header2">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#pistas9-col2" aria-expanded="false" aria-controls="pistas9-col2">
+                  <i class="bi bi-gear me-2 text-primary"></i> Orientaciones para resolver
+                </button>
+              </h2>
+              <div id="pistas9-col2" class="accordion-collapse collapse" aria-labelledby="pistas9-header2" data-bs-parent="#pistas9">
+                <div class="accordion-body">
+                  <ol>
+                    <li>Modela un objeto con <code>valor</code> y <code>tipoConversion</code>.</li>
+                    <li>Realiza el cálculo (C→F o F→C).</li>
+                    <li>Devuelve los valores introducidos y el resultado a la vista.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- fin pistas9 -->
+
+          <!-- RAMA GIT EJERCICIO 9 -->
+          <div class="accordion accordion-flush mt-3" id="rama9">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="rama9-header">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#rama9-col1" aria-expanded="false" aria-controls="rama9-col1">
+                  <i class="bi bi-git me-2 text-danger"></i> Rama Git para este ejercicio
+                </button>
+              </h2>
+              <div id="rama9-col1" class="accordion-collapse collapse" aria-labelledby="rama9-header" data-bs-parent="#rama9">
+                <div class="accordion-body small">
+                  <ul>
+                    <li>Rama de trabajo: <code>ej09-conversor-temperatura</code></li>
+                    <li><code>git checkout main</code><br><code>git checkout -b ej09-conversor-temperatura</code></li>
+                    <li><code>git push origin ej09-conversor-temperatura</code></li>
+                    <li>Merge en <code>final-thymeleaf</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin rama9 -->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- EJERCICIO 10 (medio/alto) -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="heading10">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse10" aria-expanded="false" aria-controls="collapse10">
+          <span class="me-2 badge bg-danger"><i class="bi bi-1-circle"></i><i class="bi bi-0-circle"></i></span>
+          <span class="fw-semibold">Cálculo de gastos de envío (POST)</span>
+          <span class="ms-auto">
+            <span class="badge bg-warning text-dark badge-tag">th:object</span>
+            <span class="badge bg-secondary badge-tag">th:field</span>
+          </span>
+        </button>
+      </h2>
+
+      <div id="collapse10" class="accordion-collapse collapse" aria-labelledby="heading10" data-bs-parent="#accordionEjercicios">
+        <div class="accordion-body">
+          <p>
+            Crea un formulario para calcular gastos de envío según peso, destino y envío urgente.
+            Devuelve un resumen del coste total y el desglose aplicado.
+          </p>
+
+          <!-- Acordeón interno de pistas -->
+          <div class="accordion accordion-flush mt-3" id="pistas10">
+
+            <!-- Pistas sobre etiquetas -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas10-header1">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#pistas10-col1" aria-expanded="false" aria-controls="pistas10-col1">
+                  <i class="bi bi-lightbulb me-2 text-warning"></i> Pistas sobre etiquetas
+                </button>
+              </h2>
+              <div id="pistas10-col1" class="accordion-collapse collapse" aria-labelledby="pistas10-header1" data-bs-parent="#pistas10">
+                <div class="accordion-body">
+                  <ul>
+                    <li>Vincula el formulario con <span class="badge bg-warning text-dark badge-tag">th:object="${envio}"</span>.</li>
+                    <li>Inputs: <code>th:field="*{peso}"</code>, <code>th:field="*{destino}"</code>, <code>th:field="*{urgente}"</code>.</li>
+                    <li>Envía con <span class="badge bg-primary badge-tag">th:action="@{/envio/calcular}"</span> + <span class="badge bg-success badge-tag">th:method="post"</span>.</li>
+                    <li>Recoge el objeto con <code>@ModelAttribute EnvioForm envio</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Orientaciones -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas10-header2">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#pistas10-col2" aria-expanded="false" aria-controls="pistas10-col2">
+                  <i class="bi bi-gear me-2 text-primary"></i> Orientaciones para resolver
+                </button>
+              </h2>
+              <div id="pistas10-col2" class="accordion-collapse collapse" aria-labelledby="pistas10-header2" data-bs-parent="#pistas10">
+                <div class="accordion-body">
+                  <ol>
+                    <li>Crea la clase <code>EnvioForm</code> con los campos necesarios.</li>
+                    <li>Aplica la lógica de tarifas según destino.</li>
+                    <li>Añade recargos por peso y urgencia.</li>
+                    <li>Devuelve un desglose y el coste total en una vista de resumen.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- fin pistas10 -->
+
+          <!-- RAMA GIT EJERCICIO 10 -->
+          <div class="accordion accordion-flush mt-3" id="rama10">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="rama10-header">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#rama10-col1" aria-expanded="false" aria-controls="rama10-col1">
+                  <i class="bi bi-git me-2 text-danger"></i> Rama Git para este ejercicio
+                </button>
+              </h2>
+              <div id="rama10-col1" class="accordion-collapse collapse" aria-labelledby="rama10-header" data-bs-parent="#rama10">
+                <div class="accordion-body small">
+                  <ul>
+                    <li>Rama de trabajo: <code>ej10-gastos-envio</code></li>
+                    <li><code>git checkout main</code><br><code>git checkout -b ej10-gastos-envio</code></li>
+                    <li><code>git push origin ej10-gastos-envio</code></li>
+                    <li>Merge en <code>final-thymeleaf</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin rama10 -->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- EJERCICIO 11 (medio nuevo) -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="heading11">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse11" aria-expanded="false" aria-controls="collapse11">
+          <span class="me-2 badge bg-primary"><i class="bi bi-1-circle"></i><i class="bi bi-1-circle"></i></span>
+          <span class="fw-semibold">Resaltar productos según precio</span>
+          <span class="ms-auto">
+            <span class="badge bg-info text-dark badge-tag">th:classappend</span>
+            <span class="badge bg-secondary badge-tag">th:if</span>
+          </span>
+        </button>
+      </h2>
+      <div id="collapse11" class="accordion-collapse collapse" aria-labelledby="heading11" data-bs-parent="#accordionEjercicios">
+        <div class="accordion-body">
+          <p>
+            Modifica el listado de productos para que los productos caros se muestren con una fila destacada
+            (por ejemplo, fondo suave en rojo) y los baratos con otro estilo (fondo suave en verde).
+          </p>
+
+          <div class="accordion accordion-flush mt-3" id="pistas11">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas11-header1">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#pistas11-col1" aria-expanded="false" aria-controls="pistas11-col1">
+                  <i class="bi bi-lightbulb me-2 text-warning"></i> Pistas sobre etiquetas
+                </button>
+              </h2>
+              <div id="pistas11-col1" class="accordion-collapse collapse" aria-labelledby="pistas11-header1" data-bs-parent="#pistas11">
+                <div class="accordion-body">
+                  <ul>
+                    <li>Usa <code>th:classappend</code> en la fila de la tabla:</li>
+                    <li>
+                      <code>&lt;tr th:each="p : ${listaProductos}" 
+                          th:classappend="${p.precio &gt; 100} ? 'table-danger' : 'table-success'"&gt;</code>
+                    </li>
+                    <li>Combina con clases de Bootstrap como <code>table-danger</code>, <code>table-success</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas11-header2">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#pistas11-col2" aria-expanded="false" aria-controls="pistas11-col2">
+                  <i class="bi bi-gear me-2 text-primary"></i> Orientaciones para resolver
+                </button>
+              </h2>
+              <div id="pistas11-col2" class="accordion-collapse collapse" aria-labelledby="pistas11-header2" data-bs-parent="#pistas11">
+                <div class="accordion-body">
+                  <ol>
+                    <li>Decide un umbral de precio, por ejemplo 100€.</li>
+                    <li>Aplica <code>th:classappend</code> en el <code>&lt;tr&gt;</code> del listado.</li>
+                    <li>Opcional: muestra un icono especial para productos muy caros con <code>th:if</code>.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin pistas11 -->
+
+          <!-- RAMA GIT EJERCICIO 11 -->
+          <div class="accordion accordion-flush mt-3" id="rama11">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="rama11-header">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#rama11-col1" aria-expanded="false" aria-controls="rama11-col1">
+                  <i class="bi bi-git me-2 text-danger"></i> Rama Git para este ejercicio
+                </button>
+              </h2>
+              <div id="rama11-col1" class="accordion-collapse collapse" aria-labelledby="rama11-header" data-bs-parent="#rama11">
+                <div class="accordion-body small">
+                  <ul>
+                    <li>Rama de trabajo: <code>ej11-resaltar-precio</code></li>
+                    <li><code>git checkout main</code><br><code>git checkout -b ej11-resaltar-precio</code></li>
+                    <li><code>git push origin ej11-resaltar-precio</code></li>
+                    <li>Merge a <code>final-thymeleaf</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin rama11 -->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- EJERCICIO 12 (medio nuevo) -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="heading12">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse12" aria-expanded="false" aria-controls="collapse12">
+          <span class="me-2 badge bg-primary"><i class="bi bi-1-circle"></i><i class="bi bi-2-circle"></i></span>
+          <span class="fw-semibold">Formato de precios y fechas</span>
+          <span class="ms-auto">
+            <span class="badge bg-secondary badge-tag">#numbers</span>
+            <span class="badge bg-info text-dark badge-tag">#temporals / #dates</span>
+          </span>
+        </button>
+      </h2>
+      <div id="collapse12" class="accordion-collapse collapse" aria-labelledby="heading12" data-bs-parent="#accordionEjercicios">
+        <div class="accordion-body">
+          <p>
+            Añade al producto un campo <code>fechaAlta</code> y muestra el precio y la fecha con formato amigable:
+            precio con dos decimales y símbolo €, y fecha en formato <code>dd/MM/yyyy</code>.
+          </p>
+
+          <div class="accordion accordion-flush mt-3" id="pistas12">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas12-header1">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#pistas12-col1" aria-expanded="false" aria-controls="pistas12-col1">
+                  <i class="bi bi-lightbulb me-2 text-warning"></i> Pistas sobre utilidades
+                </button>
+              </h2>
+              <div id="pistas12-col1" class="accordion-collapse collapse" aria-labelledby="pistas12-header1" data-bs-parent="#pistas12">
+                <div class="accordion-body">
+                  <ul>
+                    <li>Para números: <code>th:text="${#numbers.formatDecimal(producto.precio, 1, 2)} + ' €'"</code>.</li>
+                    <li>Para fechas (Java Time): <code>th:text="${#temporals.format(producto.fechaAlta, 'dd/MM/yyyy')}"</code>.</li>
+                    <li>Si usas <code>java.util.Date</code>, evalúa <code>#dates.format(...)</code> según la configuración.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas12-header2">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#pistas12-col2" aria-expanded="false" aria-controls="pistas12-col2">
+                  <i class="bi bi-gear me-2 text-primary"></i> Orientaciones para resolver
+                </button>
+              </h2>
+              <div id="pistas12-col2" class="accordion-collapse collapse" aria-labelledby="pistas12-header2" data-bs-parent="#pistas12">
+                <div class="accordion-body">
+                  <ol>
+                    <li>Añade el atributo <code>fechaAlta</code> en la clase <code>Producto</code>.</li>
+                    <li>Inicializa la fecha en el controlador (por ejemplo, <code>LocalDate.now()</code>).</li>
+                    <li>Muestra en la tabla una nueva columna con la fecha formateada y el precio formateado.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin pistas12 -->
+
+          <!-- RAMA GIT EJERCICIO 12 -->
+          <div class="accordion accordion-flush mt-3" id="rama12">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="rama12-header">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#rama12-col1" aria-expanded="false" aria-controls="rama12-col1">
+                  <i class="bi bi-git me-2 text-danger"></i> Rama Git para este ejercicio
+                </button>
+              </h2>
+              <div id="rama12-col1" class="accordion-collapse collapse" aria-labelledby="rama12-header" data-bs-parent="#rama12">
+                <div class="accordion-body small">
+                  <ul>
+                    <li>Rama de trabajo: <code>ej12-formato-precio-fecha</code></li>
+                    <li><code>git checkout main</code><br><code>git checkout -b ej12-formato-precio-fecha</code></li>
+                    <li><code>git push origin ej12-formato-precio-fecha</code></li>
+                    <li>Merge en <code>final-thymeleaf</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin rama12 -->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- EJERCICIO 13 (difícil nuevo) -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="heading13">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse13" aria-expanded="false" aria-controls="collapse13">
+          <span class="me-2 badge bg-danger"><i class="bi bi-1-circle"></i><i class="bi bi-3-circle"></i></span>
+          <span class="fw-semibold">Formulario maestro-detalle de pedido</span>
+          <span class="ms-auto">
+            <span class="badge bg-warning text-dark badge-tag">th:each</span>
+            <span class="badge bg-secondary badge-tag">th:field (listas)</span>
+          </span>
+        </button>
+      </h2>
+      <div id="collapse13" class="accordion-collapse collapse" aria-labelledby="heading13" data-bs-parent="#accordionEjercicios">
+        <div class="accordion-body">
+          <p>
+            Crea un formulario de <strong>pedido</strong> que permita introducir varias líneas de productos
+            (producto, cantidad, precio unitario) en una sola pantalla y enviar todo en un único <code>POST</code>.
+          </p>
+
+          <div class="accordion accordion-flush mt-3" id="pistas13">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas13-header1">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#pistas13-col1" aria-expanded="false" aria-controls="pistas13-col1">
+                  <i class="bi bi-lightbulb me-2 text-warning"></i> Pistas sobre listas y binding
+                </button>
+              </h2>
+              <div id="pistas13-col1" class="accordion-collapse collapse" aria-labelledby="pistas13-header1" data-bs-parent="#pistas13">
+                <div class="accordion-body">
+                  <ul>
+                    <li>Crea una clase <code>LineaPedido</code> y una clase <code>PedidoForm</code> con <code>List&lt;LineaPedido&gt; lineas</code>.</li>
+                    <li>En la plantilla, itera sobre <code>lineas</code> con <code>th:each</code> dentro del formulario.</li>
+                    <li>Usa expresiones como <code>th:field="*{lineas[__${iter.index}__].cantidad}"</code>.</li>
+                    <li>Recibe el formulario en el controlador con <code>@ModelAttribute PedidoForm pedido</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas13-header2">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#pistas13-col2" aria-expanded="false" aria-controls="pistas13-col2">
+                  <i class="bi bi-gear me-2 text-primary"></i> Orientaciones para resolver
+                </button>
+              </h2>
+              <div id="pistas13-col2" class="accordion-collapse collapse" aria-labelledby="pistas13-header2" data-bs-parent="#pistas13">
+                <div class="accordion-body">
+                  <ol>
+                    <li>Inicializa en el controlador un <code>PedidoForm</code> con varias líneas vacías.</li>
+                    <li>Muestra las líneas como filas de tabla con inputs para cada campo.</li>
+                    <li>En el <code>@PostMapping</code>, recorre la lista de líneas, calcula el total del pedido y devuélvelo a una vista resumen.</li>
+                    <li>Opcional: añade botones para añadir/eliminar líneas usando JavaScript.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin pistas13 -->
+
+          <!-- RAMA GIT EJERCICIO 13 -->
+          <div class="accordion accordion-flush mt-3" id="rama13">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="rama13-header">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#rama13-col1" aria-expanded="false" aria-controls="rama13-col1">
+                  <i class="bi bi-git me-2 text-danger"></i> Rama Git para este ejercicio
+                </button>
+              </h2>
+              <div id="rama13-col1" class="accordion-collapse collapse" aria-labelledby="rama13-header" data-bs-parent="#rama13">
+                <div class="accordion-body small">
+                  <ul>
+                    <li>Rama de trabajo: <code>ej13-pedido-maestro-detalle</code></li>
+                    <li><code>git checkout main</code><br><code>git checkout -b ej13-pedido-maestro-detalle</code></li>
+                    <li><code>git push origin ej13-pedido-maestro-detalle</code></li>
+                    <li>Merge en <code>final-thymeleaf</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin rama13 -->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- EJERCICIO 14 (difícil nuevo) -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="heading14">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse14" aria-expanded="false" aria-controls="collapse14">
+          <span class="me-2 badge bg-danger"><i class="bi bi-1-circle"></i><i class="bi bi-4-circle"></i></span>
+          <span class="fw-semibold">Internacionalización de vistas (i18n)</span>
+          <span class="ms-auto">
+            <span class="badge bg-info text-dark badge-tag">#{}</span>
+            <span class="badge bg-secondary badge-tag">th:href (cambiar idioma)</span>
+          </span>
+        </button>
+      </h2>
+      <div id="collapse14" class="accordion-collapse collapse" aria-labelledby="heading14" data-bs-parent="#accordionEjercicios">
+        <div class="accordion-body">
+          <p>
+            Internacionaliza la vista de listado de productos para que los textos de la interfaz se muestren
+            en español o inglés según el parámetro <code>lang</code> de la URL.
+          </p>
+
+          <div class="accordion accordion-flush mt-3" id="pistas14">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas14-header1">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#pistas14-col1" aria-expanded="false" aria-controls="pistas14-col1">
+                  <i class="bi bi-lightbulb me-2 text-warning"></i> Pistas sobre mensajes
+                </button>
+              </h2>
+              <div id="pistas14-col1" class="accordion-collapse collapse" aria-labelledby="pistas14-header1" data-bs-parent="#pistas14">
+                <div class="accordion-body">
+                  <ul>
+                    <li>Crea ficheros <code>messages.properties</code>, <code>messages_es.properties</code>, <code>messages_en.properties</code>.</li>
+                    <li>Define claves como <code>titulo.lista.productos=Listado de productos</code>.</li>
+                    <li>En la plantilla, usa <code>th:text="#{titulo.lista.productos}"</code> en lugar de texto literal.</li>
+                    <li>Añade enlaces para cambiar de idioma:
+                      <code>th:href="@{/productos(lista=${listaProductos}, lang='es')}"</code> y <code>lang='en'</code>.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas14-header2">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#pistas14-col2" aria-expanded="false" aria-controls="pistas14-col2">
+                  <i class="bi bi-gear me-2 text-primary"></i> Orientaciones para resolver
+                </button>
+              </h2>
+              <div id="pistas14-col2" class="accordion-collapse collapse" aria-labelledby="pistas14-header2" data-bs-parent="#pistas14">
+                <div class="accordion-body">
+                  <ol>
+                    <li>Configura en Spring Boot el <code>MessageSource</code> si no lo tienes ya definido.</li>
+                    <li>Asegúrate de que el <code>LocaleResolver</code> tenga en cuenta el parámetro <code>lang</code>.</li>
+                    <li>Sustituye los textos fijos de la vista por claves de mensajes <code>#{...}</code>.</li>
+                    <li>Comprueba que al cambiar <code>?lang=es</code> / <code>?lang=en</code> se actualiza el idioma de la interfaz.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin pistas14 -->
+
+          <!-- RAMA GIT EJERCICIO 14 -->
+          <div class="accordion accordion-flush mt-3" id="rama14">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="rama14-header">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#rama14-col1" aria-expanded="false" aria-controls="rama14-col1">
+                  <i class="bi bi-git me-2 text-danger"></i> Rama Git para este ejercicio
+                </button>
+              </h2>
+              <div id="rama14-col1" class="accordion-collapse collapse" aria-labelledby="rama14-header" data-bs-parent="#rama14">
+                <div class="accordion-body small">
+                  <ul>
+                    <li>Rama de trabajo: <code>ej14-i18n</code></li>
+                    <li><code>git checkout main</code><br><code>git checkout -b ej14-i18n</code></li>
+                    <li><code>git push origin ej14-i18n</code></li>
+                    <li>Merge en <code>final-thymeleaf</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin rama14 -->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- EJERCICIO 15 -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="heading15">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse15" aria-expanded="false" aria-controls="collapse15">
+          <span class="me-2 badge bg-primary"><i class="bi bi-1-circle"></i><i class="bi bi-5-circle"></i></span>
+          <span class="fw-semibold">Seleccionar categoría con &lt;select&gt;</span>
+          <span class="ms-auto">
+            <span class="badge bg-warning text-dark badge-tag">th:field</span>
+            <span class="badge bg-info text-dark badge-tag">th:each</span>
+            <span class="badge bg-secondary badge-tag">&lt;select&gt;</span>
+          </span>
+        </button>
+      </h2>
+      <div id="collapse15" class="accordion-collapse collapse" aria-labelledby="heading15" data-bs-parent="#accordionEjercicios">
+        <div class="accordion-body">
+          <p>
+            Crea un formulario de producto que incluya un campo 
+            <code>&lt;select&gt;</code> para elegir la <strong>categoría</strong> del producto.
+            Las opciones de la lista se deben obtener desde el modelo (por ejemplo, una lista de cadenas con
+            "Tecnología", "Hogar", "Deporte", "Ropa", etc.).
+          </p>
+          <p>
+            Al enviar el formulario, el controlador debe recibir el producto con su categoría seleccionada
+            y mostrar una vista de resumen con el nombre del producto y la categoría elegida.
+          </p>
+
+          <!-- PISTAS EJERCICIO 15 -->
+          <div class="accordion accordion-flush mt-3" id="pistas15">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas15-header1">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#pistas15-col1" aria-expanded="false" aria-controls="pistas15-col1">
+                  <i class="bi bi-lightbulb me-2 text-warning"></i> Pistas sobre &lt;select&gt; y binding
+                </button>
+              </h2>
+              <div id="pistas15-col1" class="accordion-collapse collapse" aria-labelledby="pistas15-header1" data-bs-parent="#pistas15">
+                <div class="accordion-body">
+                  <ul>
+                    <li>
+                      En el controlador, añade al modelo una lista de categorías:
+                      <code>model.addAttribute("categorias", List.of("Tecnología","Hogar","Deporte"));</code>
+                    </li>
+                    <li>
+                      En el formulario, vincula el objeto producto:
+                      <code>&lt;form th:object="${producto}" ...&gt;</code>
+                    </li>
+                    <li>
+                      Define el <code>&lt;select&gt;</code> con <code>th:field</code>:
+                      <br>
+                      <code>&lt;select th:field="*{categoria}" class="form-select"&gt;</code>
+                    </li>
+                    <li>
+                      Dentro del <code>&lt;select&gt;</code> itera con <code>th:each</code>:
+                      <br>
+                      <code>&lt;option th:each="cat : ${categorias}"</code><br>
+                      <code>        th:value="${cat}"</code><br>
+                      <code>        th:text="${cat}"&gt;&lt;/option&gt;</code>
+                    </li>
+                    <li>
+                      Puedes añadir una opción por defecto:
+                      <br>
+                      <code>&lt;option value="" disabled selected&gt;-- Elige categoría --&lt;/option&gt;</code>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas15-header2">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#pistas15-col2" aria-expanded="false" aria-controls="pistas15-col2">
+                  <i class="bi bi-gear me-2 text-primary"></i> Orientaciones para resolver
+                </button>
+              </h2>
+              <div id="pistas15-col2" class="accordion-collapse collapse" aria-labelledby="pistas15-header2" data-bs-parent="#pistas15">
+                <div class="accordion-body">
+                  <ol>
+                    <li>Crea o reutiliza la clase <code>Producto</code> con el atributo <code>categoria</code>.</li>
+                    <li>
+                      En el <code>@GetMapping</code>, inicializa <code>Producto</code> y la lista de categorías,
+                      añadiéndolos al modelo.
+                    </li>
+                    <li>
+                      En la vista del formulario, usa <code>th:object</code> y el <code>&lt;select&gt;</code> con
+                      <code>th:field="*{categoria}"</code>.
+                    </li>
+                    <li>
+                      En el <code>@PostMapping</code>, recibe el objeto <code>Producto</code> y muestra una vista
+                      de resumen con el nombre y la categoría.
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin pistas15 -->
+
+          <!-- RAMA GIT EJERCICIO 15 -->
+          <div class="accordion accordion-flush mt-3" id="rama15">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="rama15-header">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#rama15-col1" aria-expanded="false" aria-controls="rama15-col1">
+                  <i class="bi bi-git me-2 text-danger"></i> Rama Git para este ejercicio
+                </button>
+              </h2>
+              <div id="rama15-col1" class="accordion-collapse collapse" aria-labelledby="rama15-header" data-bs-parent="#rama15">
+                <div class="accordion-body small">
+                  <ul>
+                    <li>Rama de trabajo: <code>ej15-select-categoria</code></li>
+                    <li>Crea la rama a partir de <code>main</code>:
+                      <br><code>git checkout main</code>
+                      <br><code>git checkout -b ej15-select-categoria</code>
+                    </li>
+                    <li>Implementa el formulario y la vista de resumen en esta rama.</li>
+                    <li>Haz <code>commit</code> con un mensaje como:
+                      <br><code>"Ejercicio 15 - Select de categoría"</code>
+                    </li>
+                    <li>Sube los cambios a tu repositorio:
+                      <br><code>git push origin ej15-select-categoria</code>
+                    </li>
+                    <li>Fusiona después en <code>final-thymeleaf</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin rama15 -->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- EJERCICIO 16 -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="heading16">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse16" aria-expanded="false" aria-controls="collapse16">
+          <span class="me-2 badge bg-primary"><i class="bi bi-1-circle"></i><i class="bi bi-6-circle"></i></span>
+          <span class="fw-semibold">Select múltiple de etiquetas (multi-select)</span>
+          <span class="ms-auto">
+            <span class="badge bg-warning text-dark badge-tag">th:field</span>
+            <span class="badge bg-info text-dark badge-tag">List&lt;String&gt;</span>
+            <span class="badge bg-secondary badge-tag">multiple</span>
+          </span>
+        </button>
+      </h2>
+      <div id="collapse16" class="accordion-collapse collapse" aria-labelledby="heading16" data-bs-parent="#accordionEjercicios">
+        <div class="accordion-body">
+          <p>
+            Extiende el concepto anterior creando un formulario que permita seleccionar 
+            <strong>múltiples etiquetas</strong> para un producto (por ejemplo: "Oferta", "Nuevo", "Reacondicionado",
+            "Destacado", "Outlet") usando un <code>&lt;select multiple&gt;</code>.
+          </p>
+          <p>
+            El formulario debe enviar un objeto que contenga una lista de etiquetas seleccionadas. La vista de
+            resultado debe mostrar el nombre del producto y un listado de todas las etiquetas escogidas.
+          </p>
+
+          <!-- PISTAS EJERCICIO 16 -->
+          <div class="accordion accordion-flush mt-3" id="pistas16">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas16-header1">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#pistas16-col1" aria-expanded="false" aria-controls="pistas16-col1">
+                  <i class="bi bi-lightbulb me-2 text-warning"></i> Pistas sobre multi-select
+                </button>
+              </h2>
+              <div id="pistas16-col1" class="accordion-collapse collapse" aria-labelledby="pistas16-header1" data-bs-parent="#pistas16">
+                <div class="accordion-body">
+                  <ul>
+                    <li>
+                      Crea en tu modelo un atributo tipo lista, por ejemplo:
+                      <br><code>private List&lt;String&gt; etiquetas;</code>
+                    </li>
+                    <li>
+                      En el controlador, pasa una lista de opciones posibles:
+                      <br><code>model.addAttribute("opcionesEtiquetas", List.of("Oferta","Nuevo","Reacondicionado","Destacado","Outlet"));</code>
+                    </li>
+                    <li>
+                      En la plantilla, define el <code>&lt;select&gt;</code> con <code>multiple</code>:
+                      <br>
+                      <code>&lt;select multiple th:field="*{etiquetas}" class="form-select"&gt;</code>
+                    </li>
+                    <li>
+                      Dentro del <code>&lt;select&gt;</code>, recorre las opciones:
+                      <br>
+                      <code>&lt;option th:each="et : ${opcionesEtiquetas}"</code><br>
+                      <code>        th:value="${et}"</code><br>
+                      <code>        th:text="${et}"&gt;&lt;/option&gt;</code>
+                    </li>
+                    <li>
+                      Thymeleaf se encargará de convertir las selecciones en una lista de <code>String</code> en el objeto de formulario.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="pistas16-header2">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#pistas16-col2" aria-expanded="false" aria-controls="pistas16-col2">
+                  <i class="bi bi-gear me-2 text-primary"></i> Orientaciones para resolver
+                </button>
+              </h2>
+              <div id="pistas16-col2" class="accordion-collapse collapse" aria-labelledby="pistas16-header2" data-bs-parent="#pistas16">
+                <div class="accordion-body">
+                  <ol>
+                    <li>
+                      Crea una clase de formulario, por ejemplo <code>ProductoEtiquetasForm</code>, con
+                      <code>nombreProducto</code> y <code>List&lt;String&gt; etiquetas</code>.
+                    </li>
+                    <li>
+                      En el <code>@GetMapping</code>, inicializa el formulario y la lista <code>opcionesEtiquetas</code> y añádelos al modelo.
+                    </li>
+                    <li>
+                      En la vista, utiliza <code>th:object="${productoEtiquetas}"</code> y el <code>&lt;select multiple&gt;</code>.
+                    </li>
+                    <li>
+                      En el <code>@PostMapping</code>, recibe el formulario y muestra en una vista de resumen el nombre del producto y todas las etiquetas seleccionadas (por ejemplo, en una lista con badges de Bootstrap).</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin pistas16 -->
+
+          <!-- RAMA GIT EJERCICIO 16 -->
+          <div class="accordion accordion-flush mt-3" id="rama16">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="rama16-header">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#rama16-col1" aria-expanded="false" aria-controls="rama16-col1">
+                  <i class="bi bi-git me-2 text-danger"></i> Rama Git para este ejercicio
+                </button>
+              </h2>
+              <div id="rama16-col1" class="accordion-collapse collapse" aria-labelledby="rama16-header" data-bs-parent="#rama16">
+                <div class="accordion-body small">
+                  <ul>
+                    <li>Rama de trabajo: <code>ej16-select-etiquetas</code></li>
+                    <li>Crea la rama a partir de <code>main</code> (o desde la rama anterior si lo prefieres):
+                      <br><code>git checkout main</code>
+                      <br><code>git checkout -b ej16-select-etiquetas</code>
+                    </li>
+                    <li>Implementa el formulario con <code>select multiple</code> y la vista de resumen.</li>
+                    <li>Haz <code>commit</code> con un mensaje como:
+                      <br><code>"Ejercicio 16 - Select múltiple de etiquetas"</code>
+                    </li>
+                    <li>Sube los cambios:
+                      <br><code>git push origin ej16-select-etiquetas</code>
+                    </li>
+                    <li>Fusiona en <code>final-thymeleaf</code> para integrar con el resto de ejercicios.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div><!-- fin rama16 -->
+
+        </div>
+      </div>
+    </div>
+
+  </div><!-- fin accordionEjercicios -->
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

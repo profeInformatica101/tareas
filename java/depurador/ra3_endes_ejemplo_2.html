@@ -46,14 +46,25 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Tareas para Probar el Debugger <i class="bi bi-bug-fill"></i></h1>
+        <h1 class="text-center mb-4">
+            Tareas para Probar el Debugger (Ejemplo 2)
+            <i class="bi bi-bug-fill"></i>
+        </h1>
         
         <div class="card shadow-lg">
-            <div class="card-header">
-                <i class="bi bi-code-square"></i> Código Java con Error
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>
+                    <i class="bi bi-code-square"></i> Código Java con Error
+                </span>
+
+                <!-- 📌 Botón de descarga del archivo .java -->
+                <a href="src/Ejemplo2.java" download="Ejemplo2.java" class="btn btn-sm btn-light">
+                    <i class="bi bi-download"></i> Descargar Ejemplo2.java
+                </a>
             </div>
+
             <div class="card-body">
-                <pre>
+<pre>
 package com.ejemplos.debugger;
 
 public class Ejemplo2 {
@@ -83,70 +94,146 @@ public class Ejemplo2 {
         return suma;
     }
 }
-                </pre>
+</pre>
             </div>
         </div>
 
+        <!-- BLOQUE 1 -->
         <div class="card shadow-lg">
             <div class="card-header">
                 <i class="bi bi-bug-fill"></i> 1. Identificar el error en el método <code>llenar</code>
             </div>
             <div class="card-body">
                 <ul class="list-group">
-                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Establece un breakpoint en la línea donde se declara <code>int[] tabla = new int[3]</code>.</li>
-                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Observa que el tamaño del array no corresponde con el valor de <code>n</code>.</li>
+                    <li class="list-group-item">
+                        <i class="bi bi-arrow-right"></i>
+                        Establece un breakpoint en la línea donde se declara 
+                        <code>int[] tabla = new int[3]</code>.
+                    </li>
+                    <li class="list-group-item">
+                        <i class="bi bi-arrow-right"></i>
+                        Observa que el tamaño del array no corresponde con el valor de <code>n</code>.
+                    </li>
                 </ul>
             </div>
         </div>
 
+        <!-- BLOQUE 2 -->
         <div class="card shadow-lg">
             <div class="card-header">
                 <i class="bi bi-play-circle-fill"></i> 2. Depurar el bucle para verificar el error de índice
             </div>
             <div class="card-body">
                 <ul class="list-group">
-                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Establece un breakpoint dentro del bucle <code>for</code> del método <code>llenar</code>.</li>
-                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Observa cómo <code>i</code> excede el tamaño del array, causando un error de índice fuera de rango.</li>
+                    <li class="list-group-item">
+                        <i class="bi bi-arrow-right"></i>
+                        Establece un breakpoint dentro del bucle <code>for</code> del método 
+                        <code>llenar</code>.
+                    </li>
+                    <li class="list-group-item">
+                        <i class="bi bi-arrow-right"></i>
+                        Observa cómo <code>i</code> excede el tamaño del array, causando un 
+                        error de índice fuera de rango.
+                    </li>
                 </ul>
             </div>
         </div>
 
+        <!-- BLOQUE 3 -->
         <div class="card shadow-lg">
             <div class="card-header">
                 <i class="bi bi-arrow-down-square-fill"></i> 3. Evaluar expresiones durante la depuración
             </div>
             <div class="card-body">
                 <ul class="list-group">
-                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Establece un breakpoint en la línea donde se inicializa <code>tabla[i]</code>.</li>
-                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Usa la funcionalidad <strong>Evaluate Expression</strong> y verifica los siguientes valores:</li>
-                    <ul>
-                        <li class="list-group-item"><i class="bi bi-dash"></i> <code>tabla.length</code> (debería ser 3 en lugar de 5).</li>
-                        <li class="list-group-item"><i class="bi bi-dash"></i> <code>n</code> (valor inicial de 5).</li>
-                        <li class="list-group-item"><i class="bi bi-dash"></i> <code>i</code> (cuando excede el rango).</li>
-                    </ul>
+                    <li class="list-group-item">
+                        <i class="bi bi-arrow-right"></i>
+                        Establece un breakpoint en la línea donde se inicializa <code>tabla[i]</code>.
+                    </li>
+                    <li class="list-group-item">
+                        <i class="bi bi-arrow-right"></i>
+                        Usa <strong>Evaluate Expression</strong> y verifica:
+                        <ul>
+                            <li><i class="bi bi-dash"></i> <code>tabla.length</code> (3 en lugar de 5)</li>
+                            <li><i class="bi bi-dash"></i> <code>n</code> (valor 5)</li>
+                            <li><i class="bi bi-dash"></i> <code>i</code> cuando rompe el rango</li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
 
+        <!-- BLOQUE 4 -->
         <div class="card shadow-lg">
             <div class="card-header">
                 <i class="bi bi-arrow-up-square-fill"></i> 4. Corregir el tamaño del array y validar
             </div>
             <div class="card-body">
                 <ul class="list-group">
-                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Corrige el tamaño del array en el método <code>llenar</code> usando <code>int[] tabla = new int[n]</code>.</li>
-                    <li class="list-group-item"><i class="bi bi-arrow-right"></i> Vuelve a ejecutar el programa en modo depuración y valida el correcto funcionamiento.</li>
+                    <li class="list-group-item">
+                        <i class="bi bi-arrow-right"></i>
+                        Corrige el tamaño del array en <code>llenar</code> cambiando:
+                        <br><code>int[] tabla = new int[3]</code>
+                        <br>por
+                        <code>int[] tabla = new int[n]</code>.
+                    </li>
+                    <li class="list-group-item">
+                        <i class="bi bi-arrow-right"></i>
+                        Vuelve a ejecutar el programa en modo depuración y confirma que funciona sin errores.
+                    </li>
                 </ul>
             </div>
         </div>
 
+        <!-- NUEVO BLOQUE 5 — ENTREGA PDF -->
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <i class="bi bi-file-earmark-pdf-fill"></i> 5. Entrega de la práctica: PDF con capturas de pantalla
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+
+                    <li class="list-group-item">
+                        <i class="bi bi-arrow-right"></i>
+                        Debes crear un archivo <strong>PDF</strong> con las capturas realizadas durante la depuración.
+                    </li>
+
+                    <li class="list-group-item">
+                        <i class="bi bi-arrow-right"></i>
+                        El PDF debe incluir las siguientes capturas mínimas:
+                        <ul>
+                            <li><i class="bi bi-check"></i> Breakpoint en la línea del tamaño incorrecto <code>new int[3]</code>.</li>
+                            <li><i class="bi bi-check"></i> Ventana de variables mostrando <code>tabla.length</code> = 3.</li>
+                            <li><i class="bi bi-check"></i> Bucle ejecutándose y mostrando el error de índice fuera de rango.</li>
+                            <li><i class="bi bi-check"></i> Ejecución corregida (array del tamaño correcto) con todos los valores llenados.</li>
+                        </ul>
+                    </li>
+
+                    <li class="list-group-item">
+                        <i class="bi bi-arrow-right"></i>
+                        Añade un comentario breve (2–3 líneas) bajo cada captura explicando qué ocurre y qué error se detecta o corrige.
+                    </li>
+
+                    <li class="list-group-item">
+                        <i class="bi bi-arrow-right"></i>
+                        Guarda el archivo con el nombre:
+                        <strong>debug_ej2_apellido1_apellido2.pdf</strong>
+                        y súbelo a Moodle en la tarea correspondiente.
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+        <!-- OBJETIVO GENERAL -->
         <div class="objective mt-4">
             <h4>Objetivo General</h4>
             <p>Este ejercicio enseña a los estudiantes a:</p>
             <ul>
                 <li><i class="bi bi-check-circle-fill"></i> Identificar errores de tamaño en arrays.</li>
-                <li><i class="bi bi-check-circle-fill"></i> Inspeccionar variables y detectar errores de índice fuera de rango.</li>
-                <li><i class="bi bi-check-circle-fill"></i> Evaluar expresiones clave durante la depuración para validar hipótesis.</li>
+                <li><i class="bi bi-check-circle-fill"></i> Detectar errores de índice fuera de rango.</li>
+                <li><i class="bi bi-check-circle-fill"></i> Usar el depurador para evaluar expresiones.</li>
+                <li><i class="bi bi-check-circle-fill"></i> Documentar el proceso mediante capturas y un informe PDF.</li>
             </ul>
         </div>
     </div>
