@@ -80,17 +80,17 @@
     </h5>
     <ul class="list-group">
         <li class="list-group-item">
-    <a href="#presentacion">
-        <i class="bi bi-easel me-2"></i>
-        Presentación
-    </a>
-</li>
-<li class="list-group-item">
-    <a href="#springboot-api">
-        <i class="bi bi-journal-code me-2"></i>
-        Spring Boot API
-    </a>
-</li>
+            <a href="#presentacion">
+                <i class="bi bi-easel me-2"></i>
+                Presentación
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="#springboot-api">
+                <i class="bi bi-journal-code me-2"></i>
+                Spring Boot API
+            </a>
+        </li>
 
         <li class="list-group-item">
             <a href="#intro">
@@ -140,6 +140,12 @@
                 Hilos de aplicación
             </a>
         </li>
+        <li class="list-group-item">
+            <a href="#tareas">
+                <i class="bi bi-list-check me-2"></i>
+                Tareas y análisis
+            </a>
+        </li>
     </ul>
 </aside>
 
@@ -147,7 +153,7 @@
 <main class="main-content">
 
     <div class="container-fluid">
-         <!-- INTRO -->
+        <!-- INTRO -->
         <div class="row mb-4" id="intro">
             <div class="col-12">
                 <div class="alert alert-info">
@@ -166,186 +172,186 @@
                 </div>
             </div>
         </div>
-<!-- PRESENTACIÓN GOOGLE SLIDES -->
-<div class="row mb-5" id="presentacion">
-    <div class="col-12">
-        <div class="card shadow-sm">
-            <div class="card-header bg-info text-white">
-                <i class="bi bi-easel-fill me-2"></i>
-                Presentación introductoria
-            </div>
-            <div class="card-body p-0 text-center">
 
-                <iframe 
-                    src="https://docs.google.com/presentation/d/e/2PACX-1vQv26PhbXUu8ba5fNrk4LqDZZoznF8ghs-PhgmH2-PQnVzlyWgVRgoF0vCIsLcvLGlGhjtc3BV1b7rw/pubembed?start=false&loop=false&delayms=3000" 
-                    frameborder="0"
-                    width="100%" 
-                    height="550"
-                    allowfullscreen="true"
-                    mozallowfullscreen="true"
-                    webkitallowfullscreen="true">
-                </iframe>
-
-            </div>
-        </div>
-    </div>
-</div>
-<!-- SECCIÓN: Qué es Spring Boot y enlaces al API -->
-<section class="my-5" id="springboot-api">
-    <div class="card shadow-sm">
-        <div class="card-header bg-success text-white">
-            <h3 class="mb-0">
-                <i class="bi bi-journal-code me-2"></i>
-                ¿Qué es Spring Boot? 
-            </h3>
-        </div>
-
-        <div class="card-body">
-
-            <p class="lead">
-                Spring Boot es un <strong>framework de Java</strong> que simplifica enormemente 
-                el desarrollo de aplicaciones con Spring: permite crear aplicaciones 
-                <strong>autónomas, listas para producción</strong>, con muy poca configuración 
-                y un <strong>servidor web embebido</strong> (Tomcat, Jetty, etc.).
-            </p>
-
-            <hr>
-
-            <h4>
-                <i class="bi bi-mortarboard-fill me-2 text-primary"></i>
-                ¿Por qué es interesante para DAW y DAM?
-            </h4>
-
-            <ul class="list-group mb-3">
-                <li class="list-group-item">
-                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                    Permite crear <strong>APIs REST</strong> y aplicaciones web Java modernas 
-                    usando controladores, servicios y repositorios (patrón MVC / capas).
-                </li>
-                <li class="list-group-item">
-                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                    Incluye un <strong>servidor embebido</strong> (normalmente Tomcat), 
-                    por lo que basta con ejecutar la aplicación para tener un servidor web 
-                    en marcha (sin configurar un Tomcat externo).
-                </li>
-                <li class="list-group-item">
-                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                    Ofrece <strong>auto-configuración</strong>: detecta dependencias 
-                    (Spring Web, Data JPA, Security, etc.) y configura muchas cosas por ti,
-                    reduciendo código “ceremonial”.
-                </li>
-                <li class="list-group-item">
-                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                    Se integra fácilmente con <strong>bases de datos</strong>, seguridad, 
-                    plantillas HTML (Thymeleaf), mensajería, etc.
-                </li>
-                <li class="list-group-item">
-                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                    Es tecnología <strong>muy utilizada en el mundo profesional</strong>, 
-                    por lo que encaja perfectamente con los resultados de aprendizaje de FP 
-                    en Desarrollo de Aplicaciones Web y Multiplataforma.
-                </li>
-            </ul>
-
-            <div class="alert alert-secondary">
-                <i class="bi bi-lightbulb-fill me-2"></i>
-                En este módulo usaremos Spring Boot para entender cómo se estructura 
-                una aplicación profesional en capas (controlador, servicio, repositorio), 
-                cómo se exponen endpoints HTTP y cómo se comporta el servidor en tiempo de 
-                ejecución (hilos de Tomcat, conexiones, etc.).
-            </div>
-
-            <hr>
-
-            <h4>
-                <i class="bi bi-link-45deg me-2 text-dark"></i>
-                Documentación oficial de Spring Boot
-            </h4>
-
-            <p>
-                A continuación tienes enlaces oficiales que te servirán como referencia
-                cuando quieras profundizar más allá de los ejemplos de clase:
-            </p>
-
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <div class="card h-100 border-success">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-book-half me-2 text-success"></i>
-                                Reference Documentation
-                            </h5>
-                            <p class="card-text">
-                                Guía principal de Spring Boot: conceptos, configuración, 
-                                web, datos, seguridad, empaquetado, etc.
-                            </p>
-                            <a href="https://docs.spring.io/spring-boot/reference/" 
-                               class="btn btn-sm btn-success" target="_blank">
-                                Abrir referencia
-                                <i class="bi bi-box-arrow-up-right ms-1"></i>
-                            </a>
-                        </div>
+        <!-- PRESENTACIÓN GOOGLE SLIDES -->
+        <div class="row mb-5" id="presentacion">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-info text-white">
+                        <i class="bi bi-easel-fill me-2"></i>
+                        Presentación introductoria
                     </div>
-                </div>
+                    <div class="card-body p-0 text-center">
 
-                <div class="col-md-4 mb-3">
-                    <div class="card h-100 border-primary">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-file-code-fill me-2 text-primary"></i>
-                                API Java (Javadoc)
-                            </h5>
-                            <p class="card-text">
-                                Documentación de clases y métodos de Spring Boot. 
-                                Útil cuando quieres saber exactamente qué hace una clase,
-                                anotación o método.
-                            </p>
-                            <a href="https://docs.spring.io/spring-boot/api/java/" 
-                               class="btn btn-sm btn-primary" target="_blank">
-                                Abrir API Javadoc
-                                <i class="bi bi-box-arrow-up-right ms-1"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                        <iframe 
+                            src="https://docs.google.com/presentation/d/e/2PACX-1vQv26PhbXUu8ba5fNrk4LqDZZoznF8ghs-PhgmH2-PQnVzlyWgVRgoF0vCIsLcvLGlGhjtc3BV1b7rw/pubembed?start=false&loop=false&delayms=3000" 
+                            frameborder="0"
+                            width="100%" 
+                            height="550"
+                            allowfullscreen="true"
+                            mozallowfullscreen="true"
+                            webkitallowfullscreen="true">
+                        </iframe>
 
-                <div class="col-md-4 mb-3">
-                    <div class="card h-100 border-dark">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-github me-2"></i>
-                                Código fuente en GitHub
-                            </h5>
-                            <p class="card-text">
-                                Repositorio oficial del proyecto Spring Boot. 
-                                Aquí puedes ver cómo está implementado el framework, 
-                                issues y contribuciones.
-                            </p>
-                            <a href="https://github.com/spring-projects/spring-boot" 
-                               class="btn btn-sm btn-dark" target="_blank">
-                                Ver en GitHub
-                                <i class="bi bi-box-arrow-up-right ms-1"></i>
-                            </a>
-                        </div>
                     </div>
                 </div>
             </div>
-
-            <hr>
-
-            <div class="alert alert-info mb-0">
-                <i class="bi bi-flag-fill me-2"></i>
-                Objetivo para el módulo: ser capaces de entender, ejecutar y modificar 
-                una aplicación Spring Boot sencilla (controladores, vistas, servicios y 
-                acceso a datos), y relacionar su comportamiento con los hilos que 
-                estamos analizando en esta guía.
-            </div>
-
         </div>
-    </div>
-</section>
 
-       
+        <!-- SECCIÓN: Qué es Spring Boot y enlaces al API -->
+        <section class="my-5" id="springboot-api">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">
+                        <i class="bi bi-journal-code me-2"></i>
+                        ¿Qué es Spring Boot? 
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <p class="lead">
+                        Spring Boot es un <strong>framework de Java</strong> que simplifica enormemente 
+                        el desarrollo de aplicaciones con Spring: permite crear aplicaciones 
+                        <strong>autónomas, listas para producción</strong>, con muy poca configuración 
+                        y un <strong>servidor web embebido</strong> (Tomcat, Jetty, etc.).
+                    </p>
+
+                    <hr>
+
+                    <h4>
+                        <i class="bi bi-mortarboard-fill me-2 text-primary"></i>
+                        ¿Por qué es interesante para DAW y DAM?
+                    </h4>
+
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            Permite crear <strong>APIs REST</strong> y aplicaciones web Java modernas 
+                            usando controladores, servicios y repositorios (patrón MVC / capas).
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            Incluye un <strong>servidor embebido</strong> (normalmente Tomcat), 
+                            por lo que basta con ejecutar la aplicación para tener un servidor web 
+                            en marcha (sin configurar un Tomcat externo).
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            Ofrece <strong>auto-configuración</strong>: detecta dependencias 
+                            (Spring Web, Data JPA, Security, etc.) y configura muchas cosas por ti,
+                            reduciendo código “ceremonial”.
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            Se integra fácilmente con <strong>bases de datos</strong>, seguridad, 
+                            plantillas HTML (Thymeleaf), mensajería, etc.
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            Es tecnología <strong>muy utilizada en el mundo profesional</strong>, 
+                            por lo que encaja perfectamente con los resultados de aprendizaje de FP 
+                            en Desarrollo de Aplicaciones Web y Multiplataforma.
+                        </li>
+                    </ul>
+
+                    <div class="alert alert-secondary">
+                        <i class="bi bi-lightbulb-fill me-2"></i>
+                        En esta ocasión usaremos Spring Boot para entender cómo se estructura 
+                        una aplicación profesional en capas (controlador, servicio, repositorio), 
+                        cómo se exponen endpoints HTTP y cómo se comporta el servidor en tiempo de 
+                        ejecución (hilos de Tomcat, conexiones, etc.).
+                    </div>
+
+                    <hr>
+
+                    <h4>
+                        <i class="bi bi-link-45deg me-2 text-dark"></i>
+                        Documentación oficial de Spring Boot
+                    </h4>
+
+                    <p>
+                        A continuación tienes enlaces oficiales que te servirán como referencia
+                        cuando quieras profundizar más allá de los ejemplos de clase:
+                    </p>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 border-success">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="bi bi-book-half me-2 text-success"></i>
+                                        Reference Documentation
+                                    </h5>
+                                    <p class="card-text">
+                                        Guía principal de Spring Boot: conceptos, configuración, 
+                                        web, datos, seguridad, empaquetado, etc.
+                                    </p>
+                                    <a href="https://docs.spring.io/spring-boot/reference/" 
+                                       class="btn btn-sm btn-success" target="_blank">
+                                        Abrir referencia
+                                        <i class="bi bi-box-arrow-up-right ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 border-primary">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="bi bi-file-code-fill me-2 text-primary"></i>
+                                        API Java (Javadoc)
+                                    </h5>
+                                    <p class="card-text">
+                                        Documentación de clases y métodos de Spring Boot. 
+                                        Útil cuando quieres saber exactamente qué hace una clase,
+                                        anotación o método.
+                                    </p>
+                                    <a href="https://docs.spring.io/spring-boot/api/java/" 
+                                       class="btn btn-sm btn-primary" target="_blank">
+                                        Abrir API Javadoc
+                                        <i class="bi bi-box-arrow-up-right ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 border-dark">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="bi bi-github me-2"></i>
+                                        Código fuente en GitHub
+                                    </h5>
+                                    <p class="card-text">
+                                        Repositorio oficial del proyecto Spring Boot. 
+                                        Aquí puedes ver cómo está implementado el framework, 
+                                        issues y contribuciones.
+                                    </p>
+                                    <a href="https://github.com/spring-projects/spring-boot" 
+                                       class="btn btn-sm btn-dark" target="_blank">
+                                        Ver en GitHub
+                                        <i class="bi bi-box-arrow-up-right ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="alert alert-info mb-0">
+                        <i class="bi bi-flag-fill me-2"></i>
+                        Objetivo: ser capaces de entender, ejecutar y modificar 
+                        una aplicación Spring Boot sencilla (controladores, vistas, servicios y 
+                        acceso a datos), y relacionar su comportamiento con los hilos que 
+                        estamos analizando en esta guía.
+                    </div>
+
+                </div>
+            </div>
+        </section>
 
         <!-- SECCIÓN: Fork del repositorio y configuración Git -->
         <section class="my-5" id="fork-git">
@@ -843,369 +849,371 @@ http://localhost:8080/hilos/listar
         </div>
 
     </div>
-<!-- SECCIÓN: Listado de tareas con acordeón -->
-<section class="my-5" id="tareas">
-    <div class="card shadow-sm">
-        <div class="card-header bg-dark text-white">
-            <h3 class="mb-0">
+
+    <!-- SECCIÓN: Listado de tareas con acordeón -->
+    <section class="my-5" id="tareas">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h3 class="mb-0">
                 <i class="bi bi-list-check me-2"></i>
                 Listado de tareas (Spring Boot, hilos y debugger)
-            </h3>
-        </div>
+                </h3>
+            </div>
 
-        <div class="card-body">
+            <div class="card-body">
 
-            <p class="lead">
-                A continuación tienes varias tareas prácticas relacionadas con hilos, 
-                depuración y procesos. Cada tarea indica la <strong>rama Git</strong> 
-                donde debes guardar tu trabajo y los <strong>puntos de ruptura</strong> 
-                que tendrás que analizar en el debugger.
-            </p>
+                <p class="lead">
+                    A continuación tienes varias tareas prácticas relacionadas con hilos, 
+                    depuración y procesos. Cada tarea indica la <strong>rama Git</strong> 
+                    donde debes guardar tu trabajo y los <strong>puntos de ruptura</strong> 
+                    que tendrás que analizar en el debugger.
+                </p>
 
-            <div class="accordion" id="accordionTareas">
+                <div class="accordion" id="accordionTareas">
 
-                <!-- TAREA 1: Hilos básicos en controlador /hilos -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTarea1">
-                        <button class="accordion-button" type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapseTarea1"
-                                aria-expanded="true"
-                                aria-controls="collapseTarea1">
-                            <i class="bi bi-activity me-2 text-success"></i>
-                            Tarea 1 · Hilos básicos en Spring Boot (/hilos)
-                        </button>
-                    </h2>
-                    <div id="collapseTarea1" class="accordion-collapse collapse show"
-                         aria-labelledby="headingTarea1"
-                         data-bs-parent="#accordionTareas">
-                        <div class="accordion-body">
+                    <!-- TAREA 1: Hilos básicos en controlador /hilos -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTarea1">
+                            <button class="accordion-button" type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapseTarea1"
+                                    aria-expanded="true"
+                                    aria-controls="collapseTarea1">
+                                <i class="bi bi-activity me-2 text-success"></i>
+                                Tarea 1 · Hilos básicos en Spring Boot (/hilos)
+                            </button>
+                        </h2>
+                        <div id="collapseTarea1" class="accordion-collapse collapse show"
+                             aria-labelledby="headingTarea1"
+                             data-bs-parent="#accordionTareas">
+                            <div class="accordion-body">
 
-                            <p>
-                                En esta tarea vas a trabajar con el controlador 
-                                <code>HilosController</code>, que crea varios hilos 
-                                (por ejemplo, <code>Analizador-logs</code> y 
-                                <code>Generador-informes</code>) al acceder al endpoint 
-                                <code>/hilos</code>.
-                            </p>
+                                <p>
+                                    En esta tarea vas a trabajar con el controlador 
+                                    <code>HilosController</code>, que crea varios hilos 
+                                    (por ejemplo, <code>Analizador-logs</code> y 
+                                    <code>Generador-informes</code>) al acceder al endpoint 
+                                    <code>/hilos</code>.
+                                </p>
 
-                            <p><strong>Rama donde guardar la tarea:</strong> 
-                                <span class="badge bg-success">hilos</span>
-                            </p>
+                                <p><strong>Rama donde guardar la tarea:</strong> 
+                                    <span class="badge bg-success">hilos</span>
+                                </p>
 
-                            <ul class="list-group mb-3">
-                                <li class="list-group-item">
-                                    Ver qué hilo atiende la petición HTTP 
-                                    (normalmente <code>http-nio-808x-exec-N</code>).
-                                </li>
-                                <li class="list-group-item">
-                                    Analizar los hilos creados por ti con lambdas 
-                                    (<code>Analizador-logs</code>, <code>Generador-informes</code>).
-                                </li>
-                                <li class="list-group-item">
-                                    Observar estados de los hilos: <code>RUNNABLE</code>, 
-                                    <code>TIMED_WAITING</code>, <code>TERMINATED</code>.
-                                </li>
-                            </ul>
+                                <ul class="list-group mb-3">
+                                    <li class="list-group-item">
+                                        Ver qué hilo atiende la petición HTTP 
+                                        (normalmente <code>http-nio-808x-exec-N</code>).
+                                    </li>
+                                    <li class="list-group-item">
+                                        Analizar los hilos creados por ti con lambdas 
+                                        (<code>Analizador-logs</code>, <code>Generador-informes</code>).
+                                    </li>
+                                    <li class="list-group-item">
+                                        Observar estados de los hilos: <code>RUNNABLE</code>, 
+                                        <code>TIMED_WAITING</code>, <code>TERMINATED</code>.
+                                    </li>
+                                </ul>
 
-                            <!-- Subacordeón: Puntos de ruptura Tarea 1 -->
-                            <div class="accordion mt-3" id="accordionBreakpoints1">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingBP1">
-                                        <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#collapseBP1"
-                                                aria-expanded="false"
-                                                aria-controls="collapseBP1">
-                                            <i class="bi bi-bug-fill me-2 text-danger"></i>
-                                            Puntos de ruptura a analizar (Debugger)
-                                        </button>
-                                    </h2>
-                                    <div id="collapseBP1" class="accordion-collapse collapse"
-                                         aria-labelledby="headingBP1"
-                                         data-bs-parent="#accordionBreakpoints1">
-                                        <div class="accordion-body">
-                                            <ol class="mb-0">
-                                                <li>
-                                                    En el método <code>verHilos(...)</code>:
-                                                    línea donde se obtiene el hilo de la petición:<br>
-                                                    <code>String requestThread = Thread.currentThread().getName();</code>
-                                                </li>
-                                                <li class="mt-2">
-                                                    En la creación del hilo 
-                                                    <code>Analizador-logs</code> (dentro del <code>new Thread(() -&gt; { ... })</code>),
-                                                    en la primera línea del bucle <code>for</code>.
-                                                </li>
-                                                <li class="mt-2">
-                                                    En la creación del hilo 
-                                                    <code>Generador-informes</code>, también en la primera iteración 
-                                                    del bucle, justo antes de <code>Thread.sleep(...)</code>.
-                                                </li>
-                                                <li class="mt-2">
-                                                    Observar en la vista <strong>Debug</strong>:
-                                                    qué hilo ejecuta el controlador y qué hilos 
-                                                    ejecutan las tareas en segundo plano.
-                                                </li>
-                                            </ol>
+                                <!-- Subacordeón: Puntos de ruptura Tarea 1 -->
+                                <div class="accordion mt-3" id="accordionBreakpoints1">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingBP1">
+                                            <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseBP1"
+                                                    aria-expanded="false"
+                                                    aria-controls="collapseBP1">
+                                                <i class="bi bi-bug-fill me-2 text-danger"></i>
+                                                Puntos de ruptura a analizar (Debugger)
+                                            </button>
+                                        </h2>
+                                        <div id="collapseBP1" class="accordion-collapse collapse"
+                                             aria-labelledby="headingBP1"
+                                             data-bs-parent="#accordionBreakpoints1">
+                                            <div class="accordion-body">
+                                                <ol class="mb-0">
+                                                    <li>
+                                                        En el método <code>verHilos(...)</code>:
+                                                        línea donde se obtiene el hilo de la petición:<br>
+                                                        <code>String requestThread = Thread.currentThread().getName();</code>
+                                                    </li>
+                                                    <li class="mt-2">
+                                                        En la creación del hilo 
+                                                        <code>Analizador-logs</code> (dentro del <code>new Thread(() -&gt; { ... })</code>),
+                                                        en la primera línea del bucle <code>for</code>.
+                                                    </li>
+                                                    <li class="mt-2">
+                                                        En la creación del hilo 
+                                                        <code>Generador-informes</code>, también en la primera iteración 
+                                                        del bucle, justo antes de <code>Thread.sleep(...)</code>.
+                                                    </li>
+                                                    <li class="mt-2">
+                                                        Observar en la vista <strong>Debug</strong>:
+                                                        qué hilo ejecuta el controlador y qué hilos 
+                                                        ejecutan las tareas en segundo plano.
+                                                    </li>
+                                                </ol>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- Fin subacordeón Tarea 1 -->
+                                <!-- Fin subacordeón Tarea 1 -->
 
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- TAREA 2: InspectorDeHilos + ThreadGroup -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTarea2">
-                        <button class="accordion-button collapsed" type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapseTarea2"
-                                aria-expanded="false"
-                                aria-controls="collapseTarea2">
-                            <i class="bi bi-diagram-3-fill me-2 text-primary"></i>
-                            Tarea 2 · Inspector de hilos y ThreadGroup raíz
-                        </button>
-                    </h2>
-                    <div id="collapseTarea2" class="accordion-collapse collapse"
-                         aria-labelledby="headingTarea2"
-                         data-bs-parent="#accordionTareas">
-                        <div class="accordion-body">
+                    <!-- TAREA 2: InspectorDeHilos + ThreadGroup -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTarea2">
+                            <button class="accordion-button collapsed" type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapseTarea2"
+                                    aria-expanded="false"
+                                    aria-controls="collapseTarea2">
+                                <i class="bi bi-diagram-3-fill me-2 text-primary"></i>
+                                Tarea 2 · Inspector de hilos y ThreadGroup raíz
+                            </button>
+                        </h2>
+                        <div id="collapseTarea2" class="accordion-collapse collapse"
+                             aria-labelledby="headingTarea2"
+                             data-bs-parent="#accordionTareas">
+                            <div class="accordion-body">
 
-                            <p>
-                                En esta tarea utilizarás la clase 
-                                <code>InspectorDeHilos</code> para listar todos los hilos activos 
-                                en la JVM y entender la jerarquía de <code>ThreadGroup</code> 
-                                (JVM, Tomcat, DevTools, hilos propios, etc.).
-                            </p>
+                                <p>
+                                    En esta tarea utilizarás la clase 
+                                    <code>InspectorDeHilos</code> para listar todos los hilos activos 
+                                    en la JVM y entender la jerarquía de <code>ThreadGroup</code> 
+                                    (JVM, Tomcat, DevTools, hilos propios, etc.).
+                                </p>
 
-                            <p><strong>Rama donde guardar la tarea:</strong> 
-                                <span class="badge bg-primary">hilos-debugger</span>
-                            </p>
+                                <p><strong>Rama donde guardar la tarea:</strong> 
+                                    <span class="badge bg-primary">hilos-debugger</span>
+                                </p>
 
-                            <ul class="list-group mb-3">
-                                <li class="list-group-item">
-                                    Invocar <code>InspectorDeHilos.listarHilos()</code> desde un 
-                                    endpoint (por ejemplo, <code>/hilos/listar</code>).
-                                </li>
-                                <li class="list-group-item">
-                                    Identificar hilos de JVM, Tomcat, DevTools y de la aplicación.
-                                </li>
-                                <li class="list-group-item">
-                                    Comprender cómo se obtiene el <strong>ThreadGroup raíz</strong>.
-                                </li>
-                            </ul>
+                                <ul class="list-group mb-3">
+                                    <li class="list-group-item">
+                                        Invocar <code>InspectorDeHilos.listarHilos()</code> desde un 
+                                        endpoint (por ejemplo, <code>/hilos/listar</code>).
+                                    </li>
+                                    <li class="list-group-item">
+                                        Identificar hilos de JVM, Tomcat, DevTools y de la aplicación.
+                                    </li>
+                                    <li class="list-group-item">
+                                        Comprender cómo se obtiene el <strong>ThreadGroup raíz</strong>.
+                                    </li>
+                                </ul>
 
-                            <!-- Subacordeón: Puntos de ruptura Tarea 2 -->
-                            <div class="accordion mt-3" id="accordionBreakpoints2">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingBP2">
-                                        <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#collapseBP2"
-                                                aria-expanded="false"
-                                                aria-controls="collapseBP2">
-                                            <i class="bi bi-bug-fill me-2 text-danger"></i>
-                                            Puntos de ruptura a analizar (Debugger)
-                                        </button>
-                                    </h2>
-                                    <div id="collapseBP2" class="accordion-collapse collapse"
-                                         aria-labelledby="headingBP2"
-                                         data-bs-parent="#accordionBreakpoints2">
-                                        <div class="accordion-body">
-                                            <ol class="mb-0">
-                                                <li>
-                                                    En <code>listarHilos()</code>, justo antes de 
-                                                    obtener el grupo raíz:<br>
-                                                    <code>ThreadGroup rootGroup = obtenerRootThreadGroup();</code>
-                                                </li>
-                                                <li class="mt-2">
-                                                    En <code>obtenerRootThreadGroup()</code>, en la línea:<br>
-                                                    <code>ThreadGroup grupo = Thread.currentThread().getThreadGroup();</code><br>
-                                                    para ver en qué grupo se está ejecutando la petición.
-                                                </li>
-                                                <li class="mt-2">
-                                                    Dentro del bucle <code>while</code>:<br>
-                                                    <code>grupo = padre; // subimos en la jerarquía</code><br>
-                                                    para observar cómo se “asciende” hasta el grupo raíz.
-                                                </li>
-                                                <li class="mt-2">
-                                                    Observar en la vista de variables cómo cambia 
-                                                    <code>grupo.getName()</code> en cada iteración.
-                                                </li>
-                                            </ol>
+                                <!-- Subacordeón: Puntos de ruptura Tarea 2 -->
+                                <div class="accordion mt-3" id="accordionBreakpoints2">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingBP2">
+                                            <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseBP2"
+                                                    aria-expanded="false"
+                                                    aria-controls="collapseBP2">
+                                                <i class="bi bi-bug-fill me-2 text-danger"></i>
+                                                Puntos de ruptura a analizar (Debugger)
+                                            </button>
+                                        </h2>
+                                        <div id="collapseBP2" class="accordion-collapse collapse"
+                                             aria-labelledby="headingBP2"
+                                             data-bs-parent="#accordionBreakpoints2">
+                                            <div class="accordion-body">
+                                                <ol class="mb-0">
+                                                    <li>
+                                                        En <code>listarHilos()</code>, justo antes de 
+                                                        obtener el grupo raíz:<br>
+                                                        <code>ThreadGroup rootGroup = obtenerRootThreadGroup();</code>
+                                                    </li>
+                                                    <li class="mt-2">
+                                                        En <code>obtenerRootThreadGroup()</code>, en la línea:<br>
+                                                        <code>ThreadGroup grupo = Thread.currentThread().getThreadGroup();</code><br>
+                                                        para ver en qué grupo se está ejecutando la petición.
+                                                    </li>
+                                                    <li class="mt-2">
+                                                        Dentro del bucle <code>while</code>:<br>
+                                                        <code>grupo = padre; // subimos en la jerarquía</code><br>
+                                                        para observar cómo se “asciende” hasta el grupo raíz.
+                                                    </li>
+                                                    <li class="mt-2">
+                                                        Observar en la vista de variables cómo cambia 
+                                                        <code>grupo.getName()</code> en cada iteración.
+                                                    </li>
+                                                </ol>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- Fin subacordeón Tarea 2 -->
+                                <!-- Fin subacordeón Tarea 2 -->
 
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- TAREA 3: ProcessBuilder + hilos + tubería + Thymeleaf -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTarea3">
-                        <button class="accordion-button collapsed" type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapseTarea3"
-                                aria-expanded="false"
-                                aria-controls="collapseTarea3">
-                            <i class="bi bi-terminal-fill me-2 text-warning"></i>
-                            Tarea 3 · ProcessBuilder, hilos y tubería + Thymeleaf
-                        </button>
-                    </h2>
-                    <div id="collapseTarea3" class="accordion-collapse collapse"
-                         aria-labelledby="headingTarea3"
-                         data-bs-parent="#accordionTareas">
-                        <div class="accordion-body">
+                    <!-- TAREA 3: ProcessBuilder + hilos + tubería + Thymeleaf -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTarea3">
+                            <button class="accordion-button collapsed" type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapseTarea3"
+                                    aria-expanded="false"
+                                    aria-controls="collapseTarea3">
+                                <i class="bi bi-terminal-fill me-2 text-warning"></i>
+                                Tarea 3 · ProcessBuilder, hilos y tubería + Thymeleaf
+                            </button>
+                        </h2>
+                        <div id="collapseTarea3" class="accordion-collapse collapse"
+                             aria-labelledby="headingTarea3"
+                             data-bs-parent="#accordionTareas">
+                            <div class="accordion-body">
 
-                            <p>
-                                En esta tarea crearás, desde Spring Boot, un 
-                                <strong>proceso externo</strong> con <code>ProcessBuilder</code>, 
-                                gestionando su entrada y salida estándar con 
-                                <strong>dos hilos</strong>, y mostrando el resultado en una 
-                                vista <strong>Thymeleaf</strong>.
-                            </p>
+                                <p>
+                                    En esta tarea crearás, desde Spring Boot, un 
+                                    <strong>proceso externo</strong> con <code>ProcessBuilder</code>, 
+                                    gestionando su entrada y salida estándar con 
+                                    <strong>dos hilos</strong>, y mostrando el resultado en una 
+                                    vista <strong>Thymeleaf</strong>.
+                                </p>
 
-                            <p><strong>Rama donde guardar la tarea:</strong> 
-                                <span class="badge bg-warning text-dark">hilos-processbuilder</span>
-                            </p>
+                                <p><strong>Rama donde guardar la tarea:</strong> 
+                                    <span class="badge bg-warning text-dark">hilos-processbuilder</span>
+                                </p>
 
-                            <ul class="list-group mb-3">
-                              <li class="list-group-item">
-    Implementar <code>ProcesoService</code> con 
-    <code>ProcessBuilder</code> y dos hilos 
-    (<code>proceso-escritor</code> y <code>proceso-lector</code>).
-    Además, como ejemplo concreto en Linux, configurar el servicio para
-    ejecutar un comando del sistema que muestre información de hardware,
-    por ejemplo:
-    <br>
-    <code>sh -c "lshw -short | grep -i memory"</code>
-    <br>
-    de modo que:
-    <ul class="mt-2">
-        <li>El proceso externo ejecuta <code>lshw</code> y hace un
-            <code>grep</code> sobre la palabra <em>memory</em>.</li>
-        <li>El hilo <strong>proceso-lector</strong> va leyendo la salida
-            línea a línea y la acumula en un <code>StringBuilder</code>.</li>
-        <li>El controlador envía esa salida al modelo y se muestra en la vista
-            Thymeleaf como un bloque <code>&lt;pre&gt;</code> en la página web.</li>
-    </ul>
-    (Si <code>lshw</code> no está disponible en el sistema, se puede cambiar el
-    comando por otro seguro, como <code>ls -la</code>).
-</li>
+                                <ul class="list-group mb-3">
+                                    <li class="list-group-item">
+                                        Implementar <code>ProcesoService</code> con 
+                                        <code>ProcessBuilder</code> y dos hilos 
+                                        (<code>proceso-escritor</code> y <code>proceso-lector</code>).
+                                        Además, como ejemplo concreto en Linux, configurar el servicio para
+                                        ejecutar un comando del sistema que muestre información de hardware,
+                                        por ejemplo:
+                                        <br>
+                                        <code>sh -c "lshw -short | grep -i memory"</code>
+                                        <br>
+                                        de modo que:
+                                        <ul class="mt-2">
+                                            <li>El proceso externo ejecuta <code>lshw</code> y hace un
+                                                <code>grep</code> sobre la palabra <em>memory</em>.</li>
+                                            <li>El hilo <strong>proceso-lector</strong> va leyendo la salida
+                                                línea a línea y la acumula en un <code>StringBuilder</code>.</li>
+                                            <li>El controlador envía esa salida al modelo y se muestra en la vista
+                                                Thymeleaf como un bloque <code>&lt;pre&gt;</code> en la página web.</li>
+                                        </ul>
+                                        (Si <code>lshw</code> no está disponible en el sistema, se puede cambiar el
+                                        comando por otro seguro, como <code>ls -la</code>).
+                                    </li>
 
-                                <li class="list-group-item">
-                                    Implementar <code>ProcesoController</code> con el endpoint 
-                                    <code>/proceso/ejecutar</code>.
-                                </li>
-                                <li class="list-group-item">
-                                    Crear la vista <code>proceso.html</code> con Thymeleaf 
-                                    para mostrar la salida del proceso.
-                                </li>
-                            </ul>
+                                    <li class="list-group-item">
+                                        Implementar <code>ProcesoController</code> con el endpoint 
+                                        <code>/proceso/ejecutar</code>.
+                                    </li>
+                                    <li class="list-group-item">
+                                        Crear la vista <code>proceso.html</code> con Thymeleaf 
+                                        para mostrar la salida del proceso.
+                                    </li>
+                                </ul>
 
-                            <!-- Subacordeón: Puntos de ruptura Tarea 3 -->
-                            <div class="accordion mt-3" id="accordionBreakpoints3">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingBP3">
-                                        <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#collapseBP3"
-                                                aria-expanded="false"
-                                                aria-controls="collapseBP3">
-                                            <i class="bi bi-bug-fill me-2 text-danger"></i>
-                                            Puntos de ruptura a analizar (Debugger)
-                                        </button>
-                                    </h2>
-                                    <div id="collapseBP3" class="accordion-collapse collapse"
-                                         aria-labelledby="headingBP3"
-                                         data-bs-parent="#accordionBreakpoints3">
-                                        <div class="accordion-body">
-                                            <ol class="mb-0">
-                                                <li>
-                                                    En <code>ProcesoController.ejecutarProceso(...)</code>, 
-                                                    justo antes de llamar al servicio:<br>
-                                                    <code>String salida = procesoService.ejecutarComando(comando);</code>
-                                                </li>
-                                                <li class="mt-2">
-                                                    En <code>ProcesoService.ejecutarComando(...)</code>, 
-                                                    tras crear el <code>ProcessBuilder</code> y antes de <code>pb.start()</code>:
-                                                    para ver qué comando se va a ejecutar.
-                                                </li>
-                                                <li class="mt-2">
-                                                    En el hilo <strong>proceso-escritor</strong>, dentro del 
-                                                    bloque <code>try</code>, al abrir el <code>OutputStream</code> del proceso:
-                                                    <br><code>try (OutputStream os = proceso.getOutputStream() ... ) { ... }</code>
-                                                </li>
-                                                <li class="mt-2">
-                                                    En el hilo <strong>proceso-lector</strong>, dentro del bucle de lectura:
-                                                    <br><code>while ((linea = reader.readLine()) != null) { ... }</code>
-                                                </li>
-                                                <li class="mt-2">
-                                                    En la línea donde se hace <code>proceso.waitFor();</code>, 
-                                                    para observar cómo el hilo del controlador espera 
-                                                    a que termine el proceso externo.
-                                                </li>
-                                                <li class="mt-2">
-                                                    Observar en la vista <strong>Debug</strong> los hilos:
-                                                    <code>http-nio-...</code>, <code>proceso-escritor</code>, 
-                                                    <code>proceso-lector</code> y su estado durante la ejecución.
-                                                </li>
-                                            </ol>
+                                <!-- Subacordeón: Puntos de ruptura Tarea 3 -->
+                                <div class="accordion mt-3" id="accordionBreakpoints3">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingBP3">
+                                            <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseBP3"
+                                                    aria-expanded="false"
+                                                    aria-controls="collapseBP3">
+                                                <i class="bi bi-bug-fill me-2 text-danger"></i>
+                                                Puntos de ruptura a analizar (Debugger)
+                                            </button>
+                                        </h2>
+                                        <div id="collapseBP3" class="accordion-collapse collapse"
+                                             aria-labelledby="headingBP3"
+                                             data-bs-parent="#accordionBreakpoints3">
+                                            <div class="accordion-body">
+                                                <ol class="mb-0">
+                                                    <li>
+                                                        En <code>ProcesoController.ejecutarProceso(...)</code>, 
+                                                        justo antes de llamar al servicio:<br>
+                                                        <code>String salida = procesoService.ejecutarComando(comando);</code>
+                                                    </li>
+                                                    <li class="mt-2">
+                                                        En <code>ProcesoService.ejecutarComando(...)</code>, 
+                                                        tras crear el <code>ProcessBuilder</code> y antes de <code>pb.start()</code>:
+                                                        para ver qué comando se va a ejecutar.
+                                                    </li>
+                                                    <li class="mt-2">
+                                                        En el hilo <strong>proceso-escritor</strong>, dentro del 
+                                                        bloque <code>try</code>, al abrir el <code>OutputStream</code> del proceso:
+                                                        <br><code>try (OutputStream os = proceso.getOutputStream() ... ) { ... }</code>
+                                                    </li>
+                                                    <li class="mt-2">
+                                                        En el hilo <strong>proceso-lector</strong>, dentro del bucle de lectura:
+                                                        <br><code>while ((linea = reader.readLine()) != null) { ... }</code>
+                                                    </li>
+                                                    <li class="mt-2">
+                                                        En la línea donde se hace <code>proceso.waitFor();</code>, 
+                                                        para observar cómo el hilo del controlador espera 
+                                                        a que termine el proceso externo.
+                                                    </li>
+                                                    <li class="mt-2">
+                                                        Observar en la vista <strong>Debug</strong> los hilos:
+                                                        <code>http-nio-...</code>, <code>proceso-escritor</code>, 
+                                                        <code>proceso-lector</code> y su estado durante la ejecución.
+                                                    </li>
+                                                </ol>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- Fin subacordeón Tarea 3 -->
+                                <!-- Fin subacordeón Tarea 3 -->
 
+                            </div>
                         </div>
                     </div>
-                </div>
-<!-- ÍTEM DEL ACORDEÓN: ProcesoService con lshw + grep -->
-<div class="accordion-item">
-    <h2 class="accordion-header" id="headingProcesoService">
-        <button class="accordion-button collapsed" type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseProcesoService"
-                aria-expanded="false"
-                aria-controls="collapseProcesoService">
-            <i class="bi bi-terminal-fill me-2"></i>
-            Implementar ProcesoService con ProcessBuilder + hilos + tubería (lshw + grep)
-        </button>
-    </h2>
 
-    <div id="collapseProcesoService" 
-         class="accordion-collapse collapse" 
-         aria-labelledby="headingProcesoService"
-         data-bs-parent="#accordionTarea3">
-        <div class="accordion-body">
+                    <!-- ÍTEM DEL ACORDEÓN: ProcesoService con lshw + grep -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingProcesoService">
+                            <button class="accordion-button collapsed" type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapseProcesoService"
+                                    aria-expanded="false"
+                                    aria-controls="collapseProcesoService">
+                                <i class="bi bi-terminal-fill me-2"></i>
+                                Implementar ProcesoService con ProcessBuilder + hilos + tubería (lshw + grep)
+                            </button>
+                        </h2>
 
-            <p class="lead">
-                En esta parte implementarás un servicio capaz de ejecutar un
-                <strong>proceso externo real</strong> del sistema Linux usando:
-            </p>
+                        <div id="collapseProcesoService" 
+                             class="accordion-collapse collapse" 
+                             aria-labelledby="headingProcesoService"
+                             data-bs-parent="#accordionTareas">
+                            <div class="accordion-body">
 
-            <ul>
-                <li><code>ProcessBuilder</code></li>
-                <li>Un <strong>hilo escritor</strong> (stdin)</li>
-                <li>Un <strong>hilo lector</strong> (stdout)</li>
-                <li>Tuberías para comunicarse con el proceso</li>
-            </ul>
+                                <p class="lead">
+                                    En esta parte implementarás un servicio capaz de ejecutar un
+                                    <strong>proceso externo real</strong> del sistema Linux usando:
+                                </p>
 
-            <p>
-                El comando usado será:
-                <code>sh -c "lshw -short | grep -i memory"</code>,
-                que obtiene la información de hardware filtrada por "memory".
-            </p>
+                                <ul>
+                                    <li><code>ProcessBuilder</code></li>
+                                    <li>Un <strong>hilo escritor</strong> (stdin)</li>
+                                    <li>Un <strong>hilo lector</strong> (stdout)</li>
+                                    <li>Tuberías para comunicarse con el proceso</li>
+                                </ul>
 
-            <hr>
+                                <p>
+                                    El comando usado será:
+                                    <code>sh -c "lshw -short | grep -i memory"</code>,
+                                    que obtiene la información de hardware filtrada por "memory".
+                                </p>
 
-            <h5><i class="bi bi-code-slash me-2"></i>ProcesoService.java</h5>
+                                <hr>
+
+                                <h5><i class="bi bi-code-slash me-2"></i>ProcesoService.java</h5>
 
 <pre class="bg-light p-3 rounded border"><code>package com.hilos.servicio;
 
@@ -1292,21 +1300,305 @@ public class ProcesoService {
 }
 </code></pre>
 
-            <div class="alert alert-info mt-3">
-                <i class="bi bi-lightning-charge-fill me-2"></i>
-                Puedes colocar breakpoints en los hilos <strong>proceso-escritor</strong> 
-                y <strong>proceso-lector</strong> para verlos moverse en tu Debugger 
-                junto a los hilos http-nio de Tomcat.
+                                <div class="alert alert-info mt-3">
+                                    <i class="bi bi-lightning-charge-fill me-2"></i>
+                                    Puedes colocar breakpoints en los hilos <strong>proceso-escritor</strong> 
+                                    y <strong>proceso-lector</strong> para verlos moverse en tu Debugger 
+                                    junto a los hilos http-nio de Tomcat.
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ÍTEM DEL ACORDEÓN: Daemons, Reference Handler y prioridades -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingDaemons">
+                            <button class="accordion-button collapsed" type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapseDaemons"
+                                    aria-expanded="false"
+                                    aria-controls="collapseDaemons">
+                                <i class="bi bi-rocket-takeoff-fill me-2"></i>
+                                Hilos daemon, prioridades y el hilo especial "Reference Handler"
+                            </button>
+                        </h2>
+
+                        <div id="collapseDaemons"
+                             class="accordion-collapse collapse"
+                             aria-labelledby="headingDaemons"
+                             data-bs-parent="#accordionTareas">
+                            <div class="accordion-body">
+
+                                <p class="lead">
+                                    A partir de la salida real de <code>InspectorDeHilos</code>,
+                                    vamos a analizar qué significa que un hilo sea 
+                                    <strong>daemon</strong>, por qué algunos tienen 
+                                    <strong>prioridad muy alta</strong> (como 
+                                    <code>Reference Handler</code>) y otros prioridad baja
+                                    (como <code>Catalina-utility-1</code>).
+                                </p>
+
+                                <hr>
+
+                                <h5>
+                                    <i class="bi bi-terminal me-2 text-primary"></i>
+                                    Ejemplo real de hilos activos en la JVM
+                                </h5>
+
+<pre class="bg-light p-3 rounded border mb-3"><code>===== LISTADO DE HILOS ACTIVOS EN LA JVM =====
+Hilo: Reference Handler               | Estado: RUNNABLE     | Daemon: true  | Prioridad: 10
+Hilo: Finalizer                       | Estado: WAITING      | Daemon: true  | Prioridad: 8
+Hilo: Signal Dispatcher               | Estado: RUNNABLE     | Daemon: true  | Prioridad: 9
+Hilo: Notification Thread             | Estado: RUNNABLE     | Daemon: true  | Prioridad: 9
+Hilo: RMI TCP Accept-0                | Estado: RUNNABLE     | Daemon: true  | Prioridad: 5
+Hilo: RMI TCP Accept-40389            | Estado: RUNNABLE     | Daemon: true  | Prioridad: 5
+Hilo: RMI TCP Accept-0                | Estado: RUNNABLE     | Daemon: true  | Prioridad: 5
+Hilo: RMI Scheduler(0)                | Estado: TIMED_WAITING | Daemon: true  | Prioridad: 5
+Hilo: main                            | Estado: WAITING      | Daemon: false | Prioridad: 5
+Hilo: Thread-0                        | Estado: WAITING      | Daemon: false | Prioridad: 5
+Hilo: restartedMain                   | Estado: RUNNABLE     | Daemon: false | Prioridad: 5
+Hilo: Catalina-utility-1              | Estado: TIMED_WAITING | Daemon: false | Prioridad: 1
+Hilo: Catalina-utility-2              | Estado: WAITING      | Daemon: false | Prioridad: 1
+Hilo: container-0                     | Estado: TIMED_WAITING | Daemon: false | Prioridad: 5
+Hilo: File Watcher                    | Estado: TIMED_WAITING | Daemon: true  | Prioridad: 5
+Hilo: Live Reload Server              | Estado: RUNNABLE     | Daemon: true  | Prioridad: 5
+Hilo: http-nio-8085-exec-1            | Estado: WAITING      | Daemon: true  | Prioridad: 5
+Hilo: http-nio-8085-exec-2            | Estado: WAITING      | Daemon: true  | Prioridad: 5
+Hilo: http-nio-8085-exec-3            | Estado: WAITING      | Daemon: true  | Prioridad: 5
+Hilo: http-nio-8085-exec-4            | Estado: WAITING      | Daemon: true  | Prioridad: 5
+Hilo: http-nio-8085-exec-5            | Estado: WAITING      | Daemon: true  | Prioridad: 5
+Hilo: http-nio-8085-exec-6            | Estado: WAITING      | Daemon: true  | Prioridad: 5
+Hilo: http-nio-8085-exec-7            | Estado: WAITING      | Daemon: true  | Prioridad: 5
+Hilo: http-nio-8085-exec-8            | Estado: WAITING      | Daemon: true  | Prioridad: 5
+Hilo: http-nio-8085-exec-9            | Estado: WAITING      | Daemon: true  | Prioridad: 5
+Hilo: http-nio-8085-exec-10           | Estado: WAITING      | Daemon: true  | Prioridad: 5
+Hilo: http-nio-8085-Poller            | Estado: RUNNABLE     | Daemon: true  | Prioridad: 5
+Hilo: http-nio-8085-Acceptor          | Estado: RUNNABLE     | Daemon: true  | Prioridad: 5
+Hilo: Common-Cleaner                  | Estado: TIMED_WAITING | Daemon: true  | Prioridad: 8
+Hilo: RMI TCP Connection(1)-127.0.0.1  | Estado: RUNNABLE     | Daemon: true  | Prioridad: 5
+Hilo: RMI TCP Connection(2)-127.0.0.1  | Estado: RUNNABLE     | Daemon: true  | Prioridad: 5
+Hilo: JMX server connection timeout 32  | Estado: TIMED_WAITING | Daemon: true  | Prioridad: 5
+</code></pre>
+
+                                <hr>
+
+                                <h5><i class="bi bi-gear-wide-connected me-2 text-success"></i>
+                                    1. ¿Qué es un hilo daemon?
+                                </h5>
+
+                                <p>
+                                    En Java, un hilo <strong>daemon</strong> es un hilo de servicio o
+                                    de infraestructura. Su característica clave:
+                                </p>
+
+                                <div class="alert alert-warning">
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                    La JVM se detiene cuando <strong>solo quedan hilos daemon</strong>.
+                                    Es decir, los hilos daemon <strong>no mantienen viva</strong> la aplicación.
+                                </div>
+
+                                <ul class="list-group mb-3">
+                                    <li class="list-group-item">
+                                        <strong>daemon = true</strong> → hilo de sistema / soporte
+                                        (GC, limpieza, monitorización, RMI, DevTools...).
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>daemon = false</strong> → hilo de trabajo de la aplicación
+                                        (peticiones web, lógica de negocio, tareas que deben terminarse).
+                                    </li>
+                                </ul>
+
+                                <p class="text-muted">
+                                    Por eso ves muchos hilos <code>daemon:true</code> en la lista:
+                                    son “minions” que ayudan a la JVM o al contenedor, pero no son
+                                    la aplicación en sí.
+                                </p>
+
+                                <hr>
+
+                                <h5><i class="bi bi-search-heart me-2 text-primary"></i>
+                                    2. Reference Handler: prioridad 10 y por qué es tan importante
+                                </h5>
+
+                                <p>
+                                    <strong>Reference Handler</strong> es un hilo interno de la JVM que
+                                    se encarga de procesar las colas de referencias especiales:
+                                    <code>WeakReference</code>, <code>SoftReference</code>,
+                                    <code>PhantomReference</code>, etc.
+                                </p>
+
+                                <ul class="list-group mb-3">
+                                    <li class="list-group-item">
+                                        Cuando el <strong>Garbage Collector</strong> detecta que un
+                                        objeto solo es accesible por una referencia débil / blanda /
+                                        fantasma, lo marca para recolección y coloca esas referencias
+                                        en una <strong>cola</strong>.
+                                    </li>
+                                    <li class="list-group-item">
+                                        El hilo <strong>Reference Handler</strong> vacía esa cola y
+                                        ejecuta la lógica asociada (por ejemplo, liberar recursos
+                                        nativos o notificar a otras partes del sistema).
+                                    </li>
+                                </ul>
+
+                                <div class="alert alert-info mb-3">
+                                    <i class="bi bi-lightning-charge-fill me-2"></i>
+                                    Si este hilo se quedara atrás, podrías acumular objetos
+                                    “a medio limpiar”, aumentar el uso de memoria y tener
+                                    comportamientos extraños con cachés o recursos nativos.
+                                </div>
+
+                                <p>
+                                    Por eso tiene:
+                                </p>
+                                <ul class="list-group mb-3">
+                                    <li class="list-group-item">
+                                        <strong>Daemon: true</strong> → es un hilo de soporte de la JVM.
+                                        Si tu app termina, no tiene sentido que siga vivo.
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Prioridad: 10</strong> → se le da la
+                                        <strong>máxima prioridad</strong> para que procese
+                                        rápidamente las referencias pendientes después de cada GC.
+                                    </li>
+                                </ul>
+
+                                <hr>
+
+                                <h5><i class="bi bi-tools me-2 text-danger"></i>
+                                    3. ¿Por qué Catalina-utility-1 tiene prioridad 1 y no es daemon?
+                                </h5>
+
+                                <p>
+                                    Los hilos <code>Catalina-utility-1</code> y
+                                    <code>Catalina-utility-2</code> pertenecen a Tomcat y se encargan
+                                    de tareas de <strong>mantenimiento del contenedor</strong>:
+                                </p>
+
+                                <ul class="list-group mb-3">
+                                    <li class="list-group-item">
+                                        Limpieza de sesiones expiradas.
+                                    </li>
+                                    <li class="list-group-item">
+                                        Tareas periódicas internas del servidor.
+                                    </li>
+                                </ul>
+
+                                <p>
+                                    Tomcat decide crear estos hilos con:
+                                </p>
+
+                                <ul class="list-group mb-3">
+                                    <li class="list-group-item">
+                                        <strong>Prioridad 1 (MIN_PRIORITY)</strong> → son tareas
+                                        de fondo que no deben competir con las peticiones HTTP
+                                        (<code>http-nio-8085-exec-N</code>). Si hay carga, es más
+                                        importante atender a los usuarios que limpiar una sesión
+                                        un segundo antes.
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Daemon: false</strong> → Tomcat quiere tener
+                                        control sobre el <strong>cierre ordenado</strong> del
+                                        servidor. Al no ser daemon, estos hilos forman parte del
+                                        “trabajo vivo” del contenedor y pueden finalizarse
+                                        conscientemente durante el shutdown.
+                                    </li>
+                                </ul>
+
+                                <div class="alert alert-secondary">
+                                    <i class="bi bi-exclamation-circle me-2"></i>
+                                    Resumen: son tareas de mantenimiento poco prioritarias,
+                                    pero forman parte del ciclo de vida normal del servidor,
+                                    por eso no son daemon.
+                                </div>
+
+                                <hr>
+
+                                <h5><i class="bi bi-cloud-arrow-down-fill me-2 text-success"></i>
+                                    4. ¿Qué pasa cuando llega una petición HTTP?
+                                </h5>
+
+                                <ol class="mb-3">
+                                    <li>
+                                        El hilo <strong>http-nio-8085-Acceptor</strong> (daemon, prioridad 5)
+                                        acepta la nueva conexión TCP en el puerto 8085.
+                                    </li>
+                                    <li>
+                                        El hilo <strong>http-nio-8085-Poller</strong> vigila los sockets
+                                        y detecta que hay datos listos para leer.
+                                    </li>
+                                    <li>
+                                        Tomcat asigna la petición a uno de los hilos del pool:
+                                        <code>http-nio-8085-exec-1</code> ... <code>exec-10</code>.
+                                        Es este hilo el que:
+                                        <ul>
+                                            <li>Ejecuta el filtro de Spring,</li>
+                                            <li>Resuelve el controlador (<code>@Controller</code> / <code>@RestController</code>),</li>
+                                            <li>Llama a los servicios (<code>@Service</code>),</li>
+                                            <li>Renderiza la vista (Thymeleaf) o devuelve JSON.</li>
+                                        </ul>
+                                    </li>
+                                </ol>
+
+                                <p class="text-muted">
+                                    Mientras tanto, hilos como <code>Reference Handler</code>,
+                                    <code>Common-Cleaner</code>, RMI o DevTools siguen trabajando
+                                    en segundo plano como daemon, pero no forman parte directa
+                                    de la petición HTTP.
+                                </p>
+
+                                <hr>
+
+                                <h5><i class="bi bi-diagram-3 me-2 text-primary"></i>
+                                    5. ¿Qué ocurre cuando se ejecuta un servicio (@Service)?
+                                </h5>
+
+                                <p>
+                                    Cuando tu código entra en un método de un 
+                                    <code>@Service</code> (por ejemplo, <code>GreeterService</code>
+                                    o el servicio que llama a <code>ProcesoService</code>), ocurre lo siguiente:
+                                </p>
+
+                                <ul class="list-group mb-3">
+                                    <li class="list-group-item">
+                                        El <strong>mismo hilo</strong> que atiende la petición HTTP
+                                        (<code>http-nio-8085-exec-N</code>) es el que ejecuta
+                                        la lógica del servicio.
+                                    </li>
+                                    <li class="list-group-item">
+                                        Si desde el servicio creas nuevos hilos (como
+                                        <code>proceso-escritor</code> o <code>proceso-lector</code>),
+                                        estos cuelgan de ese flujo, pero son hilos independientes
+                                        y pueden tener su propia prioridad y configuración de daemon.
+                                    </li>
+                                    <li class="list-group-item">
+                                        Los hilos daemon de la JVM (<code>Reference Handler</code>,
+                                        <code>Common-Cleaner</code>, RMI, etc.) siguen funcionando,
+                                        pero en paralelo, gestionando memoria, limpieza y
+                                        monitorización.
+                                    </li>
+                                </ul>
+
+                                <div class="alert alert-success">
+                                    <i class="bi bi-check-circle-fill me-2"></i>
+                                    En resumen: una petición HTTP viaja en un hilo 
+                                    <code>http-nio-8085-exec-N</code>, que ejecuta controladores 
+                                    y servicios. Los hilos daemon como <code>Reference Handler</code> 
+                                    y los hilos de mantenimiento como <code>Catalina-utility-1</code> 
+                                    trabajan alrededor, garantizando que la JVM y Tomcat funcionen 
+                                    de forma segura y eficiente.
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FIN ÍTEM DAEMONS -->
+
+                </div> <!-- /accordionTareas -->
             </div>
-
         </div>
-    </div>
-</div>
-
-            </div> <!-- /accordionTareas -->
-        </div>
-    </div>
-</section>
+    </section>
 
 </main>
 
