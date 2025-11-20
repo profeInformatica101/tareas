@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Hilos en Spring Boot · Visión Profesional</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <style>
+        body { 
+            background-color: #f5f5f5; 
+            scroll-behavior: smooth;
+        }
+        .thread-badge { font-family: monospace; }
+
+        /* Sidebar fija */
+        .sidebar {
+            position: fixed;
+            top: 56px;            /* altura aproximada del navbar */
+            bottom: 0;
+            left: 0;
+            width: 260px;
+            padding: 1rem;
+            background-color: #212529;
+            color: #fff;
+            overflow-y: auto;
+        }
+
+        .sidebar .list-group-item {
+            background-color: transparent;
+            border: none;
+            color: #adb5bd;
+            padding-left: 0;
+        }
+
+        .sidebar .list-group-item a {
+            color: #adb5bd;
+            text-decoration: none;
+        }
+
+        .sidebar .list-group-item a:hover {
+            color: #ffffff;
+        }
+
+        .sidebar .list-group-item i {
+            width: 1.3rem;
+        }
+
+        /* Contenido principal desplazado a la derecha */
+        .main-content {
+            margin-left: 260px;
+            padding: 1rem 2rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR SUPERIOR -->
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <span class="navbar-brand">
+            <i class="bi bi-cpu me-2"></i>
+            Hilos en una aplicación Spring Boot
+        </span>
+    </div>
+</nav>
+
+<!-- SIDEBAR IZQUIERDA -->
+<aside class="sidebar">
+    <h5 class="text-light mb-3">
+        <i class="bi bi-list-ul me-2"></i>Índice
+    </h5>
+    <ul class="list-group">
+        <li class="list-group-item">
+    <a href="#presentacion">
+        <i class="bi bi-easel me-2"></i>
+        Presentación
+    </a>
+</li>
+<li class="list-group-item">
+    <a href="#springboot-api">
+        <i class="bi bi-journal-code me-2"></i>
+        Spring Boot API
+    </a>
+</li>
+
+        <li class="list-group-item">
+            <a href="#intro">
+                <i class="bi bi-info-circle me-2"></i>
+                Visión general
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="#fork-git">
+                <i class="bi bi-git me-2"></i>
+                Fork y remotos Git
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="#debug-threadgroup">
+                <i class="bi bi-bug-fill me-2"></i>
+                Debug ThreadGroup
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="#hilos-jvm">
+                <i class="bi bi-gear-wide-connected me-2"></i>
+                Hilos JVM
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="#hilos-rmi">
+                <i class="bi bi-activity me-2"></i>
+                Hilos RMI / JMX
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="#hilos-tomcat">
+                <i class="bi bi-cloud-arrow-down me-2"></i>
+                Hilos Tomcat
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="#hilos-devtools">
+                <i class="bi bi-tools me-2"></i>
+                Hilos DevTools
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="#hilos-app">
+                <i class="bi bi-code-slash me-2"></i>
+                Hilos de aplicación
+            </a>
+        </li>
+    </ul>
+</aside>
+
+<!-- CONTENIDO PRINCIPAL -->
+<main class="main-content">
+
+    <div class="container-fluid">
+         <!-- INTRO -->
+        <div class="row mb-4" id="intro">
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <h4 class="alert-heading">
+                        <i class="bi bi-diagram-3 me-2"></i>Visión general
+                    </h4>
+                    <p class="mb-1">
+                        Una aplicación web Spring Boot profesional ejecuta decenas de hilos.
+                        No todos los crea el programador: muchos pertenecen a la propia JVM,
+                        al servidor embebido Tomcat, a RMI/JMX y a herramientas de desarrollo.
+                    </p>
+                    <p class="mb-0">
+                        Esta página resume los principales <strong>grupos de hilos</strong>
+                        que se observan con el debugger o con una clase de inspección.
+                    </p>
+                </div>
+            </div>
+        </div>
+<!-- PRESENTACIÓN GOOGLE SLIDES -->
+<div class="row mb-5" id="presentacion">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <i class="bi bi-easel-fill me-2"></i>
+                Presentación introductoria
+            </div>
+            <div class="card-body p-0 text-center">
+
+                <iframe 
+                    src="https://docs.google.com/presentation/d/e/2PACX-1vQv26PhbXUu8ba5fNrk4LqDZZoznF8ghs-PhgmH2-PQnVzlyWgVRgoF0vCIsLcvLGlGhjtc3BV1b7rw/pubembed?start=false&loop=false&delayms=3000" 
+                    frameborder="0"
+                    width="100%" 
+                    height="550"
+                    allowfullscreen="true"
+                    mozallowfullscreen="true"
+                    webkitallowfullscreen="true">
+                </iframe>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- SECCIÓN: Qué es Spring Boot y enlaces al API -->
+<section class="my-5" id="springboot-api">
+    <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+            <h3 class="mb-0">
+                <i class="bi bi-journal-code me-2"></i>
+                ¿Qué es Spring Boot? 
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <p class="lead">
+                Spring Boot es un <strong>framework de Java</strong> que simplifica enormemente 
+                el desarrollo de aplicaciones con Spring: permite crear aplicaciones 
+                <strong>autónomas, listas para producción</strong>, con muy poca configuración 
+                y un <strong>servidor web embebido</strong> (Tomcat, Jetty, etc.).
+            </p>
+
+            <hr>
+
+            <h4>
+                <i class="bi bi-mortarboard-fill me-2 text-primary"></i>
+                ¿Por qué es interesante para DAW y DAM?
+            </h4>
+
+            <ul class="list-group mb-3">
+                <li class="list-group-item">
+                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                    Permite crear <strong>APIs REST</strong> y aplicaciones web Java modernas 
+                    usando controladores, servicios y repositorios (patrón MVC / capas).
+                </li>
+                <li class="list-group-item">
+                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                    Incluye un <strong>servidor embebido</strong> (normalmente Tomcat), 
+                    por lo que basta con ejecutar la aplicación para tener un servidor web 
+                    en marcha (sin configurar un Tomcat externo).
+                </li>
+                <li class="list-group-item">
+                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                    Ofrece <strong>auto-configuración</strong>: detecta dependencias 
+                    (Spring Web, Data JPA, Security, etc.) y configura muchas cosas por ti,
+                    reduciendo código “ceremonial”.
+                </li>
+                <li class="list-group-item">
+                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                    Se integra fácilmente con <strong>bases de datos</strong>, seguridad, 
+                    plantillas HTML (Thymeleaf), mensajería, etc.
+                </li>
+                <li class="list-group-item">
+                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                    Es tecnología <strong>muy utilizada en el mundo profesional</strong>, 
+                    por lo que encaja perfectamente con los resultados de aprendizaje de FP 
+                    en Desarrollo de Aplicaciones Web y Multiplataforma.
+                </li>
+            </ul>
+
+            <div class="alert alert-secondary">
+                <i class="bi bi-lightbulb-fill me-2"></i>
+                En este módulo usaremos Spring Boot para entender cómo se estructura 
+                una aplicación profesional en capas (controlador, servicio, repositorio), 
+                cómo se exponen endpoints HTTP y cómo se comporta el servidor en tiempo de 
+                ejecución (hilos de Tomcat, conexiones, etc.).
+            </div>
+
+            <hr>
+
+            <h4>
+                <i class="bi bi-link-45deg me-2 text-dark"></i>
+                Documentación oficial de Spring Boot
+            </h4>
+
+            <p>
+                A continuación tienes enlaces oficiales que te servirán como referencia
+                cuando quieras profundizar más allá de los ejemplos de clase:
+            </p>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 border-success">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-book-half me-2 text-success"></i>
+                                Reference Documentation
+                            </h5>
+                            <p class="card-text">
+                                Guía principal de Spring Boot: conceptos, configuración, 
+                                web, datos, seguridad, empaquetado, etc.
+                            </p>
+                            <a href="https://docs.spring.io/spring-boot/reference/" 
+                               class="btn btn-sm btn-success" target="_blank">
+                                Abrir referencia
+                                <i class="bi bi-box-arrow-up-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 border-primary">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-file-code-fill me-2 text-primary"></i>
+                                API Java (Javadoc)
+                            </h5>
+                            <p class="card-text">
+                                Documentación de clases y métodos de Spring Boot. 
+                                Útil cuando quieres saber exactamente qué hace una clase,
+                                anotación o método.
+                            </p>
+                            <a href="https://docs.spring.io/spring-boot/api/java/" 
+                               class="btn btn-sm btn-primary" target="_blank">
+                                Abrir API Javadoc
+                                <i class="bi bi-box-arrow-up-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 border-dark">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-github me-2"></i>
+                                Código fuente en GitHub
+                            </h5>
+                            <p class="card-text">
+                                Repositorio oficial del proyecto Spring Boot. 
+                                Aquí puedes ver cómo está implementado el framework, 
+                                issues y contribuciones.
+                            </p>
+                            <a href="https://github.com/spring-projects/spring-boot" 
+                               class="btn btn-sm btn-dark" target="_blank">
+                                Ver en GitHub
+                                <i class="bi bi-box-arrow-up-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="alert alert-info mb-0">
+                <i class="bi bi-flag-fill me-2"></i>
+                Objetivo para el módulo: ser capaces de entender, ejecutar y modificar 
+                una aplicación Spring Boot sencilla (controladores, vistas, servicios y 
+                acceso a datos), y relacionar su comportamiento con los hilos que 
+                estamos analizando en esta guía.
+            </div>
+
+        </div>
+    </div>
+</section>
+
+       
+
+        <!-- SECCIÓN: Fork del repositorio y configuración Git -->
+        <section class="my-5" id="fork-git">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h3 class="mb-0">
+                        <i class="bi bi-git me-2"></i>
+                        Preparación del proyecto: Fork + Configuración de repositorios remotos
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <!-- INTRO -->
+                    <p class="lead">
+                        Para realizar la práctica correctamente, cada estudiante debe trabajar 
+                        con su propio repositorio, pero mantendrá conexión con el repositorio 
+                        del profesor para recibir actualizaciones o nuevas ramas.
+                    </p>
+
+                    <hr>
+
+                    <!-- 1: FORK -->
+                    <h4 class="mt-4">
+                        <i class="bi bi-pin-angle-fill text-danger me-2"></i>
+                        1. Realizar un <strong>fork</strong> del repositorio del profesor
+                    </h4>
+                    <p>
+                        Accede al repositorio del profesor:
+                        <a href="https://github.com/profeInformatica101/SpringBootApp/tree/hilos" 
+                        target="_blank">
+                            https://github.com/profeInformatica101/SpringBootApp/tree/hilos
+                        </a>
+                    </p>
+
+                    <ol>
+                        <li>Haz clic en el botón <strong>Fork</strong> en la parte superior derecha.</li>
+                        <li>Selecciona tu cuenta personal de GitHub.</li>
+                        <li>GitHub creará una copia en tu perfil, por ejemplo:<br>
+                            <code>https://github.com/tu_usuario/SpringBootApp</code>
+                        </li>
+                        <li>Asegúrate de seleccionar la rama <strong>hilos</strong> dentro de tu fork.</li>
+                    </ol>
+
+                    <hr>
+
+                    <!-- 2: CLONAR -->
+                    <h4 class="mt-4">
+                        <i class="bi bi-download text-primary me-2"></i>
+                        2. Clonar tu repositorio forkeado en tu ordenador
+                    </h4>
+
+<pre class="bg-light p-3 rounded border">
+git clone https://github.com/tu_usuario/SpringBootApp.git
+cd SpringBootApp
+git checkout hilos
+</pre>
+
+                    <p>
+                        Importa este proyecto en Spring Tools Suite / Eclipse 
+                        como un proyecto Maven existente.
+                    </p>
+
+                    <hr>
+
+                    <!-- 3: REMOTO UPSTREAM -->
+                    <h4 class="mt-4">
+                        <i class="bi bi-link-45deg text-success me-2"></i>
+                        3. Añadir el repositorio remoto del profesor (<strong>upstream</strong>)
+                    </h4>
+
+                    <p>
+                        Este paso es imprescindible para poder traer nuevas ramas, actualizaciones 
+                        o correcciones del profesor después del fork.
+                    </p>
+
+<pre class="bg-light p-3 rounded border">
+git remote add upstream https://github.com/profeInformatica101/SpringBootApp.git
+</pre>
+
+                    <p>Comprueba que está correctamente configurado:</p>
+
+<pre class="bg-light p-3 rounded border">
+git remote -v
+</pre>
+
+                    <p>Deberías ver algo como:</p>
+
+<pre class="bg-light p-3 rounded border">
+origin    https://github.com/tu_usuario/SpringBootApp.git (fetch)
+origin    https://github.com/tu_usuario/SpringBootApp.git (push)
+upstream  https://github.com/profeInformatica101/SpringBootApp.git (fetch)
+upstream  https://github.com/profeInformatica101/SpringBootApp.git (push)
+</pre>
+
+                    <hr>
+
+                    <!-- 4: TRAER RAMAS -->
+                    <h4 class="mt-4">
+                        <i class="bi bi-arrow-repeat text-warning me-2"></i>
+                        4. Traer nuevas ramas o actualizaciones del profesor
+                    </h4>
+
+                    <p>
+                        Para obtener las ramas nuevas creadas por el profesor, ejecuta:
+                    </p>
+
+<pre class="bg-light p-3 rounded border">
+git fetch upstream
+</pre>
+
+                    <p>
+                        Esto descargará todas las ramas del profesor. Para verlas:
+                    </p>
+
+<pre class="bg-light p-3 rounded border">
+git branch -a
+</pre>
+
+                    <p>
+                        Si deseas trabajar con una rama nueva (por ejemplo, <code>debugger</code>):
+                    </p>
+
+<pre class="bg-light p-3 rounded border">
+git checkout -b debugger upstream/debugger
+</pre>
+
+                    <p class="text-muted">
+                        Esto crea una copia local de la rama del profesor, 
+                        pero dentro de tu repositorio.
+                    </p>
+
+                    <div class="alert alert-success mt-4">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        ¡Listo! Ya tienes tu propio repositorio, sincronizado con el del profesor 
+                        para recibir cualquier actualización.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: Breakpoints y Análisis del ThreadGroup en Debug -->
+        <section class="my-5" id="debug-threadgroup">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        <i class="bi bi-bug-fill me-2"></i>
+                        Análisis en Debug: ThreadGroup y jerarquía de hilos
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <!-- INTRO -->
+                    <p class="lead">
+                        En esta sección aprenderás a inspeccionar la jerarquía de hilos de la JVM
+                        utilizando puntos de ruptura (breakpoints). Analizaremos cómo Spring Boot
+                        localiza el <strong>ThreadGroup raíz</strong> y cómo se recorren sus grupos
+                        superiores.
+                    </p>
+
+                    <hr>
+
+                    <!-- 1: ARCHIVO -->
+                    <h4 class="mt-4">
+                        <i class="bi bi-file-earmark-code-fill text-dark me-2"></i>
+                        1. Ubicación del código a inspeccionar
+                    </h4>
+
+                    <p>
+                        Abre la clase:
+                        <code>src/main/java/com/hilos/util/InspectorDeHilos.java</code>
+                    </p>
+
+                    <p>Nos centraremos en este método:</p>
+
+<pre class="bg-light p-3 rounded border">
+private static ThreadGroup obtenerRootThreadGroup() {
+    ThreadGroup grupo = Thread.currentThread().getThreadGroup();
+    ThreadGroup padre;
+
+    while ((padre = grupo.getParent()) != null) {
+        grupo = padre; // subimos en la jerarquía
+    }
+    return grupo;
+}
+</pre>
+
+                    <hr>
+
+                    <!-- 2: BREAKPOINTS -->
+                    <h4 class="mt-4">
+                        <i class="bi bi-lightning-charge-fill text-danger me-2"></i>
+                        2. Colocar los puntos de ruptura (breakpoints)
+                    </h4>
+
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Debes activar el modo <strong>Debug</strong> de Spring Boot antes de continuar.
+                        (Debug As → Spring Boot App)
+                    </div>
+
+                    <p>
+                        Coloca breakpoints en estas dos líneas:
+                    </p>
+
+                    <ol>
+                        <li>
+                            <code>ThreadGroup grupo = Thread.currentThread().getThreadGroup();</code><br>
+                            <span class="text-muted">
+                                Este breakpoint te muestra el <strong>grupo de hilos actual</strong> 
+                                donde se está ejecutando la petición HTTP (normalmente un 
+                                <em>http-nio-exec-X</em> de Tomcat).
+                            </span>
+                        </li>
+
+                        <li class="mt-3">
+                            Dentro del bucle <code>while</code>, en:
+                            <br>
+                            <code>grupo = padre; // subimos en la jerarquía</code><br>
+                            <span class="text-muted">
+                                Este breakpoint te permitirá avanzar por los <strong>padres del grupo</strong>
+                                hasta llegar al <strong>ThreadGroup raíz</strong>, que contiene todos los hilos.
+                            </span>
+                        </li>
+                    </ol>
+
+                    <div class="alert alert-info mt-3">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        Cada vez que pulses <strong>Step Over</strong> o <strong>Step Into</strong>, 
+                        observarás cómo cambia la referencia del objeto <code>grupo</code> en la vista 
+                        <strong>Variables</strong> del debugger.
+                    </div>
+
+                    <hr>
+
+                    <!-- 3: EJECUTAR EL INSPECTOR -->
+                    <h4 class="mt-4">
+                        <i class="bi bi-play-fill text-success me-2"></i>
+                        3. Lanzar el inspector para llegar a los breakpoints
+                    </h4>
+
+                    <p>
+                        Abre tu navegador y visita el endpoint que ejecuta el método 
+                        <code>listarHilos()</code>. Por ejemplo:
+                    </p>
+
+<pre class="bg-light p-3 rounded border">
+http://localhost:8080/hilos/listar
+</pre>
+
+                    <p>
+                        Cuando el servidor procese esa URL, el flujo pasará automáticamente 
+                        por los puntos de ruptura colocados anteriormente.
+                    </p>
+
+                    <hr>
+
+                    <!-- 4: ANALIZAR THREADGROUP -->
+                    <h4 class="mt-4">
+                        <i class="bi bi-eye-fill text-secondary me-2"></i>
+                        4. Qué analizar en cada paso del debugger
+                    </h4>
+
+                    <ul class="list-group mb-4">
+                        <li class="list-group-item">
+                            <i class="bi bi-dot me-2"></i>
+                            Observa el <strong>nombre del Thread actual</strong> en la vista Debug:
+                            normalmente algo como <code>http-nio-8080-exec-3</code>.
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-dot me-2"></i>
+                            Mira el valor de la variable <code>grupo</code> y su propiedad 
+                            <code>name</code>. Ejemplos:
+                            <ul>
+                                <li><code>"http-nio-8080-ExecGroup"</code></li>
+                                <li><code>"main"</code></li>
+                            </ul>
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-dot me-2"></i>
+                            Avanza con <strong>Step Over</strong> y observa cómo 
+                            <code>grupo = padre</code> va subiendo niveles jerárquicos.
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-dot me-2"></i>
+                            Cuando <code>grupo.getParent() == null</code> has llegado al 
+                            <strong>ThreadGroup raíz</strong>.
+                        </li>
+                    </ul>
+
+                    <div class="alert alert-success">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        En el ThreadGroup raíz podrás ver que están todos los hilos:
+                        JVM, Tomcat, DevTools, hilos propios… exactamente lo que se imprime
+                        en el método <code>listarHilos()</code>.
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- JVM -->
+        <div class="row mb-4" id="hilos-jvm">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-secondary text-white">
+                        <i class="bi bi-gear-wide-connected me-2"></i>
+                        Hilos internos de la JVM
+                    </div>
+                    <div class="card-body">
+                        <p>Son hilos creados por la máquina virtual Java. Gestionan memoria y tareas internas.</p>
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item">
+                                <span class="badge bg-dark thread-badge me-2">Reference Handler</span>
+                                Gestiona referencias especiales (<code>WeakReference</code>, etc.).
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge bg-dark thread-badge me-2">Finalizer</span>
+                                Ejecuta métodos <code>finalize()</code> de objetos que van a ser liberados.
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge bg-dark thread-badge me-2">Signal Dispatcher</span>
+                                Atiende señales del sistema (parada, debug, etc.).
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge bg-dark thread-badge me-2">Common-Cleaner</span>
+                                Limpieza interna del JDK y recursos nativos.
+                            </li>
+                        </ul>
+                        <p class="text-muted mb-0">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Están siempre presentes en la JVM, independientemente del framework web.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RMI / JMX -->
+            <div class="col-md-6" id="hilos-rmi">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <i class="bi bi-activity me-2"></i>
+                        Hilos de RMI / JMX (monitorización)
+                    </div>
+                    <div class="card-body">
+                        <p>Permiten gestionar y monitorizar la aplicación de forma remota.</p>
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item">
+                                <span class="badge bg-primary thread-badge me-2">Notification Thread</span>
+                                Envía notificaciones JMX a herramientas de monitorización.
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge bg-primary thread-badge me-2">RMI TCP Accept-*</span>
+                                Escuchan conexiones RMI/JMX.
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge bg-primary thread-badge me-2">RMI TCP Connection(*)</span>
+                                Conexiones activas desde un cliente (p.ej. el IDE o jconsole).
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge bg-primary thread-badge me-2">JMX server connection timeout</span>
+                                Gestiona tiempos de espera de conexiones JMX.
+                            </li>
+                        </ul>
+                        <p class="text-muted mb-0">
+                            <i class="bi bi-check2-circle me-1"></i>
+                            Muy habituales en entornos profesionales donde la aplicación está monitorizada.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOMCAT -->
+        <div class="row mb-4" id="hilos-tomcat">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <i class="bi bi-cloud-arrow-down me-2"></i>
+                        Hilos del servidor embebido Tomcat (HTTP)
+                    </div>
+                    <div class="card-body">
+                        <p>Son los hilos que realmente permiten servir peticiones HTTP en Spring Boot.</p>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h6><i class="bi bi-door-open me-1"></i> Entrada</h6>
+                                <ul class="list-group mb-3">
+                                    <li class="list-group-item">
+                                        <span class="badge bg-success thread-badge me-2">http-nio-8085-Acceptor</span>
+                                        Acepta nuevas conexiones en el puerto 8085.
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span class="badge bg-success thread-badge me-2">http-nio-8085-Poller</span>
+                                        Vigila sockets y reparte trabajo usando NIO.
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h6><i class="bi bi-arrow-repeat me-1"></i> Ejecución de peticiones</h6>
+                                <ul class="list-group mb-3">
+                                    <li class="list-group-item">
+                                        <span class="badge bg-success thread-badge me-2">http-nio-8085-exec-1</span>
+                                        <span class="badge bg-success thread-badge me-2">...</span>
+                                        <span class="badge bg-success thread-badge me-2">exec-10</span>
+                                        <br>
+                                        Pool de hilos que ejecutan controladores como <code>/saluda</code>, <code>/hilos</code>, etc.
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h6><i class="bi bi-wrench-adjustable-circle me-1"></i> Utilidades Tomcat</h6>
+                                <ul class="list-group mb-3">
+                                    <li class="list-group-item">
+                                        <span class="badge bg-success thread-badge me-2">Catalina-utility-1/2</span>
+                                        Tareas internas: limpieza de sesiones, mantenimiento, etc.
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span class="badge bg-success thread-badge me-2">container-0</span>
+                                        Trabajo interno del contenedor de servlets.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="text-muted mb-0">
+                            <i class="bi bi-star-fill me-1"></i>
+                            En producción, estos hilos son esenciales: sin ellos no hay servidor HTTP.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEVTOOLS / APP -->
+        <div class="row mb-5">
+            <div class="col-md-6" id="hilos-devtools">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-warning text-dark">
+                        <i class="bi bi-tools me-2"></i>
+                        Hilos de desarrollo (DevTools)
+                    </div>
+                    <div class="card-body">
+                        <p>Solo aparecen en desarrollo, no en producción.</p>
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item">
+                                <span class="badge bg-warning text-dark thread-badge me-2">restartedMain</span>
+                                Segundo <code>main</code> que permite reiniciar la app al cambiar código.
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge bg-warning text-dark thread-badge me-2">File Watcher</span>
+                                Vigila cambios en archivos para recargar la aplicación.
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge bg-warning text-dark thread-badge me-2">Live Reload Server</span>
+                                Permite recargar el navegador automáticamente.
+                            </li>
+                        </ul>
+                        <p class="text-muted mb-0">
+                            <i class="bi bi-exclamation-circle me-1"></i>
+                            No se despliegan en producción. Solo son para mejorar la experiencia del desarrollador.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HILOS DE APLICACIÓN -->
+            <div class="col-md-6" id="hilos-app">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        <i class="bi bi-code-slash me-2"></i>
+                        Hilos de la aplicación
+                    </div>
+                    <div class="card-body">
+                        <p>Son los hilos que crea explícitamente el programador.</p>
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item">
+                                <span class="badge bg-dark thread-badge me-2">Thread-0</span>
+                                Ejemplo de hilo creado con <code>new Thread(() -&gt; { ... })</code> sin nombre personalizado.
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge bg-dark thread-badge me-2">Analizador-logs</span>
+                                <span class="badge bg-dark thread-badge me-2">Generador-informes</span>
+                                <br>
+                                Hilos diseñados por el desarrollador para tareas en segundo plano.
+                            </li>
+                        </ul>
+                        <p class="text-muted mb-0">
+                            <i class="bi bi-lightbulb me-1"></i>
+                            En aplicaciones profesionales se recomienda usar
+                            <code>ExecutorService</code>, <code>@Async</code> u otros frameworks para gestionarlos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+<!-- SECCIÓN: Listado de tareas con acordeón -->
+<section class="my-5" id="tareas">
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            <h3 class="mb-0">
+                <i class="bi bi-list-check me-2"></i>
+                Listado de tareas (Spring Boot, hilos y debugger)
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <p class="lead">
+                A continuación tienes varias tareas prácticas relacionadas con hilos, 
+                depuración y procesos. Cada tarea indica la <strong>rama Git</strong> 
+                donde debes guardar tu trabajo y los <strong>puntos de ruptura</strong> 
+                que tendrás que analizar en el debugger.
+            </p>
+
+            <div class="accordion" id="accordionTareas">
+
+                <!-- TAREA 1: Hilos básicos en controlador /hilos -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTarea1">
+                        <button class="accordion-button" type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseTarea1"
+                                aria-expanded="true"
+                                aria-controls="collapseTarea1">
+                            <i class="bi bi-activity me-2 text-success"></i>
+                            Tarea 1 · Hilos básicos en Spring Boot (/hilos)
+                        </button>
+                    </h2>
+                    <div id="collapseTarea1" class="accordion-collapse collapse show"
+                         aria-labelledby="headingTarea1"
+                         data-bs-parent="#accordionTareas">
+                        <div class="accordion-body">
+
+                            <p>
+                                En esta tarea vas a trabajar con el controlador 
+                                <code>HilosController</code>, que crea varios hilos 
+                                (por ejemplo, <code>Analizador-logs</code> y 
+                                <code>Generador-informes</code>) al acceder al endpoint 
+                                <code>/hilos</code>.
+                            </p>
+
+                            <p><strong>Rama donde guardar la tarea:</strong> 
+                                <span class="badge bg-success">hilos</span>
+                            </p>
+
+                            <ul class="list-group mb-3">
+                                <li class="list-group-item">
+                                    Ver qué hilo atiende la petición HTTP 
+                                    (normalmente <code>http-nio-808x-exec-N</code>).
+                                </li>
+                                <li class="list-group-item">
+                                    Analizar los hilos creados por ti con lambdas 
+                                    (<code>Analizador-logs</code>, <code>Generador-informes</code>).
+                                </li>
+                                <li class="list-group-item">
+                                    Observar estados de los hilos: <code>RUNNABLE</code>, 
+                                    <code>TIMED_WAITING</code>, <code>TERMINATED</code>.
+                                </li>
+                            </ul>
+
+                            <!-- Subacordeón: Puntos de ruptura Tarea 1 -->
+                            <div class="accordion mt-3" id="accordionBreakpoints1">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingBP1">
+                                        <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#collapseBP1"
+                                                aria-expanded="false"
+                                                aria-controls="collapseBP1">
+                                            <i class="bi bi-bug-fill me-2 text-danger"></i>
+                                            Puntos de ruptura a analizar (Debugger)
+                                        </button>
+                                    </h2>
+                                    <div id="collapseBP1" class="accordion-collapse collapse"
+                                         aria-labelledby="headingBP1"
+                                         data-bs-parent="#accordionBreakpoints1">
+                                        <div class="accordion-body">
+                                            <ol class="mb-0">
+                                                <li>
+                                                    En el método <code>verHilos(...)</code>:
+                                                    línea donde se obtiene el hilo de la petición:<br>
+                                                    <code>String requestThread = Thread.currentThread().getName();</code>
+                                                </li>
+                                                <li class="mt-2">
+                                                    En la creación del hilo 
+                                                    <code>Analizador-logs</code> (dentro del <code>new Thread(() -&gt; { ... })</code>),
+                                                    en la primera línea del bucle <code>for</code>.
+                                                </li>
+                                                <li class="mt-2">
+                                                    En la creación del hilo 
+                                                    <code>Generador-informes</code>, también en la primera iteración 
+                                                    del bucle, justo antes de <code>Thread.sleep(...)</code>.
+                                                </li>
+                                                <li class="mt-2">
+                                                    Observar en la vista <strong>Debug</strong>:
+                                                    qué hilo ejecuta el controlador y qué hilos 
+                                                    ejecutan las tareas en segundo plano.
+                                                </li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Fin subacordeón Tarea 1 -->
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAREA 2: InspectorDeHilos + ThreadGroup -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTarea2">
+                        <button class="accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseTarea2"
+                                aria-expanded="false"
+                                aria-controls="collapseTarea2">
+                            <i class="bi bi-diagram-3-fill me-2 text-primary"></i>
+                            Tarea 2 · Inspector de hilos y ThreadGroup raíz
+                        </button>
+                    </h2>
+                    <div id="collapseTarea2" class="accordion-collapse collapse"
+                         aria-labelledby="headingTarea2"
+                         data-bs-parent="#accordionTareas">
+                        <div class="accordion-body">
+
+                            <p>
+                                En esta tarea utilizarás la clase 
+                                <code>InspectorDeHilos</code> para listar todos los hilos activos 
+                                en la JVM y entender la jerarquía de <code>ThreadGroup</code> 
+                                (JVM, Tomcat, DevTools, hilos propios, etc.).
+                            </p>
+
+                            <p><strong>Rama donde guardar la tarea:</strong> 
+                                <span class="badge bg-primary">hilos-debugger</span>
+                            </p>
+
+                            <ul class="list-group mb-3">
+                                <li class="list-group-item">
+                                    Invocar <code>InspectorDeHilos.listarHilos()</code> desde un 
+                                    endpoint (por ejemplo, <code>/hilos/listar</code>).
+                                </li>
+                                <li class="list-group-item">
+                                    Identificar hilos de JVM, Tomcat, DevTools y de la aplicación.
+                                </li>
+                                <li class="list-group-item">
+                                    Comprender cómo se obtiene el <strong>ThreadGroup raíz</strong>.
+                                </li>
+                            </ul>
+
+                            <!-- Subacordeón: Puntos de ruptura Tarea 2 -->
+                            <div class="accordion mt-3" id="accordionBreakpoints2">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingBP2">
+                                        <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#collapseBP2"
+                                                aria-expanded="false"
+                                                aria-controls="collapseBP2">
+                                            <i class="bi bi-bug-fill me-2 text-danger"></i>
+                                            Puntos de ruptura a analizar (Debugger)
+                                        </button>
+                                    </h2>
+                                    <div id="collapseBP2" class="accordion-collapse collapse"
+                                         aria-labelledby="headingBP2"
+                                         data-bs-parent="#accordionBreakpoints2">
+                                        <div class="accordion-body">
+                                            <ol class="mb-0">
+                                                <li>
+                                                    En <code>listarHilos()</code>, justo antes de 
+                                                    obtener el grupo raíz:<br>
+                                                    <code>ThreadGroup rootGroup = obtenerRootThreadGroup();</code>
+                                                </li>
+                                                <li class="mt-2">
+                                                    En <code>obtenerRootThreadGroup()</code>, en la línea:<br>
+                                                    <code>ThreadGroup grupo = Thread.currentThread().getThreadGroup();</code><br>
+                                                    para ver en qué grupo se está ejecutando la petición.
+                                                </li>
+                                                <li class="mt-2">
+                                                    Dentro del bucle <code>while</code>:<br>
+                                                    <code>grupo = padre; // subimos en la jerarquía</code><br>
+                                                    para observar cómo se “asciende” hasta el grupo raíz.
+                                                </li>
+                                                <li class="mt-2">
+                                                    Observar en la vista de variables cómo cambia 
+                                                    <code>grupo.getName()</code> en cada iteración.
+                                                </li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Fin subacordeón Tarea 2 -->
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAREA 3: ProcessBuilder + hilos + tubería + Thymeleaf -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTarea3">
+                        <button class="accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseTarea3"
+                                aria-expanded="false"
+                                aria-controls="collapseTarea3">
+                            <i class="bi bi-terminal-fill me-2 text-warning"></i>
+                            Tarea 3 · ProcessBuilder, hilos y tubería + Thymeleaf
+                        </button>
+                    </h2>
+                    <div id="collapseTarea3" class="accordion-collapse collapse"
+                         aria-labelledby="headingTarea3"
+                         data-bs-parent="#accordionTareas">
+                        <div class="accordion-body">
+
+                            <p>
+                                En esta tarea crearás, desde Spring Boot, un 
+                                <strong>proceso externo</strong> con <code>ProcessBuilder</code>, 
+                                gestionando su entrada y salida estándar con 
+                                <strong>dos hilos</strong>, y mostrando el resultado en una 
+                                vista <strong>Thymeleaf</strong>.
+                            </p>
+
+                            <p><strong>Rama donde guardar la tarea:</strong> 
+                                <span class="badge bg-warning text-dark">hilos-processbuilder</span>
+                            </p>
+
+                            <ul class="list-group mb-3">
+                              <li class="list-group-item">
+    Implementar <code>ProcesoService</code> con 
+    <code>ProcessBuilder</code> y dos hilos 
+    (<code>proceso-escritor</code> y <code>proceso-lector</code>).
+    Además, como ejemplo concreto en Linux, configurar el servicio para
+    ejecutar un comando del sistema que muestre información de hardware,
+    por ejemplo:
+    <br>
+    <code>sh -c "lshw -short | grep -i memory"</code>
+    <br>
+    de modo que:
+    <ul class="mt-2">
+        <li>El proceso externo ejecuta <code>lshw</code> y hace un
+            <code>grep</code> sobre la palabra <em>memory</em>.</li>
+        <li>El hilo <strong>proceso-lector</strong> va leyendo la salida
+            línea a línea y la acumula en un <code>StringBuilder</code>.</li>
+        <li>El controlador envía esa salida al modelo y se muestra en la vista
+            Thymeleaf como un bloque <code>&lt;pre&gt;</code> en la página web.</li>
+    </ul>
+    (Si <code>lshw</code> no está disponible en el sistema, se puede cambiar el
+    comando por otro seguro, como <code>ls -la</code>).
+</li>
+
+                                <li class="list-group-item">
+                                    Implementar <code>ProcesoController</code> con el endpoint 
+                                    <code>/proceso/ejecutar</code>.
+                                </li>
+                                <li class="list-group-item">
+                                    Crear la vista <code>proceso.html</code> con Thymeleaf 
+                                    para mostrar la salida del proceso.
+                                </li>
+                            </ul>
+
+                            <!-- Subacordeón: Puntos de ruptura Tarea 3 -->
+                            <div class="accordion mt-3" id="accordionBreakpoints3">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingBP3">
+                                        <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#collapseBP3"
+                                                aria-expanded="false"
+                                                aria-controls="collapseBP3">
+                                            <i class="bi bi-bug-fill me-2 text-danger"></i>
+                                            Puntos de ruptura a analizar (Debugger)
+                                        </button>
+                                    </h2>
+                                    <div id="collapseBP3" class="accordion-collapse collapse"
+                                         aria-labelledby="headingBP3"
+                                         data-bs-parent="#accordionBreakpoints3">
+                                        <div class="accordion-body">
+                                            <ol class="mb-0">
+                                                <li>
+                                                    En <code>ProcesoController.ejecutarProceso(...)</code>, 
+                                                    justo antes de llamar al servicio:<br>
+                                                    <code>String salida = procesoService.ejecutarComando(comando);</code>
+                                                </li>
+                                                <li class="mt-2">
+                                                    En <code>ProcesoService.ejecutarComando(...)</code>, 
+                                                    tras crear el <code>ProcessBuilder</code> y antes de <code>pb.start()</code>:
+                                                    para ver qué comando se va a ejecutar.
+                                                </li>
+                                                <li class="mt-2">
+                                                    En el hilo <strong>proceso-escritor</strong>, dentro del 
+                                                    bloque <code>try</code>, al abrir el <code>OutputStream</code> del proceso:
+                                                    <br><code>try (OutputStream os = proceso.getOutputStream() ... ) { ... }</code>
+                                                </li>
+                                                <li class="mt-2">
+                                                    En el hilo <strong>proceso-lector</strong>, dentro del bucle de lectura:
+                                                    <br><code>while ((linea = reader.readLine()) != null) { ... }</code>
+                                                </li>
+                                                <li class="mt-2">
+                                                    En la línea donde se hace <code>proceso.waitFor();</code>, 
+                                                    para observar cómo el hilo del controlador espera 
+                                                    a que termine el proceso externo.
+                                                </li>
+                                                <li class="mt-2">
+                                                    Observar en la vista <strong>Debug</strong> los hilos:
+                                                    <code>http-nio-...</code>, <code>proceso-escritor</code>, 
+                                                    <code>proceso-lector</code> y su estado durante la ejecución.
+                                                </li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Fin subacordeón Tarea 3 -->
+
+                        </div>
+                    </div>
+                </div>
+<!-- ÍTEM DEL ACORDEÓN: ProcesoService con lshw + grep -->
+<div class="accordion-item">
+    <h2 class="accordion-header" id="headingProcesoService">
+        <button class="accordion-button collapsed" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseProcesoService"
+                aria-expanded="false"
+                aria-controls="collapseProcesoService">
+            <i class="bi bi-terminal-fill me-2"></i>
+            Implementar ProcesoService con ProcessBuilder + hilos + tubería (lshw + grep)
+        </button>
+    </h2>
+
+    <div id="collapseProcesoService" 
+         class="accordion-collapse collapse" 
+         aria-labelledby="headingProcesoService"
+         data-bs-parent="#accordionTarea3">
+        <div class="accordion-body">
+
+            <p class="lead">
+                En esta parte implementarás un servicio capaz de ejecutar un
+                <strong>proceso externo real</strong> del sistema Linux usando:
+            </p>
+
+            <ul>
+                <li><code>ProcessBuilder</code></li>
+                <li>Un <strong>hilo escritor</strong> (stdin)</li>
+                <li>Un <strong>hilo lector</strong> (stdout)</li>
+                <li>Tuberías para comunicarse con el proceso</li>
+            </ul>
+
+            <p>
+                El comando usado será:
+                <code>sh -c "lshw -short | grep -i memory"</code>,
+                que obtiene la información de hardware filtrada por "memory".
+            </p>
+
+            <hr>
+
+            <h5><i class="bi bi-code-slash me-2"></i>ProcesoService.java</h5>
+
+<pre class="bg-light p-3 rounded border"><code>package com.hilos.servicio;
+
+import org.springframework.stereotype.Service;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+
+/**
+ * Servicio encargado de ejecutar procesos externos con tuberías
+ * usando ProcessBuilder y dos hilos (lector y escritor).
+ */
+@Service
+public class ProcesoService {
+
+    /**
+     * Ejecuta un comando Linux que muestra información de hardware
+     * usando lshw + grep. Si el sistema no tiene lshw instalado,
+     * se devolverá un mensaje de error.
+     */
+    public String ejecutarComandoHardware() throws IOException, InterruptedException {
+
+        // Comando Linux: obtener hardware y filtrar por "memory"
+        ProcessBuilder pb = new ProcessBuilder(
+                "sh", "-c", "lshw -short | grep -i memory"
+        );
+
+        pb.redirectErrorStream(true); // combinar stdout + stderr
+
+        Process proceso = pb.start();
+
+        // ===== HILO ESCRITOR (stdin del proceso) =====
+        Thread escritor = new Thread(() -> {
+            try (OutputStream os = proceso.getOutputStream();
+                 OutputStreamWriter osw = new OutputStreamWriter(os, StandardCharsets.UTF_8);
+                 BufferedWriter writer = new BufferedWriter(osw)) {
+
+                // No necesitamos enviar nada al proceso
+                writer.flush();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }, "proceso-escritor");
+
+        // ===== HILO LECTOR (stdout del proceso) =====
+        StringBuilder salida = new StringBuilder();
+
+        Thread lector = new Thread(() -> {
+            try (InputStream is = proceso.getInputStream();
+                 InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
+                 BufferedReader reader = new BufferedReader(isr)) {
+
+                String linea;
+                while ((linea = reader.readLine()) != null) {
+                    salida.append(linea).append("\n");
+                }
+
+            } catch (IOException e) {
+                salida.append("Error al leer salida: ").append(e.getMessage());
+            }
+        }, "proceso-lector");
+
+        // 4. Iniciar hilos
+        escritor.start();
+        lector.start();
+
+        // 5. Esperar a que termine el proceso
+        int exitCode = proceso.waitFor();
+
+        escritor.join();
+        lector.join();
+
+        salida.append("\nCódigo de salida: ").append(exitCode);
+
+        // Comprobar si lshw existe
+        if (exitCode != 0 && salida.length() == 0) {
+            return "El comando 'lshw' no está instalado o no se pudo ejecutar.\n"
+                 + "Prueba con otro comando, como: ls -la";
+        }
+
+        return salida.toString();
+    }
+}
+</code></pre>
+
+            <div class="alert alert-info mt-3">
+                <i class="bi bi-lightning-charge-fill me-2"></i>
+                Puedes colocar breakpoints en los hilos <strong>proceso-escritor</strong> 
+                y <strong>proceso-lector</strong> para verlos moverse en tu Debugger 
+                junto a los hilos http-nio de Tomcat.
+            </div>
+
+        </div>
+    </div>
+</div>
+
+            </div> <!-- /accordionTareas -->
+        </div>
+    </div>
+</section>
+
+</main>
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+</script>
+</body>
+</html>
