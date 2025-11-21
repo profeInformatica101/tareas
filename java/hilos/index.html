@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Programación Multihilo en Java - Cena de los Filósofos</title>
+    <!-- Bootstrap 5 desde CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<style>
+    code{color:darkred;}
+</style>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="#">Multihilo en Java</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#filosofos">Problema</a></li>
+                <li class="nav-item"><a class="nav-link" href="#teoria">Teoría</a></li>
+                <li class="nav-item"><a class="nav-link" href="#codigo">Código Java</a></li>
+                <li class="nav-item"><a class="nav-link" href="#criterios">Criterios de evaluación</a></li>
+                <li class="nav-item"><a class="nav-link" href="#variantes">Variantes</a></li>
+           <li class="nav-item"><a class="nav-link" href="#debugger">Depurador</a></li>
+<li class="nav-item"><a class="nav-link" href="#pruebas">Pruebas unitarias</a></li>
+                <li class="nav-item"><a class="nav-link" href="#entrega">Entrega</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <!-- Título -->
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="mb-3">Programación multihilo en Java: la cena de los filósofos</h1>
+            <p class="lead">
+                En este tutorial veremos cómo programar una aplicación multihilo en Java
+                usando el problema clásico de la <a href="https://es.wikipedia.org/wiki/Problema_de_la_cena_de_los_fil%C3%B3sofos"><mark>cena de los filósofos</mark></a> y cómo se relaciona con
+                los criterios de evaluación del resultado de aprendizaje:
+                <strong>“Desarrolla aplicaciones compuestas por varios hilos de ejecución…”</strong>
+            </p>
+        </div>
+    </div>
+   <!-- SECCIÓN 0: EL PROBLEMA DE LA CENA DE LOS FILÓSOFOS -->
+    <section id="filosofos" class="mb-5">
+        <h2>0. El problema clásico de la cena de los filósofos</h2>
+
+        <div class="row mt-3">
+            <div class="col-lg-7">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-header bg-secondary text-white">
+                        Planteamiento del problema
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            El problema de la <strong>cena de los filósofos</strong>, propuesto por
+                            Edsger Dijkstra, es uno de los ejemplos más conocidos en programación
+                            concurrente. Sirve para estudiar cómo varios procesos (o hilos)
+                            compiten por recursos compartidos de forma segura.
+                        </p>
+                        <p>
+                            Imaginamos una mesa redonda con <strong>N filósofos</strong> sentados
+                            alrededor. Entre cada filósofo y su vecino hay un <strong>tenedor</strong>
+                            (o palillo). Cada filósofo alterna entre dos actividades:
+                            <strong>pensar</strong> y <strong>comer</strong>.
+                        </p>
+                        <ul>
+                            <li>Para comer, un filósofo necesita tomar <strong>dos tenedores</strong>:
+                                el de su izquierda y el de su derecha.</li>
+                            <li>Los tenedores son <strong>recursos compartidos</strong>:
+                                cada tenedor solo puede ser usado por un filósofo a la vez.</li>
+                            <li>Mientras piensa, el filósofo no necesita tenedores.</li>
+                        </ul>
+                        
+                        <p>
+                            El reto consiste en diseñar un protocolo que permita que todos los filósofos
+                            coman “suficientemente a menudo”, sin caer en problemas típicos de la
+                            concurrencia como el <em>interbloqueo</em> (<em>deadlock</em>),
+                            la <em>inanición</em> (<em>starvation</em>) o las
+                            <em>condiciones de carrera</em> (<em>race conditions</em>).
+                        </p>
+                    </div>
+                      <img class="img-fluid rounded shadow" width="75%"
+                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/An_illustration_of_the_dining_philosophers_problem.png/960px-An_illustration_of_the_dining_philosophers_problem.png"
+                         alt="Ilustración del problema de los filósofos">
+                </div>
+            </div>
+
+            <div class="col-lg-5 mt-3 mt-lg-0">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-header bg-secondary text-white">
+                        Interpretación en términos de hilos y recursos
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            En términos de programación multihilo:
+                        </p>
+                        <ul>
+                            <li>Cada <strong>filósofo</strong> se modela como un
+                                <strong>hilo de ejecución</strong> independiente.</li>
+                            <li>Cada <strong>tenedor</strong> representa un
+                                <strong>recurso compartido</strong> que no puede ser usado por
+                                más de un hilo a la vez.</li>
+                            <li>La <strong>mesa</strong> y el protocolo que siguen los filósofos
+                                se modelan como una <strong>estructura de sincronización</strong>
+                                (monitor, semáforos, locks, etc.).</li>
+                        </ul>
+
+                        <img src="src/img/problema.png">
+                        <p>
+                            Una solución correcta debe garantizar:
+                        </p>
+                        <ul>
+                            <li><strong>Seguridad</strong>: nunca dos filósofos vecinos comen
+                                simultáneamente con el mismo tenedor.</li>
+                            <li><strong>Ausencia de interbloqueo</strong>: el sistema no se queda
+                                bloqueado para siempre.</li>
+                            <li><strong>Equidad</strong>: ningún filósofo se queda permanentemente
+                                sin comer.</li>
+                        </ul>
+                        <p>
+                            En este tutorial implementaremos primero una solución basada en un
+                            <strong>monitor</strong> en Java, y después veremos variantes más
+                            avanzadas usando <code>java.util.concurrent</code> y semáforos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- SECCIÓN 1: TEORÍA -->
+    <section id="teoria" class="mb-5">
+        <h2>1. Teoría básica de programación multihilo</h2>
+
+        <div class="row row-cols-1 row-cols-md-2 g-4 mt-1">
+
+            <!-- Contexto de ejecución -->
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        Contexto de ejecución de los hilos. Recursos compartidos
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            Un <strong>hilo</strong> es una secuencia de instrucciones que se ejecuta de forma
+                            (aparentemente) paralela a otras. Todos los hilos de un programa
+                            comparten el mismo espacio de memoria y los mismos recursos
+                            (objetos, ficheros, variables estáticas, etc.).
+                        </p>
+                        <p>
+                            En la cena de los filósofos:
+                            cada filósofo es un <strong>hilo</strong> y los <strong>tenedores/palillos</strong> son
+                            recursos compartidos que varios hilos intentan usar al mismo tiempo.
+                            En nuestra implementación, esos recursos se gestionan a través de un
+                            <strong>monitor</strong> que controla quién puede comer y cuándo.
+                        </p>
+                        <p>
+                            Desde el punto de vista del sistema operativo, cada hilo dispone de su
+                            propio <em>contexto de ejecución</em> (contador de programa, pila, registros),
+                            pero comparte el <em>espacio de direcciones</em>. Justamente esta compartición
+                            de memoria es la que hace necesaria la sincronización cuando varios hilos
+                            leen y escriben sobre las mismas estructuras de datos.
+                        </p>
+                    </div>
+                  <img src="src/img/hilo.png">
+                </div>
+            </div>
+
+            <!-- Estados de un hilo -->
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        Estados de un hilo. Cambios de estado
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            Los hilos en Java pueden pasar por distintos estados:
+                            <strong>NEW, RUNNABLE, BLOCKED, WAITING, TIMED_WAITING, TERMINATED</strong>.
+                        </p>
+                        <ul>
+                            <li><code>NEW</code>: se ha creado el hilo, pero aún no se ha iniciado.</li>
+                            <li><code>RUNNABLE</code>: listo para usar CPU (ejecutándose o en cola).</li>
+                            <li><code>BLOCKED/WAITING</code>: espera por un recurso o una condición.</li>
+                            <li><code>TIMED_WAITING</code>: espera con tiempo límite (por ejemplo, <code>sleep()</code>).</li>
+                            <li><code>TERMINATED</code>: el método <code>run()</code> ha terminado.</li>
+                        </ul>
+                        <p>
+                            En la cena de los filósofos, los hilos pasan frecuentemente por
+                            estados de <code>WAITING</code> y <code>TIMED_WAITING</code> al
+                            esperar por tenedores o simular que piensan/comen.
+                        </p>
+                        <p>
+                            Observar estos estados en el depurador (o imprimiendo trazas) ayuda
+                            a comprender cómo el planificador cambia de un hilo a otro y cómo
+                            las primitivas de sincronización (<code>wait()</code>, <code>notifyAll()</code>,
+                            <code>sleep()</code>, adquisición de monitores y semáforos) generan
+                            transiciones entre estados.
+                        </p>
+                    </div>
+                    <img src="src/img/estados_hilos.JPG" alt="Estados de los hilos en Java">
+                </div>
+            </div>
+
+            <!-- Librerías y clases -->
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        Librerías y clases para multihilo en Java
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            Las clases básicas para trabajar con hilos en Java son:
+                        </p>
+                        <ul>
+                            <li><code>java.lang.Thread</code> (creación y gestión directa de hilos).</li>
+                            <li><code>java.lang.Runnable</code> (encapsula la tarea que ejecutará el hilo).</li>
+                            <li>Métodos como <code>start()</code>, <code>run()</code>, <code>sleep()</code>,
+                                <code>interrupt()</code>.</li>
+                        </ul>
+                        <p>
+                            Para sincronización y concurrencia avanzada también existen
+                            librerías como <code>java.util.concurrent</code>, que proporcionan
+                            abstracciones de más alto nivel (colas bloqueantes, pools de hilos,
+                            semáforos, locks, etc.). En la primera implementación usaremos
+                            principalmente las primitivas clásicas
+                            (<code>synchronized</code>, <code>wait()</code>, <code>notifyAll()</code>) y
+                            en las variantes veremos soluciones equivalentes usando semáforos.
+                        </p>
+     <img class="img-fluid rounded shadow"
+                         src="src/img/driagama_hilo.png"
+                         alt="Diagrama UML Thread">
+                        <h6 class="mt-3">Uso de <code>java.util.concurrent</code></h6>
+                        <p>
+                            La biblioteca <code>java.util.concurrent</code> introduce un modelo de
+                            programación por tareas:
+                        </p>
+                        <ul>
+                            <li><code>ExecutorService</code>: gestiona un <em>pool</em> de hilos y permite
+                                enviar tareas con <code>execute()</code> o <code>submit()</code>.</li>
+                            <li><code>Callable&lt;T&gt;</code> y <code>Future&lt;T&gt;</code>: representan tareas
+                                que devuelven un resultado y permiten recuperar el valor de forma
+                                bloqueante (<code>get()</code>) o con timeout.</li>
+                            <li><code>Semaphore</code>: contador que controla cuántos hilos pueden acceder
+                                simultáneamente a un recurso.</li>
+                            <li><code>Lock</code> y <code>ReentrantLock</code>: alternativa a
+                                <code>synchronized</code> con más operaciones (bloqueo con timeout,
+                                comprobación no bloqueante, etc.).</li>
+                        </ul>
+                        <p>
+                            Estas abstracciones son preferibles a las primitivas básicas cuando:
+                        </p>
+                        <ul>
+                            <li>La aplicación crea y destruye muchos hilos (es más eficiente reutilizar
+                                hilos con un <code>ExecutorService</code>).</li>
+                            <li>Necesitamos cancelar tareas, esperar resultados o componer varias tareas.</li>
+                            <li>Se requiere mayor control sobre la política de planificación o sobre la
+                                granularidad del bloqueo (<code>Lock</code> frente a <code>synchronized</code>).</li>
+                            <li>Queremos expresar restricciones de concurrencia de forma explícita,
+                                por ejemplo con <code>Semaphore</code> o con <code>ReadWriteLock</code>.</li>
+                        </ul>
+                        <p>
+                            El patrón de monitor que usamos en este tutorial se puede ver como una
+                            versión manual de algunos de estos mecanismos, basada en el bloqueo
+                            implícito de objetos y en variables condición implementadas con
+                            <code>wait()</code> / <code>notifyAll()</code>.
+                        </p>
+                    </div>
+               
+                </div>
+            </div>
+
+            <!-- Gestión de hilos y prioridades -->
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        Gestión de hilos. Prioridades
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            Los hilos pueden tener <strong>prioridades</strong> (de 1 a 10).
+                            El planificador del sistema operativo suele dar más tiempo de CPU a los hilos
+                            con mayor prioridad, aunque <em>no está garantizado</em>.
+                        </p>
+                              <img class="img-fluid rounded shadow"
+                         src="src/img/hilos_con_prioridad_spring_boot.png"
+                         alt="Prioridad Spring Boot">
+                        <p>
+                            En Java podemos usar:
+                        </p>
+                        <pre class="bg-light p-2"><code>t.setPriority(Thread.NORM_PRIORITY + 1);</code></pre>
+                        <p>
+                            En la cena de los filósofos podríamos dar más prioridad a ciertos filósofos
+                            para estudiar cómo afecta al orden en que comen (y relacionarlo con problemas
+                            de inanición).
+                        </p>
+                        <p>
+                            En sistemas de producción se recomienda usar las prioridades con moderación
+                            y centrarse más en el diseño de la sincronización y en el uso de
+                            <code>ExecutorService</code>, ya que el comportamiento exacto de las
+                            prioridades depende en gran medida del sistema operativo.
+                        </p>
+                    </div>
+              
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sincronización -->
+        <div class="col mt-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    Sincronización de hilos
+                </div>
+                <div class="card-body">
+                    <p>
+                        La <strong>sincronización</strong> evita que varios hilos accedan al mismo recurso
+                        a la vez produciendo errores (condiciones de carrera).
+                    </p>
+                    <p>
+                        En Java se usa:
+                    </p>
+                    <ul>
+                        <li><code>synchronized</code> para proteger secciones críticas.</li>
+                        <li><code>wait()</code> para poner un hilo en espera mientras un recurso no está disponible.</li>
+                        <li><code>notify()</code> / <code>notifyAll()</code> para despertar hilos que estaban esperando.</li>
+                    </ul>
+                    <img src="src/img/objeto.png" alt="Monitor en Java">
+                    <p class="mt-2">
+                        En nuestro problema, el <strong>monitor</strong> de filósofos usa estos mecanismos
+                        para garantizar que solo los filósofos que puedan comer (sus vecinos no comen)
+                        pasen al estado de COMIENDO. Cada llamada a <code>wait()</code> se asocia al
+                        <em>intrinsic lock</em> del objeto monitor, y las llamadas a
+                        <code>notifyAll()</code> despiertan a los filósofos que estaban bloqueados en
+                        ese mismo monitor.
+                    </p>
+                    <p>
+                        El patrón de monitor implementa la idea de que todos los accesos al recurso
+                        compartido se realizan a través de un objeto intermediario que:
+                    </p>
+                    <ul>
+                        <li>Encapsula el estado compartido (en este caso, el array <code>estado[]</code>).</li>
+                        <li>Define operaciones atómicas (<code>tomarTenedores</code>,
+                            <code>dejarTenedores</code>) que mantienen las invariantes del sistema.</li>
+                        <li>Usa variables condición (<code>wait()</code>/<code>notifyAll()</code>)
+                            para suspender y reanudar hilos según se cumplan ciertas condiciones lógicas.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Compartición de información y problemas -->
+        <div class="col mt-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    Compartición de información y problemas
+                </div>
+                <div class="card-body">
+                    <p>
+                        Cuando varios hilos comparten información pueden aparecer:
+                    </p>
+                    <ul>
+                        <li><strong>Condiciones de carrera</strong> (<em>race conditions</em>).</li>
+                        <li><strong>Interbloqueo</strong> (<em>deadlock</em>).</li>
+                        <li><strong>Inanición</strong> (<em>starvation</em>).</li>
+                    </ul>
+
+                    <h6>Condiciones de carrera</h6>
+                    <p>
+                        Una condición de carrera se da cuando el resultado final de un programa
+                        depende del orden no controlado en que los hilos intercalan sus operaciones.
+                        Por ejemplo, si dos hilos incrementan una misma variable <code>contador</code>
+                        sin sincronización:
+                    </p>
+                    <pre class="bg-light p-2"><code>contador = contador + 1;</code></pre>
+                    <p>
+                        cada incremento puede leerse y escribirse de forma intercalada, produciendo
+                        valores perdidos. En la cena de los filósofos, una condición de carrera
+                        podría permitir que dos filósofos vecinos entren a la vez en estado COMIENDO
+                        si el acceso a <code>estado[]</code> no se protegiera con
+                        <code>synchronized</code>.
+                    </p>
+
+                    <h6>Interbloqueo (deadlock)</h6>
+                    <img class="img-fluid rounded shadow my-2"
+                         src="https://upload.wikimedia.org/wikipedia/commons/2/23/Deadlock_at_a_four-way-stop.gif"
+                         alt="Deadlock tráfico">
+                    <p>
+                        Un <strong>deadlock</strong> se produce cuando un conjunto de hilos espera
+                        indefinidamente por recursos que se encuentran retenidos por otros hilos del
+                        propio conjunto. Clásicamente se describe en términos de cuatro condiciones:
+                        exclusión mutua, espera circular, retención y espera, y no expropiación.
+                    </p>
+                    <p>
+                        La cena de los filósofos es un ejemplo canónico: si todos los filósofos
+                        toman primero el tenedor de la izquierda y esperan al de la derecha, se
+                        forma un ciclo de dependencias que impide progresar. Nuestro monitor evita
+                        este deadlock al garantizar que solo se asigna el estado COMIENDO cuando
+                        ningún vecino lo está, rompiendo la espera circular.
+                    </p>
+
+                    <h6>Inanición (starvation)</h6>
+                    <p>
+                        La <strong>inanición</strong> ocurre cuando un hilo nunca llega a acceder al
+                        recurso, aunque teóricamente podría hacerlo. Por ejemplo, si el planificador
+                        siempre da prioridad a los mismos hilos, uno de ellos podría no comer nunca.
+                    </p>
+                    <p>
+                        En el monitor de filósofos, la inanición se puede producir si la política de
+                        despertar de hilos no es justa. Aunque <code>notifyAll()</code> despierta a
+                        todos, la elección de cuál adquiere el monitor a continuación depende del
+                        planificador. Las variantes con semáforos y con tiempo de espera ofrecen
+                        estrategias adicionales para reducir o monitorizar la inanición.
+                    </p>
+
+                    <h6>Cómo ayuda el patrón Monitor</h6>
+                    <p>
+                        El patrón Monitor reduce estos problemas:
+                    </p>
+                    <ul>
+                        <li>El <strong>estado compartido</strong> se encapsula y solo es accesible
+                            a través de métodos sincronizados.</li>
+                        <li>Las <strong>invariantes</strong> (por ejemplo, “ningún filósofo come si
+                            un vecino está comiendo”) se comprueban dentro del monitor antes de
+                            modificar el estado.</li>
+                        <li>Las <strong>variables condición</strong> permiten suspender hilos hasta
+                            que la invariante vuelva a cumplirse, evitando bucles activos y uso
+                            innecesario de CPU.</li>
+                    </ul>
+                    <p>
+                        Aun así, el patrón monitor no garantiza por sí solo la ausencia de deadlocks
+                        o inanición: es el diseñador quien debe escoger correctamente el orden de
+                        adquisición de recursos y las condiciones de activación de los hilos.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- SECCIÓN 2: CÓDIGO JAVA -->
+    <section id="codigo" class="mb-5">
+        <h2>2. Implementación en Java de la cena de los filósofos (Monitor)</h2>
+        <p>
+            A continuación se muestra una implementación en Java basada en un
+            <strong>monitor</strong> que controla el estado de cada filósofo:
+            <code>PENSANDO (0)</code>, <code>HAMBRIENTO (1)</code> y <code>COMIENDO (2)</code>.
+            Esta versión se inspira en soluciones clásicas en C, adaptadas a Java con
+            <code>synchronized</code>, <code>wait()</code> y <code>notifyAll()</code>, y sigue
+            buenas prácticas de programación concurrente (inmutabilidad de la configuración,
+            encapsulación del estado y manejo correcto de interrupciones).
+        </p>
+        <h6>Diagrama de Clases</h6>
+<img src="src/img/Clase_filosofo.png">
+<h6>Diagrama Secuencia</h6>
+<img src="src/img/diagrama_secuencia.png">
+<h6>Diagrama de Estados</h6>
+<img src="src/img/diagrama_estado.png">
+
+
+        <h3 class="mt-3">2.1. Clase <code>MonitorFilosofos</code> (monitor de sincronización)</h3>
+        <pre class="bg-dark text-light p-3 small"><code>/**
+ * Monitor de sincronización para el problema de la cena de los filósofos.
+ * Encapsula el estado de cada filósofo y garantiza que solo puede comer
+ * un filósofo cuyos vecinos no estén comiendo.
+ */
+public final class MonitorFilosofos {
+
+    public static final int PENSANDO  = 0;
+    public static final int HAMBRIENTO = 1;
+    public static final int COMIENDO  = 2;
+
+    private final int numFilosofos;
+
+    // Estados: 0 = PENSANDO, 1 = HAMBRIENTO, 2 = COMIENDO
+    private final int[] estado;
+
+    /**
+     * Crea un monitor para N filósofos.
+     *
+     * @param numFilosofos número de filósofos (N &gt; 1)
+     */
+    public MonitorFilosofos(final int numFilosofos) {
+        if (numFilosofos &lt;= 1) {
+            throw new IllegalArgumentException("Debe haber al menos dos filósofos");
+        }
+        this.numFilosofos = numFilosofos;
+        this.estado = new int[numFilosofos];
+        for (int i = 0; i &lt; numFilosofos; i++) {
+            estado[i] = PENSANDO; // todos empiezan pensando
+        }
+    }
+
+    public int getNumFilosofos() {
+        return numFilosofos;
+    }
+
+    private int izquierda(final int i) {
+        return (i + numFilosofos - 1) % numFilosofos;
+    }
+
+    private int derecha(final int i) {
+        return (i + 1) % numFilosofos;
+    }
+
+    private void cambiarEstado(final int i, final int nuevo) {
+        estado[i] = nuevo;
+    }
+
+    private int estadoIzq(final int i) {
+        return estado[izquierda(i)];
+    }
+
+    private int estadoDer(final int i) {
+        return estado[derecha(i)];
+    }
+
+    /**
+     * Intenta que el filósofo i pase a estado COMIENDO si sus vecinos
+     * no están comiendo. Este método debe llamarse siempre con el monitor
+     * adquirido (dentro de un método synchronized).
+     */
+    private void intentarComer(final int i) {
+        if (estado[i] == HAMBRIENTO
+                &amp;&amp; estadoIzq(i) != COMIENDO
+                &amp;&amp; estadoDer(i) != COMIENDO) {
+            cambiarEstado(i, COMIENDO);
+            // Despertamos a todos para que los filósofos que estaban
+            // esperando puedan reevaluar su condición.
+            notifyAll();
+        }
+    }
+
+    /**
+     * Filósofo i se declara hambriento e intenta comer. Si no puede,
+     * el hilo queda bloqueado (WAITING) hasta que pueda pasar a COMIENDO.
+     *
+     * @param i índice del filósofo (0..N-1)
+     * @throws InterruptedException si el hilo es interrumpido mientras espera
+     */
+    public synchronized void tomarTenedores(final int i) throws InterruptedException {
+        cambiarEstado(i, HAMBRIENTO);
+        intentarComer(i);
+
+        // Si no ha podido empezar a comer, espera hasta que su estado sea COMIENDO
+        while (estado[i] != COMIENDO) {
+            wait(); // pasa a estado WAITING asociado a este monitor
+        }
+    }
+
+    /**
+     * Filósofo i deja de comer y pasa a pensar. Después de liberar los
+     * tenedores, permite que sus vecinos intenten comer.
+     *
+     * @param i índice del filósofo (0..N-1)
+     */
+    public synchronized void dejarTenedores(final int i) {
+        cambiarEstado(i, PENSANDO);
+        // Sus vecinos pueden intentar comer ahora que i ha dejado los tenedores.
+        intentarComer(izquierda(i));
+        intentarComer(derecha(i));
+        notifyAll();
+    }
+
+    /**
+     * Solo para depuración o para mostrar el estado en una interfaz gráfica.
+     *
+     * @param i índice del filósofo
+     * @return estado del filósofo i
+     */
+    public synchronized int getEstado(final int i) {
+        return estado[i];
+    }
+}</code></pre>
+
+        <h3 class="mt-4">2.2. Clase <code>Filosofo</code> (hilo que usa el monitor)</h3>
+        <pre class="bg-dark text-light p-3 small"><code>import java.util.Random;
+
+/**
+ * Representa a un filósofo que piensa y come de forma repetida.
+ * Cada filósofo es un hilo que coordina su acceso a los tenedores
+ * a través del MonitorFilosofos.
+ */
+public final class Filosofo implements Runnable {
+
+    private final int id;
+    private final MonitorFilosofos monitor;
+    private final Random random = new Random();
+
+    public Filosofo(final int id, final MonitorFilosofos monitor) {
+        this.id = id;
+        this.monitor = monitor;
+    }
+
+    private void pensar() throws InterruptedException {
+        System.out.println("Filósofo " + id + " PENSANDO...");
+        // Simulamos un tiempo variable de pensamiento (TIMED_WAITING)
+        Thread.sleep(random.nextInt(2000) + 500L);
+    }
+
+    private void comer() throws InterruptedException {
+        System.out.println("Filósofo " + id + " COMIENDO 🍝");
+        Thread.sleep(random.nextInt(2000) + 500L);
+    }
+
+    @Override
+    public void run() {
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+                pensar();
+                System.out.println("Filósofo " + id + " tiene HAMBRE.");
+                // Puede quedar en estado WAITING dentro del monitor
+                monitor.tomarTenedores(id);
+                comer();
+                monitor.dejarTenedores(id);
+            }
+        } catch (InterruptedException e) {
+            // Restablecemos el estado de interrupción y salimos del bucle
+            Thread.currentThread().interrupt();
+            System.out.println("Filósofo " + id + " interrumpido. Termina su ejecución.");
+        }
+    }
+}</code></pre>
+
+        <h3 class="mt-4">2.3. Clase <code>CenaFilosofos</code> (método <code>main</code>)</h3>
+        <pre class="bg-dark text-light p-3 small"><code>/**
+ * Punto de entrada de la aplicación. Crea N filósofos y un monitor
+ * compartido para coordinar el acceso a los recursos (tenedores).
+ */
+public final class CenaFilosofos {
+
+    private CenaFilosofos() {
+        // Evitamos instanciación
+    }
+
+    public static void main(String[] args) {
+        final int N = 5;
+        final MonitorFilosofos monitor = new MonitorFilosofos(N);
+
+        for (int i = 0; i &lt; N; i++) {
+            final Filosofo f = new Filosofo(i, monitor);
+            final Thread t = new Thread(f, "Filosofo-" + i);
+
+            // Opcional: prioridad para trabajar el criterio g)
+            // t.setPriority(Thread.NORM_PRIORITY + (i % 2));
+
+            t.start(); // el hilo pasa de NEW a RUNNABLE
+        }
+    }
+}</code></pre>
+
+        <p class="mt-3">
+            Para ejecutar el programa:
+        </p>
+        <pre class="bg-light p-2"><code>javac MonitorFilosofos.java Filosofo.java CenaFilosofos.java
+java CenaFilosofos</code></pre>
+
+    </section>
+
+    <!-- SECCIÓN 3: CRITERIOS DE EVALUACIÓN -->
+    <section id="criterios" class="mb-5">
+        <h2>3. Relación con los criterios de evaluación</h2>
+        <p>
+            A continuación se explica cómo este caso práctico y la teoría anterior permiten
+            trabajar cada criterio del resultado de aprendizaje
+            <strong>“Desarrolla aplicaciones compuestas por varios hilos de ejecución…”</strong>.
+            Además de la descripción conceptual, se indican las clases y métodos concretos
+            en los que se evidencia cada criterio.
+        </p>
+
+        <div class="accordion mt-3" id="accordionCriterios">
+
+            <!-- a) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="critA">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseA">
+                        a) Identificación de situaciones en las que resulta útil la utilización de varios hilos
+                    </button>
+                </h2>
+                <div id="collapseA" class="accordion-collapse collapse show" data-bs-parent="#accordionCriterios">
+                    <div class="accordion-body">
+                        <p>
+                            La cena de los filósofos representa una situación donde varias tareas deben
+                            ejecutarse simultáneamente: cada filósofo piensa y quiere comer a su ritmo.
+                            Si se hiciera con un único hilo, la simulación sería irreal (los filósofos
+                            actuarían uno detrás de otro).
+                        </p>
+                        <p>
+                            Conceptos teóricos relacionados:
+                            <strong>contexto de ejecución de los hilos, recursos compartidos</strong>.
+                        </p>
+                        <p>
+                            Técnicamente, este criterio se materializa cuando el diseño separa la
+                            lógica de cada filósofo (clase <code>Filosofo</code>, que implementa
+                            <code>Runnable</code>) del recurso compartido
+                            (<code>MonitorFilosofos</code>). El hecho de que el <code>main</code>
+                            cree un hilo por cada filósofo (<code>new Thread(f, "Filosofo-" + i)</code>)
+                            indica que la solución reconoce explícitamente que cada filósofo es una
+                            unidad de ejecución independiente que se beneficia del paralelismo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- b) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="critB">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseB">
+                        b) Reconocimiento de mecanismos para crear, iniciar y finalizar hilos
+                    </button>
+                </h2>
+                <div id="collapseB" class="accordion-collapse collapse" data-bs-parent="#accordionCriterios">
+                    <div class="accordion-body">
+                        <p>
+                            En la clase <code>CenaFilosofos</code> se crean hilos con:
+                        </p>
+                        <pre class="bg-light p-2"><code>final Filosofo f = new Filosofo(i, monitor);
+final Thread t = new Thread(f, "Filosofo-" + i);
+t.start();</code></pre>
+                        <p>
+                            Aquí el alumnado reconoce el uso de <code>Thread</code>, el método
+                            <code>start()</code> y la interfaz <code>Runnable</code>.
+                            La finalización controlada se puede trabajar introduciendo
+                            un número máximo de ciclos o usando <code>interrupt()</code>.
+                        </p>
+                        <p>
+                            Relación con la teoría:
+                            <strong>librerías y clases, estados del hilo (NEW, RUNNABLE, TERMINATED)</strong>.
+                        </p>
+                        <p>
+                            Este criterio también queda reflejado en la gestión de interrupciones en
+                            <code>Filosofo.run()</code>. El bloque <code>catch (InterruptedException e)</code>
+                            restablece el estado de interrupción y termina el bucle, mostrando un
+                            mensaje de fin de ejecución. Con ello el alumno aprende a terminar
+                            limpiamente un hilo multihilo sin recurrir a métodos obsoletos como
+                            <code>stop()</code>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- c) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="critC">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseC">
+                        c) Programación de aplicaciones que implementen varios hilos
+                    </button>
+                </h2>
+                <div id="collapseC" class="accordion-collapse collapse" data-bs-parent="#accordionCriterios">
+                    <div class="accordion-body">
+                        <p>
+                            El programa implementa <strong>varios hilos reales</strong> (uno por filósofo)
+                            que ejecutan código concurrente en el método <code>run()</code>.
+                        </p>
+                        <p>
+                            El alumnado no solo ve un ejemplo teórico, sino una aplicación funcional
+                            de programación multihilo.
+                        </p>
+                        <p>
+                            Relación con la teoría:
+                            <strong>programación de aplicaciones multihilo</strong>.
+                        </p>
+                        <p>
+                            Desde el punto de vista del código, este criterio se evidencia en la
+                            implementación de la interfaz <code>Runnable</code> en
+                            <code>Filosofo</code> y en el bucle infinito (condicionado por la
+                            interrupción) dentro de <code>run()</code>. Cada iteración del bucle
+                            ejecuta la secuencia <code>pensar() → tomarTenedores() → comer() →
+                            dejarTenedores()</code>, mostrando una aplicación completa con
+                            comportamiento concurrente observable en consola.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- d) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="critD">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseD">
+                        d) Identificación de los posibles estados de ejecución de un hilo y programación de aplicaciones que los gestionen
+                    </button>
+                </h2>
+                <div id="collapseD" class="accordion-collapse collapse" data-bs-parent="#accordionCriterios">
+                    <div class="accordion-body">
+                        <p>
+                            Los estados se observan en el código:
+                        </p>
+                        <ul>
+                            <li><strong>NEW</strong>: al crear <code>Thread t = new Thread(...)</code>.</li>
+                            <li><strong>RUNNABLE</strong>: tras llamar a <code>t.start()</code>.</li>
+                            <li><strong>TIMED_WAITING</strong>: al usar <code>Thread.sleep()</code> en
+                                <code>pensar()</code> y <code>comer()</code>.
+                            </li>
+                            <li><strong>WAITING</strong>: dentro de <code>MonitorFilosofos.tomarTenedores()</code> con
+                                <code>wait()</code> cuando no puede comer aún.
+                            </li>
+                            <li><strong>TERMINATED</strong>: cuando el método <code>run()</code> termina
+                                (o se interrumpe).
+                            </li>
+                        </ul>
+                        <p>
+                            Relación con la teoría:
+                            <strong>estados de un hilo, cambios de estado</strong>.
+                        </p>
+                        <p>
+                            La propia lógica de sincronización del monitor muestra una gestión
+                            consciente de estos estados: al entrar en
+                            <code>tomarTenedores()</code>, el hilo adquiere el monitor (pasa a
+                            <em>BLOCKED</em> si otro filósofo lo posee), cambia su estado lógico a
+                            <code>HAMBRIENTO</code> y, si no puede comer, ejecuta <code>wait()</code>,
+                            pasando a <em>WAITING</em>. Cuando otro filósofo libera los tenedores y
+                            ejecuta <code>notifyAll()</code>, el hilo despierta y vuelve a
+                            <em>RUNNABLE</em>, reintentando la condición del bucle <code>while</code>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- e) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="critE">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseE">
+                        e) Utilización de mecanismos para compartir información entre varios hilos de un mismo proceso
+                    </button>
+                </h2>
+                <div id="collapseE" class="accordion-collapse collapse" data-bs-parent="#accordionCriterios">
+                    <div class="accordion-body">
+                        <p>
+                            La clase <code>MonitorFilosofos</code> actúa como recurso compartido.
+                            Todos los filósofos (hilos) acceden al mismo array <code>estado[]</code> y a
+                            los métodos <code>tomarTenedores()</code> y <code>dejarTenedores()</code>,
+                            que están protegidos con <code>synchronized</code>.
+                        </p>
+                        <p>
+                            Relación con la teoría:
+                            <strong>recursos compartidos, compartición de información</strong>.
+                        </p>
+                        <p>
+                            En términos de diseño, este criterio se refleja en cómo se pasa la misma
+                            instancia de <code>MonitorFilosofos monitor</code> al constructor de cada
+                            <code>Filosofo</code>. No se duplican los recursos (tenedores) por hilo,
+                            sino que se centraliza su gestión en un único objeto. La sincronización
+                            sobre <code>this</code> dentro de los métodos del monitor garantiza que
+                            las lecturas y escrituras sobre <code>estado[]</code> se realizan con
+                            exclusión mutua y memoria coherente.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- f) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="critF">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseF">
+                        f) Desarrollo de programas formados por varios hilos sincronizados mediante técnicas específicas
+                    </button>
+                </h2>
+                <div id="collapseF" class="accordion-collapse collapse" data-bs-parent="#accordionCriterios">
+                    <div class="accordion-body">
+                        <p>
+                            La sincronización se consigue con:
+                        </p>
+                        <ul>
+                            <li><code>synchronized</code> en los métodos del monitor.</li>
+                            <li><code>wait()</code> y <code>notifyAll()</code> para gestionar la espera por los recursos.</li>
+                            <li>Lógica de vecinos (<code>intentarComer()</code>) que garantiza que solo
+                                un filósofo coma cuando sus vecinos no están comiendo.</li>
+                        </ul>
+                        <p>
+                            Relación con la teoría:
+                            <strong>sincronización de hilos, problemas de compartición</strong>.
+                        </p>
+                        <p>
+                            Específicamente, el método <code>tomarTenedores(int i)</code> ilustra el
+                            uso de una <strong>variable de condición</strong> codificada como un
+                            bucle <code>while</code> alrededor de <code>wait()</code>. Esto implementa
+                            el patrón “<em>check-then-sleep</em>”, que garantiza que el hilo solo
+                            avanza cuando se cumplen las condiciones lógicas de seguridad. La
+                            combinación de este patrón con <code>intentarComer(i)</code> y
+                            <code>dejarTenedores(i)</code> constituye una solución completa basada
+                            en monitores para la sincronización de los hilos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- g) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="critG">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseG">
+                        g) Establecimiento y control de la prioridad de cada uno de los hilos de ejecución
+                    </button>
+                </h2>
+                <div id="collapseG" class="accordion-collapse collapse" data-bs-parent="#accordionCriterios">
+                    <div class="accordion-body">
+                        <p>
+                            En la clase <code>CenaFilosofos</code> se puede activar el código comentado:
+                        </p>
+                        <pre class="bg-light p-2"><code>t.setPriority(Thread.NORM_PRIORITY + (i % 2));</code></pre>
+                        <p>
+                            Así parte del alumnado puede experimentar con diferentes prioridades y observar
+                            si algún filósofo come más veces que otros (posible inanición).
+                        </p>
+                        <p>
+                            Relación con la teoría:
+                            <strong>gestión de hilos y prioridades</strong>.
+                        </p>
+                        <p>
+                            Desde el punto de vista técnico, modificar las prioridades antes de llamar
+                            a <code>start()</code> permite estudiar cómo el planificador del sistema
+                            operativo distribuye la CPU. Aunque el estándar de Java no garantiza un
+                            comportamiento determinista, el experimento es útil para reflexionar sobre
+                            la relación entre la capa de aplicación (decisión de prioridades en
+                            <code>CenaFilosofos</code>) y la capa de ejecución (planificador real),
+                            y sobre los riesgos de provocar starving si se abusa de prioridades altas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- h) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="critH">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseH">
+                        h) Depuración y documentación de los programas desarrollados
+                    </button>
+                </h2>
+                <div id="collapseH" class="accordion-collapse collapse" data-bs-parent="#accordionCriterios">
+                    <div class="accordion-body">
+                        <p>
+                            El código está documentado con comentarios y mensajes por consola.
+                            El alumnado puede:
+                        </p>
+                        <ul>
+                            <li>Seguir la traza de cada hilo (filósofo).</li>
+                            <li>Usar puntos de ruptura en el depurador.</li>
+                            <li>Detectar posibles situaciones de bloqueo si se modifica la lógica del monitor.</li>
+                        </ul>
+                        <p>
+                            Relación con la teoría:
+                            <strong>programación de aplicaciones multihilo</strong> y buenas prácticas.
+                        </p>
+                        <p>
+                            Las cabeceras de clase y método en <code>MonitorFilosofos</code>,
+                            <code>Filosofo</code> y <code>CenaFilosofos</code> siguen un estilo de
+                            documentación tipo Javadoc, lo que facilita la generación automática de
+                            documentación técnica. Además, los mensajes explicativos en
+                            <code>System.out.println()</code> permiten depurar la ejecución concurrente
+                            sin necesidad de herramientas externas, algo especialmente útil en
+                            entornos docentes o en ejercicios de laboratorio.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- i) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="critI">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseI">
+                        i) Análisis del contexto de ejecución de los hilos
+                    </button>
+                </h2>
+                <div id="collapseI" class="accordion-collapse collapse" data-bs-parent="#accordionCriterios">
+                    <div class="accordion-body">
+                        <p>
+                            El alumnado puede observar cómo el sistema operativo reparte la CPU
+                            entre los hilos según el planificador y las prioridades.
+                            Al ejecutar varias veces, el orden en que los filósofos comen
+                            cambia, lo que permite comentar el contexto de ejecución real:
+                            cambios de contexto, planificación, etc.
+                        </p>
+                        <p>
+                            Relación con la teoría:
+                            <strong>contexto de ejecución de los hilos</strong>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- j) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="critJ">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseJ">
+                        j) Análisis de librerías específicas del lenguaje de programación que permiten la programación multihilo
+                    </button>
+                </h2>
+                <div id="collapseJ" class="accordion-collapse collapse" data-bs-parent="#accordionCriterios">
+                    <div class="accordion-body">
+                        <p>
+                            En el ejemplo se utilizan las librerías básicas:
+                            <code>java.lang.Thread</code>, <code>java.lang.Runnable</code> y los
+                            métodos de la clase <code>Object</code> (<code>wait()</code>,
+                            <code>notifyAll()</code>).
+                        </p>
+                        <p>
+                            En las variantes se introduce también <code>java.util.concurrent.Semaphore</code>
+                            para mostrar soluciones más avanzadas.
+                        </p>
+                        <p>
+                            Relación con la teoría:
+                            <strong>librerías y clases de programación multihilo</strong>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- k) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="critK">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseK">
+                        k) Reconocimiento de los problemas derivados de la compartición de información entre los hilos de un mismo proceso
+                    </button>
+                </h2>
+                <div id="collapseK" class="accordion-collapse collapse" data-bs-parent="#accordionCriterios">
+                    <div class="accordion-body">
+                        <p>
+                            Si se elimina la sincronización (por ejemplo, se quita
+                            <code>synchronized</code> y <code>wait()</code>/<code>notifyAll()</code> del monitor),
+                            aparecen errores:
+                        </p>
+                        <ul>
+                            <li>Varios filósofos podrían entrar en estado de COMIENDO simultáneamente sin respetar la lógica de vecinos.</li>
+                            <li>Aparecen condiciones de carrera y resultados incoherentes.</li>
+                            <li>Puede producirse interbloqueo si todos esperan indefinidamente.</li>
+                        </ul>
+                        <p>
+                            Esto permite reconocer y discutir los problemas clásicos de
+                            compartición de información.
+                        </p>
+                        <p>
+                            Relación con la teoría:
+                            <strong>compartición de información entre hilos. Problemas derivados</strong>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- SECCIÓN 4: VARIANTES Y EXTENSIONES -->
+    <section id="variantes" class="mb-5">
+        <h2>4. Variantes y extensiones del problema de los filósofos</h2>
+        <p>
+            El problema de los cinco filósofos tiene diversas variantes que permiten explorar
+            soluciones más complejas a los desafíos de sincronización y concurrencia en sistemas
+            distribuidos. A continuación se presentan algunas de ellas con ejemplos en Java.
+        </p>
+
+        <!-- Variante 1: Portero -->
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                4.1. Variante del Portero o "Footman" sobre el monitor
+            </div>
+            <div class="card-body">
+                <p>
+                    En esta variante se introduce un <strong>portero</strong> que solo permite
+                    que se sienten a la mesa como máximo cuatro filósofos a la vez.
+                    Esta restricción reduce las probabilidades de interbloqueo, ya que siempre
+                    hay al menos un filósofo que podría acceder a ambos tenedores.
+                </p>
+                <p>
+                    En Java podemos implementar este portero usando un
+                    <code>Semaphore</code> de la biblioteca <code>java.util.concurrent</code>:
+                </p>
+                <pre class="bg-dark text-light p-3 small"><code>import java.util.concurrent.Semaphore;
+
+/**
+ * Envuelve al MonitorFilosofos añadiendo un "portero" (footman)
+ * que limita el número de filósofos que se sientan simultáneamente.
+ */
+public final class MonitorConFootman {
+
+    private static final int MAX_SENTADOS = 4;
+
+    private final MonitorFilosofos monitor;
+    private final Semaphore footman = new Semaphore(MAX_SENTADOS, true); // fairness=true
+
+    public MonitorConFootman(final MonitorFilosofos monitor) {
+        this.monitor = monitor;
+    }
+
+    public void sentarse(final int i) throws InterruptedException {
+        // El portero limita el número de filósofos concurrentemente sentados
+        footman.acquire();   // espera si ya hay MAX_SENTADOS filósofos sentados
+        monitor.tomarTenedores(i);
+    }
+
+    public void levantarse(final int i) {
+        monitor.dejarTenedores(i);
+        footman.release();   // libera un sitio en la mesa
+    }
+}</code></pre>
+
+                <p>
+                    El filósofo ahora usa el monitor con portero:
+                </p>
+                <pre class="bg-dark text-light p-3 small"><code>public final class FilosofoFootman implements Runnable {
+
+    private final int id;
+    private final MonitorConFootman monitor;
+
+    public FilosofoFootman(final int id, final MonitorConFootman monitor) {
+        this.id = id;
+        this.monitor = monitor;
+    }
+
+    @Override
+    public void run() {
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+                // pensar...
+                System.out.println("Filósofo " + id + " PENSANDO (footman)...");
+                Thread.sleep(1000L);
+
+                monitor.sentarse(id);
+                System.out.println("Filósofo " + id + " COMIENDO (footman) 🍝");
+                Thread.sleep(1000L);
+                monitor.levantarse(id);
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}</code></pre>
+
+                <p>
+                    Esta variante muestra cómo una pequeña restricción en el acceso a los recursos
+                    puede mejorar significativamente la seguridad y eficiencia en concurrencia.
+                    El semáforo actúa como un contador de plazas disponibles en la mesa, mientras
+                    que la lógica de vecinos sigue delegada en <code>MonitorFilosofos</code>.
+                </p>
+            </div>
+        </div>
+
+        <!-- Variante 2: Temporizadores aleatorios -->
+        <div class="card mb-4">
+            <div class="card-header bg-warning">
+                4.2. Uso de temporizadores aleatorios para evitar el interbloqueo
+            </div>
+            <div class="card-body">
+                <p>
+                    Otra solución consiste en permitir que cada filósofo suelte los tenedores
+                    después de esperar un tiempo aleatorio si no puede obtener ambos.
+                    Esto simula una espera probabilística que reduce la posibilidad de interbloqueo
+                    y se utiliza en sistemas donde los procesos deben ceder los recursos
+                    temporalmente si no logran completar su tarea en un período específico.
+                </p>
+                <p>
+                    Ejemplo de lógica con tiempo máximo de intento:
+                </p>
+                <pre class="bg-dark text-light p-3 small"><code>import java.util.Random;
+
+public final class FilosofoTimeout implements Runnable {
+
+    private final int id;
+    private final MonitorFilosofos monitor;
+    private final Random random = new Random();
+
+    public FilosofoTimeout(final int id, final MonitorFilosofos monitor) {
+        this.id = id;
+        this.monitor = monitor;
+    }
+
+    @Override
+    public void run() {
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+                // Pensar
+                Thread.sleep(1000L);
+
+                long inicio = System.currentTimeMillis();
+                long timeout = 2000L + random.nextInt(2000);
+
+                monitor.tomarTenedores(id);
+
+                // Si no llega a COMER en cierto tiempo, suelta los tenedores
+                while (monitor.getEstado(id) != MonitorFilosofos.COMIENDO) {
+                    if (System.currentTimeMillis() - inicio &gt; timeout) {
+                        System.out.println("Filósofo " + id
+                                + " se rinde y vuelve a pensar (timeout).");
+                        monitor.dejarTenedores(id);
+                        break;
+                    }
+                    Thread.sleep(50L);
+                }
+
+                if (monitor.getEstado(id) == MonitorFilosofos.COMIENDO) {
+                    // Comer normalmente
+                    Thread.sleep(1000L);
+                    monitor.dejarTenedores(id);
+                }
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}</code></pre>
+
+                <p>
+                    Esta técnica es útil en sistemas distribuidos donde los procesos tienen
+                    diferentes prioridades y tiempos de espera, y se desea evitar bloqueos largos.
+                </p>
+            </div>
+        </div>
+
+        <!-- Variante 3: Modelo Pensar-Comer cíclico -->
+        <div class="card mb-4">
+            <div class="card-header bg-info">
+                4.3. Modelo de "Pensar-Comer" cíclico
+            </div>
+            <div class="card-body">
+                <p>
+                    En esta variante, cada filósofo alterna entre pensar y comer en un ciclo fijo
+                    o programado, de manera que los recursos se distribuyen en intervalos predecibles.
+                    Este enfoque se usa en sistemas de tiempo real donde los procesos necesitan
+                    sincronizarse en intervalos regulares.
+                </p>
+                <p>
+                    Ejemplo simplificado:
+                </p>
+                <pre class="bg-dark text-light p-3 small"><code>public final class FilosofoCiclico implements Runnable {
+
+    private final int id;
+    private final MonitorFilosofos monitor;
+
+    public FilosofoCiclico(final int id, final MonitorFilosofos monitor) {
+        this.id = id;
+        this.monitor = monitor;
+    }
+
+    @Override
+    public void run() {
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+                // Pensar exactamente 1 segundo
+                Thread.sleep(1000L);
+
+                monitor.tomarTenedores(id);
+
+                // Comer exactamente 2 segundos
+                Thread.sleep(2000L);
+
+                monitor.dejarTenedores(id);
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}</code></pre>
+
+                <p>
+                    Este modelo se relaciona con sistemas embebidos de monitoreo de sensores,
+                    donde cada dispositivo accede a la red o a los recursos de procesamiento
+                    en intervalos regulares, evitando bloqueos e injusticias prolongadas.
+                </p>
+            </div>
+        </div>
+
+        <!-- Variante 4: Solución con semáforos y portero (FilosofoConSemaforos) -->
+        <div class="card mb-4">
+            <div class="card-header bg-secondary text-white">
+                4.4. Variante completa con semáforos y portero (<code>FilosofoConSemaforos</code>)
+            </div>
+            <div class="card-body">
+                <p>
+                    En esta variante implementamos la cena de los filósofos únicamente con
+                    semáforos de <code>java.util.concurrent</code>. Cada tenedor se modela como
+                    un <code>Semaphore</code> binario (permiso = 1) y se añade un semáforo
+                    adicional que actúa como <strong>portero</strong> con <code>N - 1</code> permisos.
+                    De este modo, como máximo se sientan <code>N - 1</code> filósofos
+                    simultáneamente, lo que evita el interbloqueo.
+                </p>
+
+                <h5>4.4.1. Clase <code>FilosofoConSemaforos</code></h5>
+                <pre class="bg-dark text-light p-3 small"><code>import java.util.Random;
+import java.util.concurrent.Semaphore;
+
+/**
+ * Implementación de un filósofo usando únicamente semáforos:
+ * - Un array de Semaphore para los tenedores (uno por posición).
+ * - Un Semaphore adicional (portero) con N-1 permisos para evitar deadlock.
+ */
+public final class FilosofoConSemaforos implements Runnable {
+
+    private final int id;
+    private final Semaphore[] tenedores;
+    private final Semaphore portero;
+    private final Random random = new Random();
+
+    public FilosofoConSemaforos(final int id,
+                                final Semaphore[] tenedores,
+                                final Semaphore portero) {
+        this.id = id;
+        this.tenedores = tenedores;
+        this.portero = portero;
+    }
+
+    private int izquierda() {
+        return id;
+    }
+
+    private int derecha() {
+        return (id + 1) % tenedores.length;
+    }
+
+    private void pensar() throws InterruptedException {
+        System.out.println("Filósofo " + id + " PENSANDO (semáforos)...");
+        Thread.sleep(random.nextInt(2000) + 500L);
+    }
+
+    private void comer() throws InterruptedException {
+        System.out.println("Filósofo " + id + " COMIENDO (semáforos) 🍝");
+        Thread.sleep(random.nextInt(2000) + 500L);
+    }
+
+    @Override
+    public void run() {
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+                pensar();
+
+                // El portero limita el número de filósofos que pueden competir
+                // por los tenedores simultáneamente. Tiene N-1 permisos.
+                portero.acquire();
+                try {
+                    // Adquirimos primero el tenedor izquierdo y luego el derecho.
+                    // Cada tenedor es un semáforo binario (1 permiso).
+                    tenedores[izquierda()].acquire();
+                    tenedores[derecha()].acquire();
+                    try {
+                        comer();
+                    } finally {
+                        // Liberamos los tenedores en orden inverso
+                        tenedores[derecha()].release();
+                        tenedores[izquierda()].release();
+                    }
+                } finally {
+                    // Dejamos libre un sitio en la mesa
+                    portero.release();
+                }
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.out.println("Filósofo " + id + " interrumpido (semáforos).");
+        }
+    }
+}</code></pre>
+
+                <h5 class="mt-3">4.4.2. Clase <code>CenaFilosofosSemaforos</code></h5>
+                <p>
+                    El método <code>main</code> crea un array de semáforos para los tenedores
+                    y un semáforo adicional para el portero, con <code>N - 1</code> permisos.
+                </p>
+                <pre class="bg-dark text-light p-3 small"><code>import java.util.concurrent.Semaphore;
+
+/**
+ * Variante de la cena de los filósofos implementada con semáforos.
+ */
+public final class CenaFilosofosSemaforos {
+
+    private CenaFilosofosSemaforos() {
+        // Evitamos instanciación
+        }
+
+    public static void main(String[] args) {
+        final int N = 5;
+
+        // Un semáforo binario por tenedor (1 permiso)
+        final Semaphore[] tenedores = new Semaphore[N];
+        for (int i = 0; i &lt; N; i++) {
+            tenedores[i] = new Semaphore(1, true); // fairness=true para reducir starvation
+        }
+
+        // Semáforo "portero" con N-1 permisos
+        final Semaphore portero = new Semaphore(N - 1, true);
+
+        for (int i = 0; i &lt; N; i++) {
+            final FilosofoConSemaforos f =
+                    new FilosofoConSemaforos(i, tenedores, portero);
+            final Thread t = new Thread(f, "FilosofoSem-" + i);
+            t.start();
+        }
+    }
+}</code></pre>
+
+                <h5 class="mt-3">4.4.3. Interacción entre los semáforos</h5>
+                <ul>
+                    <li><strong>Array de semáforos de tenedores</strong>:
+                        cada elemento del array <code>tenedores[i]</code> representa el tenedor
+                        situado entre el filósofo <code>i</code> y el filósofo
+                        <code>(i + 1) % N</code>. Al adquirir ambos semáforos, el filósofo
+                        garantiza la exclusión mutua sobre los recursos físicos.</li>
+                    <li><strong>Semáforo portero</strong>:
+                        el semáforo <code>portero</code> con <code>N - 1</code> permisos asegura
+                        que, como máximo, <code>N - 1</code> filósofos puedan competir por los
+                        tenedores al mismo tiempo. Esto rompe la posible espera circular
+                        y elimina el deadlock.</li>
+                    <li><strong>Equidad</strong>:
+                        activar el parámetro <code>fair</code> en los semáforos
+                        (<code>new Semaphore(..., true)</code>) indica al runtime que utilice
+                        una política FIFO para asignar permisos, reduciendo la probabilidad
+                        de inanición.</li>
+                </ul>
+                <p>
+                    Esta solución ilustra cómo los semáforos de <code>java.util.concurrent</code>
+                    permiten expresar directamente las restricciones de concurrencia (número máximo
+                    de hilos en sección crítica, exclusión mutua, orden de llegada) sin necesidad
+                    de gestionar manualmente <code>wait()</code> y <code>notifyAll()</code>.
+                </p>
+            </div>
+        </div>
+    </section>
+    <!-- SECCIÓN 5: ENTREGA Y DOCUMENTACIÓN -->
+    <section id="entrega" class="mb-5">
+        <h2>5. Entrega, documentación y requisitos del proyecto</h2>
+
+        <p class="lead">
+            Para completar esta actividad, debes preparar correctamente el proyecto, documentarlo
+            de forma profesional y enviarlo a través de Moodle en un archivo comprimido.
+            La documentación debe reflejar tanto el diseño concurrente como las pruebas con
+            depuración y pruebas unitarias.
+        </p>
+
+        <div class="card border-primary shadow-sm">
+            <div class="card-header bg-primary text-white">
+                Requisitos de la entrega
+            </div>
+            <div class="card-body">
+
+                <h5 class="mt-3">📁 Estructura mínima de archivos</h5>
+                <ul>
+                    <li><strong>Código fuente Java</strong> (carpeta <code>src/main/java</code> o similar) con:
+                        <ul>
+                            <li><code>MonitorFilosofos.java</code> (implementación con monitor).</li>
+                            <li><code>Filosofo.java</code> y <code>CenaFilosofos.java</code>.</li>
+                            <li>Opcionalmente, variantes:
+                                <code>MonitorConFootman.java</code>,
+                                <code>FilosofoFootman.java</code>,
+                                <code>FilosofoTimeout.java</code>,
+                                <code>FilosofoCiclico.java</code>,
+                                <code>FilosofoConSemaforos.java</code>,
+                                <code>CenaFilosofosSemaforos.java</code>.
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li><strong>Pruebas unitarias</strong> (carpeta <code>src/test/java</code>) con:
+                        <ul>
+                            <li><code>MonitorFilosofosTest.java</code> (invariantes y exclusión mutua).</li>
+                            <li><code>FilosofoTest.java</code> (interrupciones / comportamiento básico).</li>
+                            <li><code>FilosofoConSemaforosTest.java</code> (portero y semáforos), en caso de implementar la variante.</li>
+                        </ul>
+                    </li>
+
+                    <li><strong>Documentación técnica</strong> en formato PDF:
+                        <ul>
+                            <li><code>doc/memoria_tecnica.pdf</code>, incluyendo capturas de depuración
+                                y resumen de pruebas unitarias.</li>
+                        </ul>
+                    </li>
+
+                    <li><strong>Archivo README</strong> (opcional pero recomendado):
+                        <ul>
+                            <li><code>README.md</code> con instrucciones de compilación y ejecución
+                                (incluyendo cómo ejecutar las pruebas JUnit).</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h5 class="mt-4">📝 Contenido de la memoria técnica</h5>
+                <p>
+                    La memoria técnica deberá presentarse en un documento PDF con una extensión
+                    orientativa de entre 4 y 8 páginas, escrita con un tono académico y siguiendo
+                    una estructura coherente. Se recomienda el siguiente índice:
+                </p>
+                <ol>
+                    <li><strong>Introducción</strong>
+                        <ul>
+                            <li>Descripción del problema de la cena de los filósofos.</li>
+                            <li>Objetivos de la práctica y relación con la programación multihilo.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Diseño de la solución</strong>
+                        <ul>
+                            <li>Explicación de la arquitectura general.</li>
+                            <li>Descripción de las clases principales y sus responsabilidades.</li>
+                            <li>Decisiones de diseño sobre el uso de monitores y/o semáforos,
+                                justificando la solución elegida.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Implementación concurrente</strong>
+                        <ul>
+                            <li>Detalle del funcionamiento de <code>MonitorFilosofos</code>:
+                                estados, invariante, uso de <code>synchronized</code> y
+                                <code>wait()</code>/<code>notifyAll()</code>.</li>
+                            <li>Descripción de las variantes con semáforos y portero
+                                (<code>FilosofoConSemaforos</code> y
+                                <code>CenaFilosofosSemaforos</code>), en caso de implementarlas.</li>
+                            <li>Justificación de cómo se evita el <em>deadlock</em> y cómo se
+                                reduce la <em>starvation</em>.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Pruebas y resultados</strong>
+                        <ul>
+                            <li>Descripción de las pruebas realizadas (escenarios de ejecución,
+                                número de filósofos, repeticiones).</li>
+                            <li>Resumen de las <strong>pruebas unitarias</strong> implementadas con JUnit
+                                (casos de prueba, invariantes comprobadas y resultados).</li>
+                            <li>Selección de <strong>capturas de pantalla del depurador</strong>
+                                (ver sección 6 de este tutorial), señalando estados de los hilos,
+                                valores del array <code>estado[]</code> y situaciones de espera.</li>
+                            <li>Comentarios sobre el comportamiento observado (equidad, aparición
+                                o ausencia de bloqueos, etc.).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Conclusiones y trabajo futuro</strong>
+                        <ul>
+                            <li>Resumen de lo aprendido sobre programación multihilo en Java.</li>
+                            <li>Posibles mejoras o extensiones (cambio a <code>ExecutorService</code>,
+                                monitorización de estadísticas, interfaz gráfica, etc.).</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h5 class="mt-4">📚 Calidad del código y documentación interna</h5>
+                <ul>
+                    <li>El código debe compilar sin errores ni <em>warnings</em> innecesarios.</li>
+                    <li>Deben utilizarse nombres de clases, métodos y variables significativos
+                        (<code>MonitorFilosofos</code>, <code>FilosofoConSemaforos</code>,
+                        <code>tomarTenedores</code>, etc.).</li>
+                    <li>Los métodos principales de sincronización deben estar comentados, indicando:
+                        <ul>
+                            <li>Qué condición lógica están comprobando.</li>
+                            <li>Qué invariante garantizan.</li>
+                            <li>Qué estados de los hilos intervienen (<em>RUNNABLE</em>,
+                                <em>WAITING</em>, etc.).</li>
+                        </ul>
+                    </li>
+                    <li>Se valorará positivamente el uso de comentarios tipo Javadoc
+                        (<code>/** ... */</code>) y la generación opcional de la documentación
+                        con la herramienta <code>javadoc</code>.</li>
+                </ul>
+
+                <h5 class="mt-4">📦 Formato de entrega</h5>
+                <p>
+                    Todo el proyecto deberá comprimirse en un único archivo con el formato:
+                </p>
+                <pre class="bg-light p-2"><code>nombre-apellidos-multihilo.zip</code></pre>
+                <p>
+                    Puedes utilizar formatos <strong>.zip</strong> o <strong>.rar</strong>.
+                    No se aceptarán carpetas sueltas ni enlaces externos.
+                </p>
+
+                <h5 class="mt-4">📤 Cómo enviar la tarea en Moodle</h5>
+                <ol>
+                    <li>Accede al curso correspondiente.</li>
+                    <li>Entra en la tarea titulada
+                        <strong>“Actividad: Programación Multihilo – Cena de los Filósofos”</strong>.
+                    </li>
+                    <li>Haz clic en <strong>“Agregar entrega”</strong>.</li>
+                    <li>Sube el archivo comprimido (<code>.zip</code> o <code>.rar</code>).</li>
+                    <li>Guarda los cambios y confirma la entrega.</li>
+                </ol>
+
+                <h5 class="mt-4">✔ Criterios mínimos para que la entrega sea evaluada</h5>
+                <ul>
+                    <li>El programa debe compilar y ejecutarse correctamente desde línea de comandos
+                        (o desde el IDE indicado por el profesor).</li>
+                    <li>El código debe incluir comentarios explicativos de la lógica de concurrencia
+                        y del uso de las primitivas de sincronización.</li>
+                    <li>Deben existir <strong>pruebas unitarias</strong> que verifiquen al menos las
+                        invariantes básicas del monitor.</li>
+                    <li>La memoria técnica debe incluir capturas de depuración y una sección de
+                        pruebas y resultados claramente redactada.</li>
+                    <li>El archivo comprimido debe tener la estructura solicitada y un nombre que
+                        identifique claramente al autor o al grupo.</li>
+                </ul>
+
+                <div class="alert alert-info mt-4">
+                    💡 <strong>Consejo:</strong> Antes de comprimir la carpeta, prueba a ejecutar
+                    el programa y las pruebas desde la línea de comandos tal y como lo recibirá el profesor.
+                    Verifica que no dependes de rutas absolutas ni de configuraciones locales
+                    de tu IDE.
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <!-- SECCIÓN 6: Capturas con el depurador -->
+    <section id="debugger" class="mb-5">
+        <h2>6. Capturas de pantalla usando el depurador</h2>
+        <p class="lead">
+            Las capturas de pantalla del depurador forman parte del apartado
+            <strong>“Pruebas y resultados”</strong> de la memoria técnica. Deben ilustrar el
+            comportamiento real de los hilos y del monitor durante la ejecución.
+        </p>
+
+        <div class="card border-secondary shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                Indicaciones para generar capturas de calidad
+            </div>
+
+            <div class="card-body">
+                <h5>1. Configurar puntos de ruptura</h5>
+                <ul>
+                    <li>Coloca un breakpoint en <code>Filosofo.run()</code>, justo antes de llamar a <code>monitor.tomarTenedores()</code>.</li>
+                    <li>Pon otro en <code>MonitorFilosofos.tomarTenedores()</code> y, opcionalmente, en
+                        <code>intentarComer()</code> y <code>dejarTenedores()</code>.</li>
+                </ul>
+
+                <h5>2. Ejecutar en modo Depuración</h5>
+                <p>
+                    Lanza la clase <code>CenaFilosofos</code> en modo Debug y captura:
+                </p>
+                <ul>
+                    <li>La lista de hilos activos (por ejemplo, <code>Filosofo-0</code>, <code>Filosofo-1</code>…).</li>
+                    <li>Un hilo detenido en un breakpoint, mostrando su pila de llamadas (stack trace).</li>
+                </ul>
+
+                <h5>3. Inspeccionar variables</h5>
+                <p>
+                    Entra paso a paso en el monitor e inspecciona el array <code>estado[]</code>.
+                </p>
+                <ul>
+                    <li>Muestra en la captura los valores de <code>estado[i]</code> y los de sus vecinos
+                        (<code>estado[izquierda(i)]</code> y <code>estado[derecha(i)]</code>).</li>
+                    <li>Incluye en la memoria una breve explicación sobre la situación de concurrencia
+                        que se observa.</li>
+                </ul>
+
+                <h5>4. Capturas de hilos en WAITING / BLOCKED</h5>
+                <p>
+                    Permite que varios filósofos esperen en <code>wait()</code> y captura:
+                </p>
+                <ul>
+                    <li>Hilos en estado <strong>WAITING</strong> o <strong>BLOCKED</strong> en la vista de hilos del IDE.</li>
+                    <li>La línea concreta donde están suspendidos dentro del monitor.</li>
+                </ul>
+
+                <h5>5. Recomendación para la memoria</h5>
+                <p>
+                    Cada captura debe acompañarse de un pie explicativo, por ejemplo:
+                </p>
+                <blockquote class="blockquote">
+                    “Figura X.Y – Filósofo 2 en estado HAMBRIENTO esperando a que el vecino
+                    libere los tenedores. El hilo está en WAITING dentro del monitor.”
+                </blockquote>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 7: Pruebas unitarias -->
+    <section id="pruebas" class="mb-5">
+        <h2>7. Pruebas unitarias de la lógica concurrente</h2>
+        <p class="lead">
+            Además de la ejecución normal, es recomendable realizar pruebas unitarias que verifiquen
+            el correcto funcionamiento del monitor y reduzcan el riesgo de errores típicos de concurrencia.
+            Se utilizará JUnit para automatizar las comprobaciones.
+        </p>
+
+        <div class="card border-primary shadow-sm">
+            <div class="card-header bg-primary text-white">
+                Tipos de pruebas recomendadas
+            </div>
+
+            <div class="card-body">
+                <h5>1. Pruebas de invariantes del monitor</h5>
+                <p>
+                    Se instancian pocos filósofos (por ejemplo, 3) y se verifican las transiciones de estado
+                    sin crear hilos reales:
+                </p>
+                <ul>
+                    <li><code>estado[i]</code> pasa a COMIENDO si no hay vecinos comiendo.</li>
+                    <li>Tras <code>dejarTenedores(i)</code>, el filósofo vuelve a PENSANDO.</li>
+                </ul>
+
+<pre class="bg-light p-3"><code>@Test
+public void testTransicionBasica() throws InterruptedException {
+    MonitorFilosofos m = new MonitorFilosofos(3);
+    m.tomarTenedores(0);
+    assertEquals(MonitorFilosofos.COMIENDO, m.getEstado(0));
+    m.dejarTenedores(0);
+    assertEquals(MonitorFilosofos.PENSANDO, m.getEstado(0));
+}</code></pre>
+
+                <h5>2. Pruebas de exclusión mutua</h5>
+                <p>
+                    Se comprueba que nunca hay dos vecinos comiendo simultáneamente:
+                </p>
+
+<pre class="bg-light p-3"><code>for (int i = 0; i &lt; N; i++) {
+    assertFalse(m.getEstado(i) == MonitorFilosofos.COMIENDO
+        &amp;&amp; m.getEstado((i + 1) % N) == MonitorFilosofos.COMIENDO);
+}</code></pre>
+
+                <h5>3. Pruebas de interrupción</h5>
+                <p>
+                    Se verifica que los hilos <code>Filosofo</code> terminan correctamente cuando se llama
+                    a <code>interrupt()</code>, es decir, que salen del bucle de <code>run()</code> sin bloquearse.
+                </p>
+
+                <h5>4. Pruebas para la variante con semáforos</h5>
+                <ul>
+                    <li>Comprobar que el semáforo “portero” se inicializa con <code>N - 1</code> permisos.</li>
+                    <li>Asegurar que no hay <code>N</code> filósofos simultáneamente en la sección COMIENDO.</li>
+                </ul>
+
+                <h5>5. Estructura recomendada del paquete de pruebas</h5>
+<pre class="bg-light p-3"><code>src/
+ ├── main/java/...
+ └── test/java/
+      ├── MonitorFilosofosTest.java
+      ├── FilosofoTest.java
+      └── FilosofoConSemaforosTest.java</code></pre>
+
+                <p class="mt-3">
+                    En la memoria técnica, dentro del apartado <strong>“Pruebas y resultados”</strong>,
+                    incluye un breve resumen de las pruebas implementadas, indicando qué verifican,
+                    si han pasado correctamente y qué garantías ofrecen sobre el comportamiento
+                    concurrente del sistema.
+                </p>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
