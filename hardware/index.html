@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sistema de Procesamiento Central</title>
+  <!-- Bootstrap 5 -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <!-- Bootstrap Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+  />
+</head>
+<body class="bg-light">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <i class="bi bi-cpu me-2"></i>
+        Sistema de Procesamiento Central
+      </a>
+    </div>
+  </nav>
+
+  <div class="container mb-5">
+    <!-- Intro -->
+    <div class="row mb-4">
+      <div class="col-lg-8">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h1 class="h3 mb-3">
+              <i class="bi bi-motherboard me-2"></i>
+              El cerebro del computador
+            </h1>
+            <p>
+              El sistema de procesamiento central es el componente principal de cualquier sistema de
+              computador, a veces llamado el <strong>cerebro del computador</strong>. Es responsable
+              por ejecutar instrucciones de software, ejecutar calculaciones matemáticas y lógicas,
+              mantener la seguridad del sistema, detectar y manejar errores y verificar transferencias
+              de datos entre componentes dentro del sistema, entre otros roles.
+            </p>
+            <p>
+              El modo fundamental de operación de un procesador es un proceso iterativo llamado
+              <strong>ciclo de instrucción</strong>, también conocido como ciclo de ejecución del código
+              <em>Fetch</em>. Este ciclo continuo es el mecanismo principal por el que un procesador
+              ejecuta todas las instrucciones de software, desde el principio del computador y hasta
+              el final de la instrucción.
+            </p>
+            <p>
+              Estas instrucciones pueden ser tan simples como añadir números, mover datos de un lugar
+              a otro o verificar si un valor es cero.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 mt-3 mt-lg-0">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h2 class="h5 mb-3">
+              <i class="bi bi-list-check me-2"></i>
+              Roles del CPU
+            </h2>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <i class="bi bi-play-fill me-2"></i>
+                Ejecutar instrucciones de software
+              </li>
+              <li class="list-group-item">
+                <i class="bi bi-calculator me-2"></i>
+                Realizar cálculos matemáticos y lógicos
+              </li>
+              <li class="list-group-item">
+                <i class="bi bi-shield-lock me-2"></i>
+                Mantener la seguridad del sistema
+              </li>
+              <li class="list-group-item">
+                <i class="bi bi-bug me-2"></i>
+                Detectar y manejar errores
+              </li>
+              <li class="list-group-item">
+                <i class="bi bi-arrow-left-right me-2"></i>
+                Verificar transferencias de datos
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+     <div class="container mb-5">
+    <!-- Intro -->
+    <div class="row mb-4">
+<img src="src/licensed-image.jpeg">
+    </div></div>
+    <!-- ISA -->
+    <section class="mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="h4 mb-3">
+            <i class="bi bi-code-slash me-2"></i>
+            Lenguaje nativo del CPU: ISA
+          </h2>
+          <p>
+            La lengua nativa del CPU es definida por su <strong>arquitectura de instrucciones</strong>,
+            o <strong>ISA</strong>, que incluye una lista predefinida de todas las instrucciones
+            que un CPU específico puede entender. Los diferentes CPUs tienen diferentes ISAs.
+          </p>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="border rounded-3 p-3 mb-3">
+                <h3 class="h6">
+                  <i class="bi bi-pc-display me-2"></i>
+                  X86 (CISC)
+                </h3>
+                <p class="mb-1">
+                  Por ejemplo, los procesadores Intel y AMD usan <strong>X86</strong>,
+                  que implementa una arquitectura de computadores con instrucciones complejas,
+                  también conocida como <strong>CISC</strong>.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="border rounded-3 p-3 mb-3">
+                <h3 class="h6">
+                  <i class="bi bi-phone me-2"></i>
+                  ARM (RISC)
+                </h3>
+                <p class="mb-1">
+                  Los procesadores en los smartphones usan <strong>ARM</strong>, que implementa
+                  una arquitectura de computadores con instrucciones reducidas,
+                  también conocida como <strong>RISC</strong>.
+                </p>
+              </div>
+            </div>
+          </div>
+          <p class="mb-0">
+            Los procesadores modernos son increíblemente complejos. En el nivel fundamental, un
+            procesador está formado por varias unidades que trabajan juntas para ejecutar instrucciones
+            y realizar computaciones.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Componentes principales -->
+    <section class="mb-4">
+      <h2 class="h4 mb-3">
+        <i class="bi bi-grid-3x3-gap me-2"></i>
+        Componentes principales del procesador
+      </h2>
+      <div class="row g-3">
+        <!-- ALU -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h3 class="h6">
+                <i class="bi bi-calculator me-2"></i>
+                Unidad Lógica Aritmética (ALU)
+              </h3>
+              <p class="small">
+                Maneja operaciones matemáticas y lógicas y es el motor computacional del procesador.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Registro File -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h3 class="h6">
+                <i class="bi bi-stack me-2"></i>
+                File de Registro
+              </h3>
+              <p class="small">
+                Guarda los datos que el procesador necesita para acceder rápidamente y que están en uso activo.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- LSU -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h3 class="h6">
+                <i class="bi bi-arrow-down-up me-2"></i>
+                Unidad Load/Store (LSU)
+              </h3>
+              <p class="small">
+                Maneja las transferencias de datos entre el file de registro y los componentes de memoria.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Unidad de Control -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h3 class="h6">
+                <i class="bi bi-diagram-3 me-2"></i>
+                Unidad de Control
+              </h3>
+              <p class="small">
+                Maneja el flujo de instrucciones y coordina todas las operaciones dentro del procesador.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-3">
+        A parte de estos cuatro componentes, el procesador también contiene varios subsistemas que manejan
+        la memoria y la data, mantienen la seguridad y mejoran la performance del sistema.
+      </p>
+    </section>
+
+    <!-- ALU Detalle -->
+    <section class="mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="h4 mb-3">
+            <i class="bi bi-calculator-fill me-2"></i>
+            Detalle de la ALU
+          </h2>
+          <p>
+            El ALU es el motor computacional del procesador. Es responsable de ejecutar varios tipos
+            de operaciones:
+          </p>
+          <div class="row">
+            <div class="col-md-6">
+              <ul class="list-group mb-3">
+                <li class="list-group-item">
+                  <i class="bi bi-plus-slash-minus me-2"></i>
+                  <strong>Operaciones aritméticas:</strong> adición, sustracción, multiplicación y división.
+                </li>
+                <li class="list-group-item">
+                  <i class="bi bi-sliders me-2"></i>
+                  <strong>Operaciones lógicas:</strong> AND, OR, NOT, XOR.
+                </li>
+                <li class="list-group-item">
+                  <i class="bi bi-chevron-bar-up me-2"></i>
+                  <strong>Operaciones de comparación:</strong> igualdad, mayor, menor, etc.
+                </li>
+                <li class="list-group-item">
+                  <i class="bi bi-chevron-bar-expand me-2"></i>
+                  <strong>Operaciones SHIFT:</strong> desplazan todos los bits a la izquierda o derecha.
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <p>
+                El ALU recibe una instrucción y datos como entrada y produce un resultado. Además del
+                resultado, también produce varias <strong>señales</strong> que ofrecen contexto:
+              </p>
+              <ul>
+                <li>Zero flag (resultado es cero)</li>
+                <li>Sign flag</li>
+                <li>Carry flag</li>
+                <li>Overflow flag</li>
+                <li>Otros indicadores de estado</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Registros -->
+    <section class="mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="h4 mb-3">
+            <i class="bi bi-stack-overflow me-2"></i>
+            Registros
+          </h2>
+          <p>
+            Tenemos un set de unidades de memoria de alta velocidad llamadas <strong>registradoras</strong>.
+            Su propósito es detener datos e instrucciones que están siendo usados activamente, ofreciendo
+            al procesador acceso inmediato a la información relevante.
+          </p>
+          <div class="row">
+            <div class="col-md-4">
+              <h3 class="h6">
+                <i class="bi bi-box-seam me-2"></i>
+                Propósito general
+              </h3>
+              <ul class="small">
+                <li>Detener datos para operaciones de ALU</li>
+                <li>Guardar resultados intermedios</li>
+                <li>Guardar direcciones de memoria</li>
+              </ul>
+            </div>
+            <div class="col-md-4">
+              <h3 class="h6">
+                <i class="bi bi-gear me-2"></i>
+                Propósito especial
+              </h3>
+              <ul class="small">
+                <li>Guardar la dirección de la siguiente instrucción</li>
+                <li>Guardar señales importantes del procesador</li>
+              </ul>
+            </div>
+            <div class="col-md-4">
+              <h3 class="h6">
+                <i class="bi bi-columns-gap me-2"></i>
+                Registros de vector
+              </h3>
+              <p class="small">
+                Registradoras largas que permiten hacer una operación en múltiples elementos de datos al mismo tiempo.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LSU y Unidad de Control -->
+    <section class="mb-4">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h2 class="h5 mb-3">
+                <i class="bi bi-arrow-left-right-square me-2"></i>
+                Unidad de carga/guarda (LSU)
+              </h2>
+              <p>
+                Una unidad de guarda de carga es una unidad de ejecución dentro del procesador,
+                dedicada exclusivamente a manejar transferencias de datos entre el file de registro
+                y la memoria externa.
+              </p>
+              <p class="mb-0">
+                La LSU puede ejecutar instrucciones de <strong>carga</strong> para recuperar datos de memoria
+                en un registro e instrucciones de <strong>almacenamiento</strong> para escribir datos de
+                registro de vuelta a la memoria.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h2 class="h5 mb-3">
+                <i class="bi bi-diagram-2-fill me-2"></i>
+                Unidad de Control y reloj
+              </h2>
+              <p>
+                La unidad de control contiene la lógica principal del procesador. Su trabajo es recoger
+                instrucciones de memoria, decodificarlas y ejecutarlas mientras maneja todos los otros componentes.
+              </p>
+              <p>
+                Para asegurar que estos componentes se comuniquen y operen en sincronía, el procesador utiliza
+                un <strong>clock</strong> que fija la velocidad. Genera una serie continua de pulsos eléctricos
+                que coordinan todas las operaciones internas.
+              </p>
+              <p class="mb-0">
+                El <strong>rato de clock</strong> (velocidad) se mide en hertz, o en computadores modernos
+                en gigahertz, lo que significa billones de ciclos por segundo. Un clock más alto permite completar
+                más instrucciones por segundo.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Buses -->
+    <section class="mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="h4 mb-3">
+            <i class="bi bi-diagram-3-fill me-2"></i>
+            Buses: la red de comunicación
+          </h2>
+          <p>
+            Todos estos componentes se comunican usando una red compleja de líneas eléctricas internas
+            llamadas <strong>buses</strong>. Estos buses transmiten datos, instrucciones y señales de control
+            entre los diferentes componentes del procesador. Son la <strong>infraestructura de comunicación</strong>
+            del CPU.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ciclo de Instrucción -->
+    <section class="mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="h4 mb-3">
+            <i class="bi bi-arrow-repeat me-2"></i>
+            El ciclo de instrucción (5 etapas clásicas)
+          </h2>
+          <p>
+            Los componentes del procesador trabajan juntos para ejecutar un programa a través de un proceso
+            continuo llamado <strong>ciclo de instrucciones</strong>. Un ciclo clásico incluye cinco etapas
+            principales:
+          </p>
+
+          <ol class="list-group list-group-numbered mb-3">
+            <li class="list-group-item">
+              <strong>Fetch (búsqueda):</strong> la unidad de control mira el
+              <em>contador de programa</em>, que guarda la dirección de memoria de la siguiente
+              instrucción, la trae a un registro llamado <em>registro de instrucciones</em> y
+              luego incrementa el contador de programa.
+            </li>
+            <li class="list-group-item">
+              <strong>Decode (decodificación):</strong> la unidad de control toma la instrucción y
+              la decodifica, descubriendo qué operación se debe hacer y qué registros o direcciones
+              de memoria están implicadas (por ejemplo, <code>ADD R1 R2</code>).
+            </li>
+            <li class="list-group-item">
+              <strong>Execute (ejecución):</strong> el procesador ejecuta la operación especificada.
+              Las operaciones aritméticas o lógicas las realiza la ALU; el movimiento de datos lo
+              inicia la unidad de carga/guarda; una instrucción de salto condicional puede cambiar el
+              contador de programa.
+            </li>
+            <li class="list-group-item">
+              <strong>Memory (acceso a memoria):</strong> si la instrucción lo requiere, se accede a
+              memoria para leer o escribir datos.
+            </li>
+            <li class="list-group-item">
+              <strong>Write back (escritura de resultados):</strong> se guarda el resultado final en
+              el registro o la ubicación de memoria correspondiente.
+            </li>
+          </ol>
+
+          <p class="mb-0">
+            Las dos últimas etapas (memoria y escritura) son opcionales y sólo ocurren cuando la instrucción
+            lo requiere.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Bootstrap JS (opcional para algunos componentes) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

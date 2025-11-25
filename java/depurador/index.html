@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Tutorial de Depuración en Java (Nivel Inicial)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap 5 CDN -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <style>
+    body {
+      scroll-behavior: smooth;
+    }
+    .section-title {
+      border-left: 4px solid #0d6efd;
+      padding-left: .75rem;
+      margin-bottom: .75rem;
+    }
+    .code-block {
+      font-family: "Fira Code", "Consolas", monospace;
+      font-size: .9rem;
+      background: #212529;
+      color: #f8f9fa;
+      border-radius: .5rem;
+      padding: 1rem;
+      overflow-x: auto;
+    }
+    .badge-topic {
+      font-size: .8rem;
+    }
+  </style>
+</head>
+<body class="bg-light">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#top">Java Debugging</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarNav" aria-controls="navbarNav"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="#intro">Introducción</a></li>
+          <li class="nav-item"><a class="nav-link" href="#antes-depurar">Antes de depurar</a></li>
+          <li class="nav-item"><a class="nav-link" href="#basicos">Básicos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#cliente">Lado cliente</a></li>
+          <li class="nav-item"><a class="nav-link" href="#servidor">Lado servidor</a></li>
+          <li class="nav-item"><a class="nav-link" href="#hilos">Multihilo</a></li>
+          <li class="nav-item"><a class="nav-link" href="#jikes">Jikes</a></li>
+          <li class="nav-item"><a class="nav-link" href="#jdb">JDB</a></li>
+          <li class="nav-item"><a class="nav-link" href="#ejercicios">Ejercicios</a></li>
+          <li class="nav-item"><a class="nav-link" href="#glosario">Glosario</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header id="top" class="py-5 bg-primary text-white">
+    <div class="container">
+      <div class="row align-items-center gy-3">
+        <div class="col-lg-8">
+          <h1 class="display-5 fw-bold mb-3">Depuración en Java para Principiantes</h1>
+          <p class="lead mb-3">
+            Guía paso a paso para aprender a encontrar y corregir errores (“bugs”) en tus
+            primeros programas Java, usando desde simples mensajes en consola hasta
+            herramientas de depuración.
+          </p>
+          <p class="mb-0">
+            Pensado para estudiantes que están comenzando a programar en Java y que
+            usan un IDE (Eclipse, IntelliJ, NetBeans) o la línea de comandos.
+          </p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+          <span class="badge text-bg-light text-dark me-1 badge-topic">Java básico</span>
+          <span class="badge text-bg-light text-dark me-1 badge-topic">Depuración</span>
+          <span class="badge text-bg-light text-dark me-1 badge-topic">Aprendizaje</span>
+          <span class="badge text-bg-light text-dark badge-topic">Principiantes</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container my-4">
+
+    <!-- Tarjeta rápida: ¿Para quién es este tutorial? -->
+    <section class="mb-4">
+      <div class="card shadow-sm border-success">
+        <div class="card-body">
+          <h2 class="h4 section-title">¿Para quién es este tutorial?</h2>
+          <ul class="mb-0">
+            <li>Estudiantes que han escrito ya sus primeros programas Java (bucles, condicionales, métodos).</li>
+            <li>Personas que han visto errores en pantalla y no saben bien cómo interpretarlos.</li>
+            <li>Alumnado que quiere aprender a usar el depurador del IDE y no solo <code>System.out.println()</code>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Introducción -->
+    <section id="intro" class="mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="h4 section-title">1. Introducción: ¿Qué es depurar?</h2>
+
+          <div class="alert alert-info">
+            <strong>Idea clave:</strong> Depurar es <strong>entender qué está pasando realmente</strong>
+            en tu programa cuando no hace lo que tú esperas, para poder corregirlo.
+          </div>
+
+          <p>
+            Cuando empiezas a programar es muy normal que los programas tengan errores.
+            A estos errores los llamamos <strong>bugs</strong>. Depurar es el proceso de:
+          </p>
+          <ol>
+            <li>Reproducir el error (hacer que vuelva a ocurrir).</li>
+            <li>Investigar en qué parte del código se produce.</li>
+            <li>Entender por qué ocurre.</li>
+            <li>Modificar el código para corregirlo.</li>
+          </ol>
+
+          <p>
+            En Java, podemos depurar de varias formas, desde las más simples (mensajes por
+            pantalla) hasta herramientas completas de depuración incluidas en los IDEs.
+          </p>
+
+          <h3 class="h5 mt-3">Tipos de depuradores en Java</h3>
+          <ul>
+            <li><strong>Depurador del IDE</strong> (Eclipse, IntelliJ, NetBeans): lo usaremos mucho en clase.</li>
+            <li><strong>Herramientas en consola</strong>: como <code>jdb</code>, útil para entender qué pasa “por dentro”.</li>
+            <li><strong>Mensajes en consola</strong>: el clásico <code>System.out.println()</code>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Antes de depurar -->
+    <section id="antes-depurar" class="mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="h4 section-title">2. Antes de depurar: entender el error</h2>
+
+          <div class="row gy-3">
+            <div class="col-md-6">
+              <h3 class="h5">2.1 Tipos de errores básicos</h3>
+              <ul>
+                <li>
+                  <strong>Errores de compilación</strong>:
+                  el programa ni siquiera se ejecuta.
+                  <br>
+                  Ejemplo: te falta un <code>;</code>, un <code>}</code>, o usas una variable no declarada.
+                </li>
+                <li>
+                  <strong>Errores de ejecución</strong>:
+                  el programa arranca, pero se para de golpe con una excepción.
+                  <br>
+                  Ejemplo: <code>NullPointerException</code>, <code>ArrayIndexOutOfBoundsException</code>.
+                </li>
+                <li>
+                  <strong>Errores lógicos</strong>:
+                  el programa no se rompe, pero el resultado no es el esperado.
+                  <br>
+                  Ejemplo: calculas mal un descuento o una media.
+                </li>
+              </ul>
+            </div>
+
+            <div class="col-md-6">
+              <h3 class="h5">2.2 Leer el mensaje de error</h3>
+              <p>
+                Cuando Java muestra un error, casi nunca es “ruido”; normalmente te dice:
+              </p>
+              <ul>
+                <li><strong>Tipo de error</strong> (por ejemplo, <code>NullPointerException</code>).</li>
+                <li><strong>Línea del código</strong> donde ha ocurrido.</li>
+                <li>
+                  A veces, el <strong>método</strong> y la <strong>clase</strong> que estaban en uso
+                  cuando ocurrió el error.
+                </li>
+              </ul>
+
+              <div class="code-block">
+Exception in thread "main" java.lang.ArithmeticException: / by zero
+    at Calculadora.dividir(Calculadora.java:10)
+    at Calculadora.main(Calculadora.java:20)
+              </div>
+
+              <p class="mb-0">
+                Aquí podemos ver que el problema está en la línea 10 de <code>Calculadora.java</code>,
+                dentro del método <code>dividir</code>, porque estamos dividiendo entre 0.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Básicos -->
+    <section id="basicos" class="mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="h4 section-title">3. Conceptos básicos de depuración</h2>
+
+          <div class="alert alert-warning">
+            <strong>Pensar como detective:</strong> El depurador te ayuda, pero quien resuelve
+            el caso eres tú. Necesitas hacer preguntas al código: “¿Qué valor tenía esta
+            variable?”, “¿Ha entrado en este <code>if</code>?”, “¿Cuántas veces se repite este bucle?”.
+          </div>
+
+          <h3 class="h5">3.1 Depurar con mensajes en consola</h3>
+          <p>
+            Es la forma más sencilla y muy útil cuando empiezas. Consiste en ir escribiendo
+            mensajes para ver por dónde pasa el programa y qué valores tienen las variables.
+          </p>
+          <div class="code-block mb-3">
+public static int sumarHasta(int n) {
+    int suma = 0;
+    System.out.println("Inicio del método sumarHasta con n = " + n);
+
+    for (int i = 1; i &lt;= n; i++) {
+        suma += i;
+        System.out.println("i = " + i + " | suma = " + suma);
+    }
+
+    System.out.println("Fin del método sumarHasta. Resultado = " + suma);
+    return suma;
+}
+          </div>
+          <p>
+            Con estos mensajes puedes ver si el bucle se repite el número de veces correcto
+            y si la variable <code>suma</code> acumula bien los valores.
+          </p>
+
+          <h3 class="h5 mt-3">3.2 Puntos de ruptura (breakpoints)</h3>
+          <p>
+            Un <strong>breakpoint</strong> es como decirle al programa:
+            “<em>para aquí y deja que mire qué está pasando</em>”.
+          </p>
+          <ul>
+            <li>Se marcan en el IDE haciendo clic en el margen de la línea.</li>
+            <li>Al ejecutar en modo “depuración”, el programa se detiene en esa línea.</li>
+            <li>Desde ahí puedes avanzar paso a paso, ver variables, etc.</li>
+          </ul>
+
+          <h3 class="h5 mt-3">3.3 Ejecución paso a paso (step)</h3>
+          <ul>
+            <li><strong>Step over</strong>: ejecuta la línea actual y pasa a la siguiente.</li>
+            <li><strong>Step into</strong>: si la línea llama a un método, entra dentro de ese método.</li>
+            <li><strong>Step return</strong>: ejecuta hasta que termina el método actual.</li>
+          </ul>
+
+          <h3 class="h5 mt-3">3.4 Trazas de pila (stack trace)</h3>
+          <p>
+            La traza de pila es “el camino” de métodos que se han ido llamando hasta llegar
+            al error.
+          </p>
+          <div class="code-block mb-3">
+try {
+    metodoA();
+} catch (Exception e) {
+    e.printStackTrace();   // Muestra la traza completa
+}
+          </div>
+          <p class="mb-0">
+            Leyendo la traza puedes saber qué métodos se han ejecutado y en qué orden,
+            hasta que algo ha fallado.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cliente -->
+    <section id="cliente" class="mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="h4 section-title">4. Depuración en aplicaciones cliente sencillas</h2>
+
+          <p>
+            En el nivel inicial solemos trabajar con <strong>programas de consola</strong> o pequeñas
+            interfaces gráficas. Las ideas clave son las mismas:
+          </p>
+
+          <h3 class="h5">4.1 Ejemplo: programa que calcula el IMC</h3>
+          <div class="code-block mb-3">
+public static void main(String[] args) {
+    double peso = 70;
+    double altura = 0; // ¡Error! No podemos dividir entre 0
+
+    double imc = peso / (altura * altura);
+    System.out.println("Tu IMC es: " + imc);
+}
+          </div>
+
+          <p>
+            Si ejecutas este código, se producirá una <code>ArithmeticException</code>.
+            Para depurarlo, puedes:
+          </p>
+          <ul>
+            <li>Leer el mensaje de error: te dirá que divides entre 0.</li>
+            <li>Poner un breakpoint en la línea del cálculo y ver el valor de <code>altura</code>.</li>
+            <li>Corregir el código comprobando que <code>altura</code> no sea 0.</li>
+          </ul>
+
+          <h3 class="h5 mt-3">4.2 Técnicas rápidas que puedes usar ya</h3>
+          <ul>
+            <li>
+              <strong>Imágenes mentales</strong>:
+              dibuja en papel qué valores deberían tener las variables en cada paso.
+            </li>
+            <li>
+              <strong>Poner nombre claro a las variables</strong>:
+              <code>notaMedia</code> es mejor que <code>x</code>.
+            </li>
+            <li>
+              <strong>Dividir el código en métodos pequeños</strong>:
+              es más fácil depurar un método de 10 líneas que uno de 200.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Servidor -->
+    <section id="servidor" class="mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="h4 section-title">5. Depuración en el lado servidor (vista muy básica)</h2>
+
+          <div class="alert alert-secondary">
+            En este nivel, basta con entender la idea general. Más adelante en el curso
+            veremos servlets, JSP y aplicaciones web en detalle.
+          </div>
+
+          <p>
+            En aplicaciones web Java (por ejemplo, con servlets o JSP), el código no se ejecuta
+            en tu ordenador, sino en un <strong>servidor</strong>. La idea de depurar es la misma,
+            pero:
+          </p>
+          <ul>
+            <li>Puede haber muchos usuarios usando la aplicación al mismo tiempo.</li>
+            <li>El servidor crea hilos para atender las peticiones.</li>
+            <li>A veces depuramos “a distancia” (depuración remota).</li>
+          </ul>
+
+          <h3 class="h5">5.1 Técnicas sencillas en servidor</h3>
+          <ul>
+            <li>Escribir mensajes en un fichero de log del servidor.</li>
+            <li>Añadir parámetros de depuración en la URL, por ejemplo <code>?debug=true</code>.</li>
+            <li>Probar primero la lógica en una clase con <code>main</code> (sin servidor) y depurarla ahí.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Multihilo -->
+    <section id="hilos" class="mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="h4 section-title">6. Depuración de aplicaciones multihilo (idea introductoria)</h2>
+
+          <div class="alert alert-info">
+            <strong>Hilo = tarea paralela</strong>. De momento, quédate con la idea: varios
+            hilos pueden intentar usar la misma variable al mismo tiempo, y eso puede
+            producir errores “raros”.
+          </div>
+
+          <p>
+            Aunque en tu primer contacto con Java normalmente usarás un solo hilo, es útil
+            saber que:
+          </p>
+          <ul>
+            <li>
+              Los errores con hilos son más difíciles de reproducir porque el orden de ejecución
+              cambia cada vez.
+            </li>
+            <li>
+              Para proteger zonas de código que no pueden ser usadas por dos hilos a la vez,
+              se usa <code>synchronized</code>.
+            </li>
+          </ul>
+
+          <h3 class="h5">6.1 Pequeño ejemplo</h3>
+          <div class="code-block mb-3">
+public class Contador {
+    private int valor = 0;
+
+    public synchronized void incrementar() {
+        valor++;
+    }
+
+    public int getValor() {
+        return valor;
+    }
+}
+          </div>
+
+          <p class="mb-0">
+            La palabra <code>synchronized</code> hace que solo un hilo pueda entrar en el
+            método <code>incrementar()</code> cada vez, evitando que se pierdan incrementos.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Jikes -->
+    <section id="jikes" class="mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="h4 section-title">7. Jikes y depuradores gráficos</h2>
+
+          <p>
+            Además de los IDEs, existen depuradores gráficos independientes, como el de
+            <strong>Jikes</strong>. No es necesario que lo uses en tus primeros programas, pero es
+            interesante saber que:
+          </p>
+          <ul>
+            <li>Puedes ver las variables en ventanas separadas.</li>
+            <li>Tienes una ventana para la pila de llamadas, otra para hilos, etc.</li>
+            <li>Funciona en varios sistemas operativos al estar escrito en Java.</li>
+          </ul>
+
+          <p class="mb-0">
+            En la práctica, lo más habitual en clase será usar el depurador integrado en el IDE,
+            que ofrece una experiencia muy parecida.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- JDB -->
+    <section id="jdb" class="mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="h4 section-title">8. JDB: el depurador de línea de comandos</h2>
+
+          <div class="alert alert-secondary">
+            Esta parte es para estudiantes que quieran profundizar un poco más y entender
+            cómo funciona la depuración “por debajo”.
+          </div>
+
+          <p>
+            <strong>JDB</strong> es una herramienta del JDK para depurar desde la consola.
+            Utiliza comandos de texto:
+          </p>
+
+          <h3 class="h5">8.1 Ejemplo básico con JDB</h3>
+          <p>Supón que tienes la clase <code>HolaMundo</code>:</p>
+          <div class="code-block mb-3">
+public class HolaMundo {
+    public static void main(String[] args) {
+        String msg = "Hola";
+        System.out.println(msg);
+    }
+}
+          </div>
+
+          <ol>
+            <li>Compila con información de depuración:
+              <div class="code-block my-2">
+javac -g HolaMundo.java
+              </div>
+            </li>
+            <li>Inicia JDB:
+              <div class="code-block my-2">
+jdb HolaMundo
+              </div>
+            </li>
+            <li>Dentro de JDB, puedes hacer cosas como:
+              <ul>
+                <li><code>stop in HolaMundo.main</code>: poner un breakpoint en <code>main</code>.</li>
+                <li><code>run</code>: ejecutar el programa hasta el breakpoint.</li>
+                <li><code>print msg</code>: ver el valor de <code>msg</code>.</li>
+                <li><code>step</code> y <code>next</code>: avanzar por el código.</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ejercicios -->
+    <section id="ejercicios" class="mb-5">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="h4 section-title">9. Ejercicios prácticos para clase</h2>
+
+          <div class="row gy-3">
+            <div class="col-md-6">
+              <div class="card border-primary h-100">
+                <div class="card-body">
+                  <h3 class="h5">Ejercicio 1: Encuentra el bug</h3>
+                  <p>
+                    El siguiente código quiere calcular el área de un rectángulo, pero devuelve
+                    un resultado incorrecto. Usa mensajes en consola o el depurador del IDE
+                    para encontrar el fallo.
+                  </p>
+                  <div class="code-block mb-3">
+public static int areaRectangulo(int base, int altura) {
+    int area = base + altura; // &lt;-- Bug
+    return area;
+}
+
+public static void main(String[] args) {
+    int resultado = areaRectangulo(5, 3);
+    System.out.println("Área = " + resultado);
+}
+                  </div>
+                  <ul>
+                    <li>Pista 1: ¿Qué fórmula debería usarse?</li>
+                    <li>Pista 2: Pon un breakpoint dentro de <code>areaRectangulo</code>.</li>
+                    <li>Extensión: añade comprobaciones para valores negativos.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card border-success h-100">
+                <div class="card-body">
+                  <h3 class="h5">Ejercicio 2: Bucle infinito</h3>
+                  <p>
+                    Este programa se “queda pensando” y parece no terminar nunca. Usa el
+                    depurador para descubrir qué pasa.
+                  </p>
+                  <div class="code-block mb-3">
+public static void main(String[] args) {
+    int i = 0;
+    while (i &lt; 10) {
+        System.out.println("i = " + i);
+        // i++;  &lt;-- Falta algo aquí
+    }
+}
+                  </div>
+                  <ul>
+                    <li>Pista 1: ¿Qué condición tiene el while?</li>
+                    <li>Pista 2: Observa el valor de <code>i</code> durante la ejecución.</li>
+                    <li>Pista 3: Corrige el código para evitar el bucle infinito.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card border-warning h-100">
+                <div class="card-body">
+                  <h3 class="h5">Ejercicio 3: Depuración con condicionales</h3>
+                  <p>
+                    Este método debería devolver si un número es positivo, negativo o cero,
+                    pero no funciona bien para todos los casos.
+                  </p>
+                  <div class="code-block mb-3">
+public static String tipoNumero(int n) {
+    if (n &gt; 0) {
+        return "positivo";
+    } else if (n &gt; 0) {
+        return "negativo";
+    } else {
+        return "cero";
+    }
+}
+                  </div>
+                  <ul>
+                    <li>Prueba con valores: <code>5</code>, <code>-3</code>, <code>0</code>.</li>
+                    <li>Usa el depurador para seguir el flujo de los <code>if</code>.</li>
+                    <li>Corrige las condiciones para que el método funcione bien.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card border-info h-100">
+                <div class="card-body">
+                  <h3 class="h5">Ejercicio 4: Diseña tus propios mensajes de depuración</h3>
+                  <p>
+                    Toma un programa que ya tengas (por ejemplo, uno que calcule notas,
+                    medias o tablas de multiplicar) y:
+                  </p>
+                  <ol>
+                    <li>Añade mensajes <code>System.out.println()</code> en los puntos clave.</li>
+                    <li>
+                      Intenta que los mensajes sean claros, por ejemplo:
+                      <code>"[DEBUG] Entrando en calcularMedia con n = " + n</code>.
+                    </li>
+                    <li>Ejecuta el programa y comprueba si el flujo coincide con lo esperado.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Glosario -->
+    <section id="glosario" class="mb-5">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="h4 section-title">10. Glosario básico</h2>
+
+          <dl class="row">
+            <dt class="col-sm-3">Bug</dt>
+            <dd class="col-sm-9">
+              Error o fallo en el programa que hace que no se comporte como se espera.
+            </dd>
+
+            <dt class="col-sm-3">Depurar</dt>
+            <dd class="col-sm-9">
+              Proceso de encontrar y corregir bugs en el código.
+            </dd>
+
+            <dt class="col-sm-3">Breakpoint</dt>
+            <dd class="col-sm-9">
+              Punto de ruptura: marca en una línea donde el programa se detiene al depurar.
+            </dd>
+
+            <dt class="col-sm-3">Stack trace</dt>
+            <dd class="col-sm-9">
+              Traza de pila: lista de métodos que se han ido llamando hasta llegar a un error.
+            </dd>
+
+            <dt class="col-sm-3">Excepción</dt>
+            <dd class="col-sm-9">
+              Evento que interrumpe el flujo normal del programa (por ejemplo, dividir entre cero,
+              acceso a posición inválida de un array, etc.).
+            </dd>
+
+            <dt class="col-sm-3">Hilo (thread)</dt>
+            <dd class="col-sm-9">
+              Unidad de ejecución dentro de un programa. Varios hilos permiten hacer varias cosas
+              “a la vez”.
+            </dd>
+
+            <dt class="col-sm-3">JDB</dt>
+            <dd class="col-sm-9">
+              Depurador de línea de comandos incluido en el JDK.
+            </dd>
+
+            <dt class="col-sm-3">IDE</dt>
+            <dd class="col-sm-9">
+              Entorno de Desarrollo Integrado (Eclipse, IntelliJ, NetBeans...), que incluye editor,
+              compilador y depurador.
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white-50 py-3">
+    <div class="container text-center">
+      <small>
+        Tutorial de depuración en Java adaptado para alumnado que está comenzando a programar.
+      </small>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+  </script>
+</body>
+</html>

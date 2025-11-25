@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Tomates Fritos</title>
+
+  <!-- Fuente manuscrita de Google (puedes probar otras si quieres) -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400&family=Reenie+Beanie&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #ddd;
+      padding: 20px;
+      font-family: "Kalam", "Reenie Beanie", cursive;
+    }
+
+    .paper {
+      position: relative;
+      width: 650px;
+      max-width: 100%;
+      padding: 40px 40px 60px;
+      background: #faf7f0;
+      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.4);
+      border-radius: 4px;
+      overflow: hidden;
+
+      /* Papel cuadriculado */
+      background-image:
+        linear-gradient(#faf7f0, #faf7f0),
+        repeating-linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0.08) 0,
+          rgba(0, 0, 0, 0.08) 1px,
+          transparent 1px,
+          transparent 24px
+        ),
+        repeating-linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.08) 0,
+          rgba(0, 0, 0, 0.08) 1px,
+          transparent 1px,
+          transparent 24px
+        );
+      background-blend-mode: normal, multiply, multiply;
+    }
+
+    .title {
+      font-family: "Kalam", cursive;
+      font-weight: 400;
+      font-size: 32px;
+      letter-spacing: 4px;
+      text-align: center;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+
+    .line {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 8px;
+      white-space: pre;
+      transform-origin: left center;
+    }
+
+    .line.small {
+      font-size: 18px;
+    }
+
+    .line.bold {
+      font-weight: 600;
+      letter-spacing: 2px;
+    }
+
+    .line.indent {
+      margin-left: 20px;
+    }
+
+    /* Efecto de “papel viejo” en los bordes */
+    .paper::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(0, 0, 0, 0.1), transparent 60%),
+                  radial-gradient(circle at bottom right, rgba(0, 0, 0, 0.12), transparent 55%);
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="paper">
+    <div class="title line">TOMATES - FRITOS</div>
+
+    <span class="line small">Cebolla, pimiento, ajo</span>
+    <span class="line small indent">50 ml aceite - 2 segundos, V5</span>
+
+    <span class="line bold">SOFREIR - 10' - 120º - V1</span>
+
+    <span class="line">ECHAR los tomates, sal, pizca</span>
+    <span class="line small indent">(opcional) azúcar</span>
+    <span class="line bold">40 ó 45' VAROMA, V-1</span>
+    <span class="line small">sin cubilete</span>
+  </div>
+
+  <script>
+    // Pequeñas variaciones aleatorias para simular escritura a mano
+    document.querySelectorAll('.line').forEach(function(line) {
+      var rot = (Math.random() - 0.5) * 2.2;   // entre -1.1 y 1.1 grados aprox
+      var x = (Math.random() - 0.5) * 10;      // desplazamiento horizontal
+      var y = (Math.random() - 0.5) * 2;       // desplazamiento vertical leve
+      line.style.transform =
+        "translate(" + x + "px," + y + "px) rotate(" + rot + "deg)";
+    });
+  </script>
+</body>
+</html>

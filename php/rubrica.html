@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Práctica PHP – Sesiones, Formularios y Clases (RA2)</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0 0 40px;
+  }
+  header {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 15px 20px;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 1.4rem;
+  }
+  header p {
+    margin: 5px 0 0;
+    font-size: 0.9rem;
+  }
+  main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #ffffff;
+  }
+  h2, h3 {
+    color: #2c3e50;
+  }
+  pre {
+    background-color: #272822;
+    color: #f8f8f2;
+    padding: 10px;
+    overflow-x: auto;
+    font-size: 0.9rem;
+  }
+  code {
+    font-family: Consolas, "Courier New", monospace;
+  }
+  .nota {
+    background: #e8f4fd;
+    border-left: 4px solid #3498db;
+    padding: 8px 10px;
+    margin: 10px 0 20px;
+    font-size: 0.9rem;
+  }
+  .bloque-ejercicio {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 25px;
+    border-radius: 4px;
+    background: #fafafa;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    font-size: 0.9rem;
+  }
+  caption {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    vertical-align: top;
+  }
+  th {
+    background-color: #2c3e50;
+    color: #ffffff;
+    text-align: center;
+  }
+
+  /* COLORES RÚBRICA */
+  .col-0  { background-color: #f8d7da; }
+  .col-25 { background-color: #fce5cd; }
+  .col-50 { background-color: #fff8b3; }
+  .col-75 { background-color: #d4edda; }
+  .col-100{ background-color: #c3e6cb; }
+
+  .indicador {
+    background-color: #e9ecef;
+    font-weight: bold;
+    width: 20%;
+  }
+  .sub {
+    font-size: 0.8rem;
+    color: #555;
+    font-weight: normal;
+    display: block;
+    margin-top: 3px;
+  }
+  ul.test {
+    list-style: none;
+    padding-left: 0;
+  }
+  ul.test li {
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Módulo: Desarrollo Web en Entorno Servidor – Práctica PHP (RA2)</h1>
+  <p>Sesiones, formularios, clases, arrays asociativos y seguridad básica (XSS)</p>
+</header>
+
+<main>
+  <section class="bloque-ejercicio">
+    <h2>Datos del alumno</h2>
+    <p>
+      Nombre y apellidos: ___________________________________ &nbsp;&nbsp;
+      Fecha: __/__/__
+    </p>
+    <div class="nota">
+      <strong>RA2:</strong> Desarrolla aplicaciones web utilizando un lenguaje de programación del lado del servidor, 
+      comprendiendo su sintaxis, estructuras y buenas prácticas.
+    </div>
+  </section>
+
+  <!-- EJERCICIO 1 -->
+  <section class="bloque-ejercicio">
+    <h2>(2 puntos) Ejercicio 1 – Clase <code>Usuario</code> y método <code>mostrarPreferencias()</code></h2>
+
+    <p>Sea la siguiente clase contenida en el archivo <strong>Usuario.php</strong>:</p>
+
+    <pre><code>&lt;?php
+class Usuario {
+    private string $nombre;
+    private int $edad;
+    private array $preferencias = [];
+
+    public function __construct(string $nombre, int $edad) {
+        $this-&gt;nombre = $nombre;
+        $this-&gt;edad   = $edad;
+    }
+
+    public function agregarPreferencia(string $clave, string $valor): void {
+        $this-&gt;preferencias[$clave] = $valor;
+    }
+    // Aquí irá 1.a)
+}
+?&gt;</code></pre>
+
+    <h3>[1 punto] 1.a) Método <code>mostrarPreferencias()</code></h3>
+    <p>
+      Añade a la clase <code>Usuario</code> un método público llamado <code>mostrarPreferencias()</code> que:
+    </p>
+    <ul>
+      <li>Recorra el array asociativo <code>$preferencias</code> y muestre las preferencias dentro de una lista HTML (&lt;ul&gt; y &lt;li&gt;).</li>
+      <li>Si el usuario no tiene preferencias, muestre el mensaje: <strong>No tiene preferencias guardadas.</strong></li>
+    </ul>
+
+    <h3>[1 punto] 1.b) Creación de un usuario y sus preferencias</h3>
+    <p>
+      Crea un usuario llamado <strong>Argantonio</strong> cuya edad es <strong>82</strong> y añade las siguientes preferencias:
+    </p>
+    <ul>
+      <li><code>tema -&gt; oscuro</code></li>
+      <li><code>idioma -&gt; es</code></li>
+    </ul>
+
+    <p>En el archivo, por ejemplo <strong>test_usuario.php</strong>:</p>
+
+    <pre><code>&lt;?php
+include_once "Usuario.php";
+
+// Aquí tu código para crear el objeto Usuario y agregar las preferencias
+</code></pre>
+  </section>
+
+  <!-- EJERCICIO 2 -->
+  <section class="bloque-ejercicio">
+    <h2>(3 puntos) Ejercicio 2 – Formulario, sesiones y seguridad</h2>
+
+    <p>Dado el siguiente formulario en un archivo, por ejemplo <strong>index.php</strong>:</p>
+
+    <pre><code>&lt;h2&gt;Formulario de registro básico&lt;/h2&gt;
+&lt;form action="procesar.php" method="POST"&gt;
+    Nombre: &lt;input type="text" name="nombre" required&gt;&lt;br&gt;&lt;br&gt;
+    Edad: &lt;input type="number" name="edad" required&gt;&lt;br&gt;&lt;br&gt;
+    &lt;button type="submit"&gt;Enviar&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+
+    <p>
+      Crea un archivo <strong>procesar.php</strong> que cumpla los siguientes requisitos:
+    </p>
+    <ol>
+      <li><strong>Inicia la sesión</strong> con PHP usando <code>session_start()</code>.</li>
+      <li><strong>Recoge los valores enviados por POST</strong> (<code>nombre</code> y <code>edad</code>).</li>
+      <li>
+        <strong>Aplica al menos una medida de seguridad</strong> antes de mostrarlos, por ejemplo 
+        <code>htmlspecialchars()</code> sobre el nombre.
+      </li>
+      <li>
+        <strong>Crea un objeto <code>Usuario</code></strong> con esos datos y guárdalo en la sesión como 
+        <code>'usuario'</code>, de forma que pueda mantenerse mientras navega.
+      </li>
+      <li>
+        <strong>Muestra un mensaje</strong> como:  
+        <em>“Sesión iniciada. Bienvenido, NOMBRE (EDAD).”</em>
+      </li>
+    </ol>
+
+    <div class="nota">
+      Recuerda que los datos que vienen de un formulario pueden contener código malicioso.  
+      Es importante sanearlos antes de mostrarlos en HTML (por ejemplo, con <code>htmlspecialchars()</code>) para evitar XSS.
+    </div>
+  </section>
+
+  <!-- EJERCICIO 3 (OPCIONAL / TIPO TEST) -->
+  <section class="bloque-ejercicio">
+    <h2>(5 puntos) Ejercicio 3 – Preguntas tipo test (repaso de teoría)</h2>
+    <p>Marca la respuesta correcta en cada caso:</p>
+
+    <ul class="test">
+      <li>
+        1. ¿Qué función se utiliza en PHP para iniciar una sesión?<br>
+        a) session_open()  b) start_session()  c) session_start()  d) session_init()
+      </li>
+      <li>
+        2. ¿Qué superglobal en PHP se usa para acceder a los valores almacenados en la sesión?<br>
+        a) $_COOKIE  b) $_SESSION  c) $_SERVER  d) $_POST
+      </li>
+      <li>
+        3. ¿Qué se usa para almacenar datos en el navegador del cliente que persisten entre visitas (por ejemplo, recordar un idioma)?<br>
+        a) Variables locales  b) Sesiones  c) Cookies  d) Arrays
+      </li>
+      <li>
+        4. ¿Qué mecanismo permite mantener información del usuario mientras navega entre páginas durante una misma visita?<br>
+        a) Variables locales  b) Sesiones  c) Cookies  d) Arrays
+      </li>
+      <li>
+        5. ¿Qué tipo de ataque se intenta evitar cuando usamos <code>htmlspecialchars</code> antes de mostrar datos en HTML?<br>
+        a) Inyección SQL  b) Fuerza bruta  c) Denegación de servicio (DoS)  d) Cross-Site Scripting (XSS)
+      </li>
+      <li>
+        6. ¿Cómo se llama correctamente a un método público <code>mostrar()</code> desde un objeto <code>$obj</code>?<br>
+        a) mostrar($obj);  b) $obj-&gt;mostrar();  c) $obj::mostrar();  d) llamar($obj-&gt;mostrar);
+      </li>
+      <li>
+        7. ¿Qué declaración define correctamente una clase llamada <code>Carrito</code>?<br>
+        a) new class Carrito {}  b) class Carrito {}  c) Carrito class {}  d) object Carrito {}
+      </li>
+      <li>
+        8. ¿Cómo se crea un objeto a partir de una clase llamada <code>Persona</code>?<br>
+        a) Persona();  b) new Persona;  c) create Persona();  d) new-&gt;Persona();
+      </li>
+      <li>
+        9. ¿Cómo se llama correctamente a un método estático <code>saludar()</code> dentro de la clase <code>Util</code>?<br>
+        a) Util::saludar();  b) Util-&gt;saludar();  c) new Util.saludar();  d) Util.saludar();
+      </li>
+      <li>
+        10. ¿Qué método se ejecuta automáticamente al crear un objeto en PHP?<br>
+        a) __start()  b) __class()  c) __construct()  d) __new()
+      </li>
+    </ul>
+  </section>
+
+  <!-- RÚBRICA -->
+  <section>
+    <h2>Rúbrica de evaluación (RA2)</h2>
+    <p class="nota">
+      Esta rúbrica se utilizará para evaluar la práctica de los Ejercicios 1 y 2, según el grado de consecución del RA2 
+      y sus criterios de evaluación.
+    </p>
+
+    <table>
+      <caption>Rúbrica de evaluación – Ejercicios 1 y 2 (RA2)</caption>
+
+      <thead>
+        <tr>
+          <th>Indicador / Criterios RA2</th>
+          <th>0%</th>
+          <th>25%</</th>
+          <th>50%</th>
+          <th>75%</th>
+          <th>100%</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <!-- EJERCICIO 1 - FILA 1 -->
+        <tr>
+          <td class="indicador">
+            Ejercicio 1 – Método <code>mostrarPreferencias()</code>
+            <span class="sub">RA2: a) sintaxis, b) estructuras, c) arrays</span>
+          </td>
+
+          <td class="col-0">
+            No define el método o contiene errores de sintaxis que impiden la ejecución.  
+            No accede al array o provoca errores en tiempo de ejecución.
+          </td>
+
+          <td class="col-25">
+            Método creado pero con fallos graves:  
+            no usa el array, rompe la página, mezcla mal PHP/HTML.
+          </td>
+
+          <td class="col-50">
+            Método funcional pero incompleto:  
+            no controla el caso vacío o no genera lista HTML válida.  
+            La salida es poco clara o con formato incorrecto.
+          </td>
+
+          <td class="col-75">
+            Recorre el array correctamente, controla el caso vacío,  
+            genera HTML funcional con pequeños fallos de formato.
+          </td>
+
+          <td class="col-100">
+            Controla perfectamente el caso vacío,  
+            muestra “No tiene preferencias guardadas.”  
+            y genera una lista HTML válida y limpia.
+          </td>
+        </tr>
+
+        <!-- EJERCICIO 1 - FILA 2 -->
+        <tr>
+          <td class="indicador">
+            Ejercicio 1 – Creación objeto y preferencias
+            <span class="sub">RA2: a) sintaxis, b) variables, c) arrays</span>
+          </td>
+
+          <td class="col-0">
+            No crea el objeto Usuario o sintaxis incorrecta.  
+            No llama al constructor o parámetros mal pasados.
+          </td>
+
+          <td class="col-25">
+            Intenta crear el objeto pero con errores que impiden su uso:  
+            parámetros en desorden, nombres incorrectos, etc.
+          </td>
+
+          <td class="col-50">
+            Objeto creado correctamente pero añade solo una preferencia  
+            o comete errores leves en claves y valores.
+          </td>
+
+          <td class="col-75">
+            Objeto creado y dos preferencias añadidas,  
+            aunque con detalles menores de estilo o nomenclatura.
+          </td>
+
+          <td class="col-100">
+            Crea correctamente:  
+            <code>
+$usuario = new Usuario("Argantonio", 82);
+                             // Añade bien las preferencias:
+$usuario->agregarPreferencia("tema", "oscuro");
+$usuario->agregarPreferencia("idioma", "es");</code><br>
+           
+          </td>
+        </tr>
+
+        <!-- EJERCICIO 2 - FILA 1 -->
+        <tr>
+          <td class="indicador">
+            Ejercicio 2 – Iniciar la sesión
+            <span class="sub">RA2: f) sesiones</span>
+          </td>
+
+          <td class="col-0">
+            No usa <code>session_start()</code> o lo elimina.
+          </td>
+
+          <td class="col-25">
+            Llama a <code>session_start()</code> en lugar incorrecto  
+            o con sintaxis errónea.
+          </td>
+
+          <td class="col-50">
+            Inicia sesión pero no al inicio del script o de forma confusa.
+          </td>
+
+          <td class="col-75">
+            Inicia sesión correctamente con pequeños detalles mejorables.
+          </td>
+
+          <td class="col-100">
+            Coloca <code>session_start()</code> al inicio, limpio y correcto.
+          </td>
+        </tr>
+
+        <!-- EJERCICIO 2 - FILA 2 -->
+        <tr>
+          <td class="indicador">
+            Ejercicio 2 – Recoger valores por POST
+            <span class="sub">RA2: a), b), d)</span>
+          </td>
+
+          <td class="col-0">
+            No recoge datos del formulario.  
+            No usa <code>$_POST</code> o nombres incorrectos.
+          </td>
+
+          <td class="col-25">
+            Usa <code>$_POST</code> con errores graves de sintaxis o claves.
+          </td>
+
+          <td class="col-50">
+            Recoge nombre y edad sin validación ni casting.
+          </td>
+
+          <td class="col-75">
+            Recoge datos correctamente y aplica control básico  
+            (operador ??, casting, comprobaciones).
+          </td>
+
+          <td class="col-100">
+            Recoge datos limpiamente, valida y convierte tipos,  
+            código seguro y legible.
+          </td>
+        </tr>
+
+        <!-- EJERCICIO 2 - FILA 3 -->
+        <tr>
+          <td class="indicador">
+            Ejercicio 2 – Seguridad (XSS)
+            <span class="sub">RA2: g) seguridad</span>
+          </td>
+
+          <td class="col-0">
+            No usa ninguna medida de seguridad.  
+            Muestra datos sin sanear.
+          </td>
+
+          <td class="col-25">
+            Intenta aplicar seguridad pero de forma incorrecta.
+          </td>
+
+          <td class="col-50">
+            Aplica <code>htmlspecialchars()</code> de forma parcial o errónea.
+          </td>
+
+          <td class="col-75">
+            Usa <code>htmlspecialchars()</code> correctamente en el nombre,  
+            con pequeños detalles mejorables.
+          </td>
+
+          <td class="col-100">
+            Usa correctamente <code>htmlspecialchars()</code> en todos los datos mostrados.  
+            Código seguro y consistente.
+          </td>
+        </tr>
+
+        <!-- EJERCICIO 2 - FILA 4 -->
+        <tr>
+          <td class="indicador">
+            Ejercicio 2 – Objeto Usuario y sesión
+            <span class="sub">RA2: a), b), c), f)</span>
+          </td>
+
+          <td class="col-0">
+            No crea el objeto ni lo guarda en sesión.
+          </td>
+
+          <td class="col-25">
+            Crea el objeto pero no lo almacena en <code>$_SESSION</code>.
+          </td>
+
+          <td class="col-50">
+            Guarda datos sueltos pero no el objeto completo.
+          </td>
+
+          <td class="col-75">
+            Crea el objeto y lo guarda en sesión con detalles menores mejorables.
+          </td>
+
+          <td class="col-100">
+            Crea el objeto correctamente y lo guarda en  
+            <code>$_SESSION['usuario']</code> de forma limpia y funcional.
+          </td>
+        </tr>
+
+        <!-- EJERCICIO 2 - FILA 5 -->
+        <tr>
+          <td class="indicador">
+            Ejercicio 2 – Mensaje final al usuario
+            <span class="sub">RA2: g), a)</span>
+          </td>
+
+          <td class="col-0">
+            No muestra mensaje o está roto.
+          </td>
+
+          <td class="col-25">
+            Muestra mensaje pero incorrecto o incompleto.
+          </td>
+
+          <td class="col-50">
+            Muestra mensaje sin los datos del usuario.
+          </td>
+
+          <td class="col-75">
+            Mensaje correcto con formato mejorable.  
+          </td>
+
+          <td class="col-100">
+            Muestra correctamente:  
+            <strong>“Sesión iniciada. Bienvenido, NOMBRE (EDAD).”</strong><br>
+            usando datos saneados.
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </section>
+</main>
+
+</body>
+</html>
