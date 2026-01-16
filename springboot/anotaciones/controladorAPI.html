@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spring Boot Controller Annotations — Guía pedagógica</title>
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- Bootstrap Icons (iconos profesionales y consistentes) -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+  />
+
+  <style>
+    body { background: #f8f9fa; }
+    .header {
+      background: linear-gradient(90deg, #0d6efd, #0b5ed7);
+      color: #fff;
+      padding: 28px 16px;
+      text-align: center;
+    }
+    .header .subtitle { opacity: .92; }
+    .chip {
+      font-size: .78rem;
+      padding: .22rem .55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,.08);
+      background: #fff;
+      display: inline-flex;
+      gap: .35rem;
+      align-items: center;
+      box-shadow: 0 1px 0 rgba(0,0,0,.04);
+    }
+    .section-meta { display: flex; flex-wrap: wrap; gap: .5rem; }
+    pre {
+      background: #0b1220;
+      color: #e6edf3;
+      border: 1px solid rgba(255,255,255,.08);
+      padding: 12px;
+      border-radius: 12px;
+      overflow: auto;
+      margin-bottom: .75rem;
+    }
+    pre code { color: inherit; }
+    .accordion-button::after { display:none; } /* quitamos el caret por defecto */
+    .acc-title {
+      display: flex; align-items: center; gap: .6rem;
+      font-weight: 600;
+    }
+    .acc-title i { font-size: 1.15rem; }
+    .callout {
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,.08);
+      background: #fff;
+      box-shadow: 0 1px 0 rgba(0,0,0,.04);
+      padding: 12px 14px;
+      margin: 10px 0;
+    }
+    .callout .label { font-weight: 700; }
+    .kbd {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      background: #eef2ff;
+      border: 1px solid #dbe4ff;
+      border-radius: 8px;
+      padding: 2px 8px;
+      font-size: .85rem;
+    }
+    .mini { color: #6c757d; font-size: .93rem; }
+    .hr-soft { border-top: 1px dashed rgba(0,0,0,.15); }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <div class="header">
+    <h1 class="mb-2">
+      <i class="bi bi-diagram-3 me-2"></i>
+      Spring Boot Controller Annotations
+    </h1>
+    <p class="subtitle mb-0">
+      Guía práctica: propósito, cuándo usar, ejemplos realistas, alertas didácticas y buenas prácticas
+    </p>
+  </div>
+
+  <div class="container my-4">
+    <!-- Intro pedagógica -->
+    <div class="row g-3">
+      <div class="col-12 col-lg-8">
+        <div class="p-3 bg-white border rounded-4 shadow-sm">
+          <h2 class="h5 mb-2">
+            <i class="bi bi-compass me-2"></i>
+            Mapa mental rápido
+          </h2>
+          <p class="mb-2">
+            En Spring Boot, un <span class="kbd">Controller</span> recibe una petición HTTP, extrae datos (URL, query, body, headers),
+            ejecuta lógica de aplicación (normalmente vía un <span class="kbd">Service</span>) y devuelve una respuesta
+            (JSON/HTML + código HTTP).
+          </p>
+
+          <div class="callout">
+            <div class="d-flex gap-2 align-items-start">
+              <i class="bi bi-lightbulb text-primary fs-5"></i>
+              <div>
+                <div class="label">💡 Consejo</div>
+                <div class="mini">
+                  Si tu API es REST, lo normal es usar <span class="kbd">@RestController</span> + <span class="kbd">ResponseEntity</span>
+                  y devolver códigos HTTP correctos (201, 204, 400, 404…).
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout">
+            <div class="d-flex gap-2 align-items-start">
+              <i class="bi bi-exclamation-triangle text-warning fs-5"></i>
+              <div>
+                <div class="label">⚠️ Advertencia</div>
+                <div class="mini">
+                  Muchas excepciones en producción vienen de: validación incompleta, NPE por IDs inexistentes
+                  y respuestas sin estado claro. Por eso verás patrones de <span class="kbd">Optional</span>, <span class="kbd">@Valid</span>
+                  y manejadores globales de errores.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout">
+            <div class="d-flex gap-2 align-items-start">
+              <i class="bi bi-check-circle text-success fs-5"></i>
+              <div>
+                <div class="label">✅ Buena práctica</div>
+                <div class="mini">
+                  Separar: Controller (HTTP) → Service (reglas de negocio) → Repository (BD).
+                  El Controller no debería contener “lógica de negocio pesada”.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-4">
+        <div class="p-3 bg-white border rounded-4 shadow-sm h-100">
+          <h3 class="h6 mb-3">
+            <i class="bi bi-list-check me-2"></i>
+            Checklist REST rápido
+          </h3>
+          <ul class="mb-0">
+            <li>GET colección → <span class="kbd">200 OK</span></li>
+            <li>GET por id → <span class="kbd">200 OK</span> / <span class="kbd">404</span></li>
+            <li>POST crear → <span class="kbd">201 Created</span> + Location</li>
+            <li>PUT reemplazar → <span class="kbd">200</span> / <span class="kbd">204</span></li>
+            <li>PATCH parcial → <span class="kbd">200</span></li>
+            <li>DELETE → <span class="kbd">204 No Content</span></li>
+            <li>Validación → <span class="kbd">400 Bad Request</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="my-4 hr-soft"/>
+
+    <!-- Accordion -->
+    <div class="accordion" id="annotationsAccordion">
+
+      <!-- 0) @RestController / @Controller -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingControllerTypes">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseControllerTypes" aria-expanded="true" aria-controls="collapseControllerTypes">
+            <span class="acc-title">
+              <i class="bi bi-box-arrow-in-right text-primary"></i>
+              0) @RestController y @Controller (punto de partida)
+            </span>
+          </button>
+        </h2>
+        <div id="collapseControllerTypes" class="accordion-collapse collapse show" aria-labelledby="headingControllerTypes" data-bs-parent="#annotationsAccordion">
+          <div class="accordion-body">
+            <div class="section-meta mb-2">
+              <span class="chip"><i class="bi bi-flag"></i> Base</span>
+              <span class="chip"><i class="bi bi-braces"></i> REST / MVC</span>
+            </div>
+
+            <p class="mb-2"><strong>Propósito:</strong> indicar a Spring que esta clase maneja peticiones web.</p>
+            <ul class="mb-3">
+              <li><strong>@Controller</strong>: pensado para MVC (vistas: Thymeleaf/JSP). Suele devolver nombres de vista.</li>
+              <li><strong>@RestController</strong>: equivale a <span class="kbd">@Controller</span> + <span class="kbd">@ResponseBody</span>.
+                Devuelve directamente JSON (o similar).</li>
+            </ul>
+
+            <div class="callout">
+              <div class="d-flex gap-2 align-items-start">
+                <i class="bi bi-lightbulb text-primary fs-5"></i>
+                <div>
+                  <div class="label">💡 Cuándo usar</div>
+                  <div class="mini">
+                    Si estás construyendo una API REST para frontend (React/Vue/Angular) o móvil: <span class="kbd">@RestController</span>.
+                    Si renderizas HTML desde servidor: <span class="kbd">@Controller</span>.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <pre><code>// API REST (JSON)
+@RestController
+@RequestMapping("/api/productos")
+public class ProductoController { }
+
+// MVC (vistas)
+@Controller
+public class HomeController {
+  @GetMapping("/")
+  public String home() {        // devuelve nombre de plantilla/vista
+    return "index";
+  }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1) Routing -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingRouting">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRouting" aria-expanded="false" aria-controls="collapseRouting">
+            <span class="acc-title">
+              <i class="bi bi-signpost-split text-primary"></i>
+              1) Routing: @RequestMapping, @GetMapping, @PostMapping, @PutMapping, @DeleteMapping, @PatchMapping
+            </span>
+          </button>
+        </h2>
+        <div id="collapseRouting" class="accordion-collapse collapse" aria-labelledby="headingRouting" data-bs-parent="#annotationsAccordion">
+          <div class="accordion-body">
+            <div class="section-meta mb-2">
+              <span class="chip"><i class="bi bi-route"></i> Rutas</span>
+              <span class="chip"><i class="bi bi-globe"></i> HTTP</span>
+            </div>
+
+            <p class="mb-2">
+              <strong>Propósito:</strong> mapear una URL + método HTTP a un método Java.
+              <br />
+              <strong>Idea clave:</strong> usa rutas consistentes y orientadas a recursos (nombres en plural).
+            </p>
+
+            <div class="callout">
+              <div class="d-flex gap-2 align-items-start">
+                <i class="bi bi-check-circle text-success fs-5"></i>
+                <div>
+                  <div class="label">✅ Buena práctica</div>
+                  <div class="mini">
+                    Define un prefijo a nivel de clase con <span class="kbd">@RequestMapping("/api/productos")</span> y luego rutas relativas.
+                    Así evitas repetir strings y reduces errores.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <pre><code>@RestController
+@RequestMapping("/api/productos")
+public class ProductoController {
+
+  private final ProductoService productoService;
+
+  public ProductoController(ProductoService productoService) {
+    this.productoService = productoService;
+  }
+
+  // GET /api/productos?page=0&size=10
+  @GetMapping
+  public ResponseEntity&lt;List&lt;ProductoDto&gt;&gt; listar(
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
+
+    return ResponseEntity.ok(productoService.listar(page, size));
+  }
+
+  // GET /api/productos/42
+  @GetMapping("/{id}")
+  public ResponseEntity&lt;ProductoDto&gt; obtener(@PathVariable Long id) {
+    // Si no existe, devolvemos 404 de forma explícita
+    return productoService.obtener(id)
+        .map(ResponseEntity::ok)
+        .orElseGet(() -&gt; ResponseEntity.notFound().build());
+  }
+
+  // POST /api/productos
+  @PostMapping
+  public ResponseEntity&lt;ProductoDto&gt; crear(@Valid @RequestBody ProductoCreateDto body) {
+    ProductoDto creado = productoService.crear(body);
+
+    // 201 Created + Location: /api/productos/{id}
+    URI location = URI.create("/api/productos/" + creado.id());
+    return ResponseEntity.created(location).body(creado);
+  }
+
+  // PUT /api/productos/42 (reemplaza recurso)
+  @PutMapping("/{id}")
+  public ResponseEntity&lt;ProductoDto&gt; reemplazar(
+      @PathVariable Long id,
+      @Valid @RequestBody ProductoUpdateDto body) {
+
+    return productoService.reemplazar(id, body)
+        .map(ResponseEntity::ok)
+        .orElseGet(() -&gt; ResponseEntity.notFound().build());
+  }
+
+  // PATCH /api/productos/42 (actualiza parcialmente)
+  @PatchMapping("/{id}")
+  public ResponseEntity&lt;ProductoDto&gt; parcial(
+      @PathVariable Long id,
+      @RequestBody ProductoPatchDto body) {
+
+    return productoService.actualizarParcial(id, body)
+        .map(ResponseEntity::ok)
+        .orElseGet(() -&gt; ResponseEntity.notFound().build());
+  }
+
+  // DELETE /api/productos/42
+  @DeleteMapping("/{id}")
+  public ResponseEntity&lt;Void&gt; borrar(@PathVariable Long id) {
+    boolean borrado = productoService.borrar(id);
+
+    // 204 si borró, 404 si no existía
+    return borrado ? ResponseEntity.noContent().build()
+                   : ResponseEntity.notFound().build();
+  }
+}</code></pre>
+
+            <div class="callout">
+              <div class="d-flex gap-2 align-items-start">
+                <i class="bi bi-exclamation-triangle text-warning fs-5"></i>
+                <div>
+                  <div class="label">⚠️ Ojo con PUT vs PATCH</div>
+                  <div class="mini">
+                    <span class="kbd">PUT</span> suele entenderse como “reemplazo completo” (envías el recurso completo).
+                    <span class="kbd">PATCH</span> es “cambios parciales” (envías solo campos a modificar).
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- 2) Parameter handling -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingParameters">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseParameters" aria-expanded="false" aria-controls="collapseParameters">
+            <span class="acc-title">
+              <i class="bi bi-sliders text-primary"></i>
+              2) Parámetros: @PathVariable, @RequestParam, @RequestBody, @RequestHeader, @CookieValue
+            </span>
+          </button>
+        </h2>
+        <div id="collapseParameters" class="accordion-collapse collapse" aria-labelledby="headingParameters" data-bs-parent="#annotationsAccordion">
+          <div class="accordion-body">
+            <div class="section-meta mb-2">
+              <span class="chip"><i class="bi bi-input-cursor-text"></i> Entrada</span>
+              <span class="chip"><i class="bi bi-gear"></i> Binding</span>
+            </div>
+
+            <p class="mb-2">
+              <strong>Propósito:</strong> “sacar” datos de la petición HTTP y convertirlos a tipos Java.
+              <br />
+              <strong>Cuándo usar:</strong> según dónde viaja el dato (URL, query, body, headers, cookies).
+            </p>
+
+            <div class="callout">
+              <div class="d-flex gap-2 align-items-start">
+                <i class="bi bi-lightbulb text-primary fs-5"></i>
+                <div>
+                  <div class="label">💡 Regla rápida</div>
+                  <div class="mini">
+                    Identificadores y estructura de recurso → <span class="kbd">@PathVariable</span>.
+                    Filtros/paginación → <span class="kbd">@RequestParam</span>.
+                    Datos complejos para crear/editar → <span class="kbd">@RequestBody</span>.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <pre><code>// 1) @PathVariable: parte de la ruta (ideal para IDs)
+@GetMapping("/api/productos/{id}")
+public ResponseEntity&lt;ProductoDto&gt; get(@PathVariable Long id) { ... }
+
+// 2) @RequestParam: query string (filtros/paginación)
+@GetMapping("/api/productos/buscar")
+public ResponseEntity&lt;List&lt;ProductoDto&gt;&gt; buscar(
+  @RequestParam String q,
+  @RequestParam(defaultValue = "0") int page
+) { ... }
+
+// 3) @RequestBody: JSON del cuerpo (DTO recomendado)
+@PostMapping("/api/productos")
+public ResponseEntity&lt;ProductoDto&gt; create(@Valid @RequestBody ProductoCreateDto body) { ... }
+
+// 4) @RequestHeader: metadatos del cliente (p.e. trazas, auth custom)
+@GetMapping("/api/debug/user-agent")
+public ResponseEntity&lt;String&gt; ua(@RequestHeader("User-Agent") String ua) {
+  return ResponseEntity.ok("UA=" + ua);
+}
+
+// 5) @CookieValue: leer cookie (menos común en APIs REST puras)
+@GetMapping("/api/debug/session")
+public ResponseEntity&lt;String&gt; cookie(
+  @CookieValue(value = "SESSION", required = false) String session
+) {
+  return ResponseEntity.ok(session == null ? "Sin cookie SESSION" : session);
+}</code></pre>
+
+            <div class="callout">
+              <div class="d-flex gap-2 align-items-start">
+                <i class="bi bi-exclamation-triangle text-warning fs-5"></i>
+                <div>
+                  <div class="label">⚠️ DTOs en vez de Entidades</div>
+                  <div class="mini">
+                    Evita usar directamente entidades JPA en <span class="kbd">@RequestBody</span>.
+                    Mejor DTOs: reduces acoplamiento, evitas exponer campos sensibles y controlas validación.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- 3) Respuesta -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingResponses">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseResponses" aria-expanded="false" aria-controls="collapseResponses">
+            <span class="acc-title">
+              <i class="bi bi-reply-all text-primary"></i>
+              3) Respuesta: @ResponseBody y ResponseEntity (códigos HTTP, cabeceras, body)
+            </span>
+          </button>
+        </h2>
+        <div id="collapseResponses" class="accordion-collapse collapse" aria-labelledby="headingResponses" data-bs-parent="#annotationsAccordion">
+          <div class="accordion-body">
+            <div class="section-meta mb-2">
+              <span class="chip"><i class="bi bi-filetype-json"></i> JSON</span>
+              <span class="chip"><i class="bi bi-123"></i> HTTP status</span>
+            </div>
+
+            <p class="mb-2">
+              <strong>Propósito:</strong> construir una respuesta HTTP clara y semántica.
+              <br />
+              <strong>Por qué importa:</strong> el frontend/cliente decide qué hacer según el código HTTP.
+            </p>
+
+            <div class="callout">
+              <div class="d-flex gap-2 align-items-start">
+                <i class="bi bi-check-circle text-success fs-5"></i>
+                <div>
+                  <div class="label">✅ Patrón recomendado</div>
+                  <div class="mini">
+                    Usa <span class="kbd">ResponseEntity</span> siempre que tengas que controlar
+                    estado (<span class="kbd">404</span>), cabeceras (<span class="kbd">Location</span>) o devolver vacío (<span class="kbd">204</span>).
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <pre><code>// @RestController ya implica @ResponseBody en TODOS los métodos.
+// En @Controller (MVC), @ResponseBody se usa para "salir" en JSON puntualmente.
+
+@Controller
+public class MixedController {
+
+  // Devuelve JSON aunque sea @Controller
+  @GetMapping("/api/ping")
+  @ResponseBody
+  public Map&lt;String, Object&gt; ping() {
+    return Map.of("ok", true, "ts", System.currentTimeMillis());
+  }
+}
+
+@RestController
+@RequestMapping("/api/productos")
+public class ProductoController {
+
+  // 404 si no existe
+  @GetMapping("/{id}")
+  public ResponseEntity&lt;ProductoDto&gt; get(@PathVariable Long id) {
+    return service.obtener(id)
+        .map(ResponseEntity::ok)
+        .orElseGet(() -&gt; ResponseEntity.status(404).build());
+  }
+
+  // 201 Created + Location
+  @PostMapping
+  public ResponseEntity&lt;ProductoDto&gt; create(@Valid @RequestBody ProductoCreateDto body) {
+    ProductoDto creado = service.crear(body);
+    return ResponseEntity
+        .created(URI.create("/api/productos/" + creado.id()))
+        .body(creado);
+  }
+
+  // 204 No Content
+  @DeleteMapping("/{id}")
+  public ResponseEntity&lt;Void&gt; delete(@PathVariable Long id) {
+    return service.borrar(id) ? ResponseEntity.noContent().build()
+                             : ResponseEntity.notFound().build();
+  }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4) Validación -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingValidation">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseValidation" aria-expanded="false" aria-controls="collapseValidation">
+            <span class="acc-title">
+              <i class="bi bi-shield-check text-primary"></i>
+              4) Validación: @Valid, @Validated (y mensajes útiles)
+            </span>
+          </button>
+        </h2>
+        <div id="collapseValidation" class="accordion-collapse collapse" aria-labelledby="headingValidation" data-bs-parent="#annotationsAccordion">
+          <div class="accordion-body">
+            <div class="section-meta mb-2">
+              <span class="chip"><i class="bi bi-clipboard-check"></i> Validation</span>
+              <span class="chip"><i class="bi bi-bug"></i> Errores</span>
+            </div>
+
+            <p class="mb-2">
+              <strong>Propósito:</strong> rechazar peticiones inválidas antes de tocar la lógica de negocio o la BD.
+              <br />
+              <strong>Cuándo usar:</strong> en entradas (DTOs) con reglas: no vacío, rangos, email, etc.
+            </p>
+
+            <pre><code>// DTO de entrada (recomendado)
+public record ProductoCreateDto(
+  @NotBlank(message = "El nombre es obligatorio")
+  String nombre,
+
+  @NotNull(message = "El precio es obligatorio")
+  @Positive(message = "El precio debe ser positivo")
+  BigDecimal precio
+) { }
+
+// Controller
+@PostMapping("/api/productos")
+public ResponseEntity&lt;ProductoDto&gt; create(@Valid @RequestBody ProductoCreateDto body) {
+  // Si body no cumple reglas, Spring devolverá 400 automáticamente (si no lo capturas).
+  ProductoDto creado = service.crear(body);
+  return ResponseEntity.created(URI.create("/api/productos/" + creado.id())).body(creado);
+}</code></pre>
+
+            <div class="callout">
+              <div class="d-flex gap-2 align-items-start">
+                <i class="bi bi-lightbulb text-primary fs-5"></i>
+                <div>
+                  <div class="label">💡 Cómo hacerlo “más pedagógico” para el alumnado</div>
+                  <div class="mini">
+                    Acompaña la validación con un <span class="kbd">@ControllerAdvice</span> que devuelva errores “bonitos”
+                    (campo → mensaje). Eso enseña APIs reales y facilita depuración.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <pre><code>// Respuesta de error consistente (ejemplo)
+public record ApiError(String message, Map&lt;String, String&gt; fieldErrors) { }
+
+// Manejador global de validación y otras excepciones
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity&lt;ApiError&gt; handleValidation(MethodArgumentNotValidException ex) {
+    Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();
+
+    ex.getBindingResult().getFieldErrors()
+      .forEach(err -&gt; errors.put(err.getField(), err.getDefaultMessage()));
+
+    return ResponseEntity.badRequest()
+      .body(new ApiError("Validación fallida", errors));
+  }
+}</code></pre>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- 5) Seguridad y CORS -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingSecurity">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSecurity" aria-expanded="false" aria-controls="collapseSecurity">
+            <span class="acc-title">
+              <i class="bi bi-lock text-primary"></i>
+              5) Seguridad y CORS: @PreAuthorize y @CrossOrigin
+            </span>
+          </button>
+        </h2>
+        <div id="collapseSecurity" class="accordion-collapse collapse" aria-labelledby="headingSecurity" data-bs-parent="#annotationsAccordion">
+          <div class="accordion-body">
+            <div class="section-meta mb-2">
+              <span class="chip"><i class="bi bi-person-check"></i> AuthZ</span>
+              <span class="chip"><i class="bi bi-arrows-angle-contract"></i> CORS</span>
+            </div>
+
+            <p class="mb-2">
+              <strong>@PreAuthorize</strong> controla autorización (roles/permisos) a nivel de método.
+              <br />
+              <strong>@CrossOrigin</strong> permite que un frontend en otro dominio/puerto llame a tu API (CORS).
+            </p>
+
+            <div class="callout">
+              <div class="d-flex gap-2 align-items-start">
+                <i class="bi bi-exclamation-triangle text-warning fs-5"></i>
+                <div>
+                  <div class="label">⚠️ Advertencia</div>
+                  <div class="mini">
+                    CORS no es “seguridad” de backend: es una política del navegador. Tu API debe seguir validando tokens y permisos.
+                    Lo ideal es configurar CORS globalmente en Spring Security, no “a golpe de anotación” en todos lados.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <pre><code>// Autorización por rol
+@PreAuthorize("hasRole('ADMIN')")
+@DeleteMapping("/api/productos/{id}")
+public ResponseEntity&lt;Void&gt; delete(@PathVariable Long id) {
+  return service.borrar(id) ? ResponseEntity.noContent().build()
+                           : ResponseEntity.notFound().build();
+}
+
+// CORS a nivel de método (útil para demos rápidas)
+@CrossOrigin(origins = "http://localhost:3000")
+@GetMapping("/api/productos")
+public ResponseEntity&lt;List&lt;ProductoDto&gt;&gt; listar() {
+  return ResponseEntity.ok(service.listar(0, 20));
+}</code></pre>
+
+            <div class="callout">
+              <div class="d-flex gap-2 align-items-start">
+                <i class="bi bi-check-circle text-success fs-5"></i>
+                <div>
+                  <div class="label">✅ Buena práctica</div>
+                  <div class="mini">
+                    Prefiere seguridad “de verdad” con Spring Security (JWT/OAuth2), y usa <span class="kbd">@PreAuthorize</span>
+                    para reglas finas a nivel de endpoint.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- 6) Extras: @ControllerAdvice, @ExceptionHandler, @RequestMapping avanzados -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingExtras">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExtras" aria-expanded="false" aria-controls="collapseExtras">
+            <span class="acc-title">
+              <i class="bi bi-tools text-primary"></i>
+              6) “Nivel pro”: @ControllerAdvice/@RestControllerAdvice, @ExceptionHandler, consumes/produces
+            </span>
+          </button>
+        </h2>
+        <div id="collapseExtras" class="accordion-collapse collapse" aria-labelledby="headingExtras" data-bs-parent="#annotationsAccordion">
+          <div class="accordion-body">
+            <div class="section-meta mb-2">
+              <span class="chip"><i class="bi bi-life-preserver"></i> Errores globales</span>
+              <span class="chip"><i class="bi bi-filter"></i> Content negotiation</span>
+            </div>
+
+            <p class="mb-2">
+              <strong>Propósito:</strong> crear APIs “de producción”: errores consistentes, contratos claros y menos duplicación.
+            </p>
+
+            <pre><code>// 1) @ExceptionHandler: convierte excepciones en respuestas HTTP coherentes
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+  // Ejemplo: tu propia excepción de dominio
+  @ExceptionHandler(ProductoNoEncontradoException.class)
+  public ResponseEntity&lt;ApiError&gt; handleNotFound(ProductoNoEncontradoException ex) {
+    return ResponseEntity.status(404)
+        .body(new ApiError(ex.getMessage(), Map.of()));
+  }
+
+  // Fallback genérico (cuidado: en producción loguear y no filtrar info sensible)
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity&lt;ApiError&gt; handleGeneric(Exception ex) {
+    return ResponseEntity.status(500)
+        .body(new ApiError("Error interno", Map.of()));
+  }
+}
+
+// 2) consumes / produces (contrato explícito)
+@PostMapping(
+  value = "/api/productos",
+  consumes = "application/json",
+  produces = "application/json"
+)
+public ResponseEntity&lt;ProductoDto&gt; create(@Valid @RequestBody ProductoCreateDto body) { ... }</code></pre>
+
+            <div class="callout">
+              <div class="d-flex gap-2 align-items-start">
+                <i class="bi bi-lightbulb text-primary fs-5"></i>
+                <div>
+                  <div class="label">💡 Cuándo merece la pena</div>
+                  <div class="mini">
+                    En cuanto tengas 4–5 endpoints, te compensa un <span class="kbd">@RestControllerAdvice</span>:
+                    reduces repetición y consigues respuestas uniformes (muy útil para enseñar).
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <hr class="my-4 hr-soft"/>
+
+    <!-- Pie -->
+    <div class="p-3 bg-white border rounded-4 shadow-sm">
+      <h2 class="h6 mb-2">
+        <i class="bi bi-mortarboard me-2"></i>
+        Sugerencia didáctica (para clase)
+      </h2>
+      <p class="mb-0 mini">
+        Puedes proponer al alumnado un “mini-API” de Productos con 6 endpoints (GET/POST/PUT/PATCH/DELETE + búsqueda),
+        obligando a: <span class="kbd">@Valid</span>, <span class="kbd">ResponseEntity</span>,
+        y un <span class="kbd">@RestControllerAdvice</span> para errores. Con eso aprenden “lo real”.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

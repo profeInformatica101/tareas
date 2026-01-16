@@ -1,214 +1,451 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spring Boot Controller Annotations</title>
+  <title>🍃 Thymeleaf + Spring MVC (Controladores)</title>
+
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome (como en tu plantilla) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
   <style>
-    body {
-      background-color: #f8f9fa;
-    }
-    .header {
-      background-color: #007bff;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-    .accordion-button::after {
-      content: '\25bc';
-      font-size: 12px;
-      margin-left: 10px;
-    }
-    .accordion-button.collapsed::after {
-      content: '\25b6';
-    }
+    body { background-color: #f8f9fa; }
+    h1 { color: #28a745; }
+
     pre {
-      background-color: #f8f9fa;
-      border: 1px solid #ddd;
-      padding: 10px;
-      border-radius: 5px;
+      background-color: #ffffff;
+      border: 1px solid #dee2e6;
+      padding: 12px;
+      border-radius: 10px;
+      overflow: auto;
+      margin: 10px 0 16px;
     }
-    code {
-      color:darkred
+    code { color: darkred; }
+
+    .callout {
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: #fff;
+      margin: 10px 0 16px;
+    }
+    .callout .title { font-weight: 700; }
+    .callout.tip { border-left: 6px solid #0d6efd; }
+    .callout.warn { border-left: 6px solid #ffc107; }
+    .callout.good { border-left: 6px solid #28a745; }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      font-size: .82rem;
+      padding: .25rem .6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,.10);
+      background: #fff;
+      margin-right: .35rem;
+      margin-bottom: .35rem;
     }
   </style>
 </head>
+
 <body>
+<div class="container mt-5">
+  <h1><i class="fas fa-leaf"></i> Spring MVC + Thymeleaf: Anotaciones clave en Controladores</h1>
+  <p class="text-muted mb-3">
+    En MVC con Thymeleaf, el controlador <strong>devuelve el nombre de una vista</strong> con <code>return "nombre-vista"</code>
+    y Spring busca <code>nombre-vista.html</code> en <strong>resources/templates</strong>.
+  </p>
 
-  <!-- Header -->
-  <div class="header">
-    <h1>Spring Boot Controller Annotations</h1>
-    <p>Explicación de las etiquetas más importantes de Spring Boot para controladores</p>
-  </div>
-
-  <!-- Accordion for annotations -->
-  <div class="container mt-4">
-    <div class="accordion" id="annotationsAccordion">
-      <!-- Routing Annotations -->
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingRouting">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRouting" aria-expanded="true" aria-controls="collapseRouting">
-            📜 Routing Annotations
-          </button>
-        </h2>
-        <div id="collapseRouting" class="accordion-collapse collapse show" aria-labelledby="headingRouting" data-bs-parent="#annotationsAccordion">
-          <div class="accordion-body">
-            <ul>
-              <li><strong>@RequestMapping:</strong> Mapea URLs a métodos o clases.
-                <pre>@RequestMapping(value = "/productos", method = RequestMethod.GET)
-public List<Producto> listar() {
-  return productoServicio.listarTodosLosProductos();
-}</pre>
-              </li>
-              <li><strong>@GetMapping:</strong> Mapea solicitudes HTTP GET.
-                <pre>@GetMapping("/productos/{id}")
-public Producto obtenerProducto(@PathVariable Long id) {
-  return productoServicio.obtenerProductoPorId(id);
-}</pre>
-              </li>
-              <li><strong>@PostMapping:</strong> Mapea solicitudes HTTP POST.
-                <pre>@PostMapping("/productos")
-public Producto crearProducto(@RequestBody Producto producto) {
-  return productoServicio.guardarProducto(producto);
-}</pre>
-              </li>
-              <li><strong>@PutMapping:</strong> Mapea solicitudes HTTP PUT.
-                <pre>@PutMapping("/productos/{id}")
-public ResponseEntity<Producto> actualizarProducto(@PathVariable Long id, @RequestBody Producto producto) {
-  return productoServicio.actualizarProducto(id, producto);
-}</pre>
-              </li>
-              <li><strong>@DeleteMapping:</strong> Mapea solicitudes HTTP DELETE.
-                <pre>@DeleteMapping("/productos/{id}")
-public ResponseEntity<Void> eliminarProducto(@PathVariable Long id) {
-  productoServicio.eliminarProducto(id);
-}</pre>
-              </li>
-              <li><strong>@PatchMapping:</strong> Mapea solicitudes HTTP PATCH, ideal para actualizaciones parciales.
-                <pre>@PatchMapping("/productos/{id}")
-public ResponseEntity<Producto> actualizarParcialProducto(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
-  return productoServicio.actualizarParcialProducto(id, updates);
-}</pre>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- Parameter Handling Annotations -->
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingParameters">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseParameters" aria-expanded="false" aria-controls="collapseParameters">
-            🛠️ Parameter Handling Annotations
-          </button>
-        </h2>
-        <div id="collapseParameters" class="accordion-collapse collapse" aria-labelledby="headingParameters" data-bs-parent="#annotationsAccordion">
-          <div class="accordion-body">
-            <ul>
-              <li><strong>@PathVariable:</strong> Extrae valores de la URL.
-                <pre>@GetMapping("/productos/{id}")
-public Producto obtenerProducto(@PathVariable Long id) {
-  return productoServicio.obtenerProductoPorId(id);
-}</pre>
-              </li>
-              <li><strong>@RequestParam:</strong> Vincula parámetros de consulta de la URL.
-                <pre>@GetMapping("/buscar")
-public List<Producto> buscar(@RequestParam String nombre) {
-  return productoServicio.buscarPorNombre(nombre);
-}</pre>
-              </li>
-              <li><strong>@RequestBody:</strong> Vincula el cuerpo de la solicitud HTTP.
-                <pre>@PostMapping("/productos")
-public Producto crearProducto(@RequestBody Producto producto) {
-  return productoServicio.guardarProducto(producto);
-}</pre>
-              </li>
-              <li><strong>@RequestHeader:</strong> Extrae valores de los encabezados HTTP.
-                <pre>@GetMapping("/cabecera")
-public ResponseEntity<String> obtenerCabecera(@RequestHeader("User-Agent") String userAgent) {
-  return ResponseEntity.ok("User-Agent: " + userAgent);
-}</pre>
-              </li>
-              <li><strong>@CookieValue:</strong> Extrae valores de cookies.
-                <pre>@GetMapping("/cookies")
-public String obtenerCookie(@CookieValue(value = "sessionId", defaultValue = "default") String sessionId) {
-  return "Session ID: " + sessionId;
-}</pre>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- Response Annotations -->
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingResponses">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseResponses" aria-expanded="false" aria-controls="collapseResponses">
-            💾 Response Annotations
-          </button>
-        </h2>
-        <div id="collapseResponses" class="accordion-collapse collapse" aria-labelledby="headingResponses" data-bs-parent="#annotationsAccordion">
-          <div class="accordion-body">
-            <ul>
-              <li><strong>@ResponseBody:</strong> Devuelve datos serializados (JSON/XML).
-                <pre>@GetMapping("/productos")
-@ResponseBody
-public List<Producto> listarProductos() {
-  return productoServicio.listarTodosLosProductos();
-}</pre>
-              </li>
-              <li><strong>ResponseEntity:</strong> Personaliza la respuesta HTTP.
-                <pre>@GetMapping("/productos/{id}")
-public ResponseEntity<Producto> obtenerProducto(@PathVariable Long id) {
-  Producto producto = productoServicio.obtenerProductoPorId(id);
-  return ResponseEntity.ok(producto);
-}</pre>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- Security and Validation Annotations -->
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingSecurity">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSecurity" aria-expanded="false" aria-controls="collapseSecurity">
-            🔒 Security and Validation Annotations
-          </button>
-        </h2>
-        <div id="collapseSecurity" class="accordion-collapse collapse" aria-labelledby="headingSecurity" data-bs-parent="#annotationsAccordion">
-          <div class="accordion-body">
-            <ul>
-              <li><strong>@Valid:</strong> Valida datos automáticamente.
-                <pre>@PostMapping("/productos")
-public Producto crearProducto(@Valid @RequestBody Producto producto) {
-  return productoServicio.guardarProducto(producto);
-}</pre>
-              </li>
-              <li><strong>@PreAuthorize:</strong> Verifica permisos.
-                <pre>@PreAuthorize("hasRole('ADMIN')")
-@DeleteMapping("/productos/{id}")
-public void eliminarProducto(@PathVariable Long id) {
-  productoServicio.eliminarProducto(id);
-}</pre>
-              </li>
-              <li><strong>@CrossOrigin:</strong> Habilita CORS.
-                <pre>@CrossOrigin(origins = "http://localhost:3000")
-@GetMapping("/productos")
-public List<Producto> listarProductos() {
-  return productoServicio.listarTodosLosProductos();
-}</pre>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+  <div class="callout good">
+    <div class="title"><i class="fas fa-check-circle me-2"></i>✅ Idea esencial (MVC)</div>
+    <div>
+      Un controlador MVC normalmente devuelve:
+      <ul class="mb-0">
+        <li><strong>Una vista</strong>: <code>return "productos/lista"</code></li>
+        <li>Y opcionalmente <strong>datos</strong> para la vista en el <code>Model</code>: <code>model.addAttribute("productos", ...)</code></li>
+      </ul>
     </div>
   </div>
 
-  <!-- Bootstrap JS and dependencies -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <div class="callout tip">
+    <div class="title"><i class="fas fa-lightbulb me-2"></i>💡 Cuándo NO usar @RestController</div>
+    <div>
+      Si estás renderizando HTML con Thymeleaf, usa <code>@Controller</code>.
+      <code>@RestController</code> es para devolver JSON (APIs REST).
+    </div>
+  </div>
+
+  <div class="accordion" id="thymeleafAccordion">
+
+    <!-- 0) @Controller, Model y nombre de vista -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingBase">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBase" aria-expanded="true" aria-controls="collapseBase">
+          <i class="fas fa-door-open me-2"></i> Base: @Controller, Model y return "nombre-vista"
+        </button>
+      </h2>
+
+      <div id="collapseBase" class="accordion-collapse collapse show" aria-labelledby="headingBase" data-bs-parent="#thymeleafAccordion">
+        <div class="accordion-body">
+
+          <span class="pill"><i class="fas fa-layer-group"></i> MVC</span>
+          <span class="pill"><i class="fas fa-file-alt"></i> templates/</span>
+          <span class="pill"><i class="fas fa-database"></i> Model</span>
+
+          <p class="mb-2"><strong>Propósito:</strong> indicar que la clase maneja rutas web y devuelve vistas HTML.</p>
+          <p class="mb-2"><strong>Cuándo y por qué usarlo:</strong> cuando quieres renderizar páginas con Thymeleaf.</p>
+
+          <pre><code>// templates/home.html
+// templates/productos/lista.html
+
+@Controller
+public class HomeController {
+
+  @GetMapping("/")
+  public String home() {
+    // Devuelve "home" → Spring buscará templates/home.html
+    return "home";
+  }
+
+  @GetMapping("/productos")
+  public String lista(Model model) {
+    // Añades datos a la vista
+    model.addAttribute("titulo", "Listado de productos");
+    model.addAttribute("productos", List.of("Teclado", "Ratón", "Monitor"));
+
+    // Devuelve "productos/lista" → templates/productos/lista.html
+    return "productos/lista";
+  }
+}</code></pre>
+
+          <div class="callout warn">
+            <div class="title"><i class="fas fa-exclamation-triangle me-2"></i>⚠️ Error típico</div>
+            <div>
+              Devolver <code>return "/productos/lista.html"</code> o rutas con extensión suele romper convenciones.
+              Lo habitual es devolver <strong>solo el nombre lógico</strong>: <code>return "productos/lista"</code>.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 1) @RequestMapping + @GetMapping/@PostMapping en MVC -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingRouting">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRouting" aria-expanded="false" aria-controls="collapseRouting">
+          <i class="fas fa-route me-2"></i> Rutas: @RequestMapping, @GetMapping, @PostMapping, @PutMapping, @DeleteMapping
+        </button>
+      </h2>
+
+      <div id="collapseRouting" class="accordion-collapse collapse" aria-labelledby="headingRouting" data-bs-parent="#thymeleafAccordion">
+        <div class="accordion-body">
+
+          <p class="mb-2"><strong>Propósito:</strong> mapear URL + método HTTP a métodos del controlador.</p>
+          <p class="mb-2"><strong>Cuándo usar:</strong> para separar “ver formulario”, “enviar formulario”, “borrar”, etc.</p>
+
+          <div class="callout tip">
+            <div class="title"><i class="fas fa-lightbulb me-2"></i>💡 En MVC, lo más común</div>
+            <div>
+              <ul class="mb-0">
+                <li><code>@GetMapping</code> para mostrar páginas (lista, detalle, formulario)</li>
+                <li><code>@PostMapping</code> para procesar formularios</li>
+              </ul>
+            </div>
+          </div>
+
+          <pre><code>@Controller
+@RequestMapping("/productos") // prefijo común
+public class ProductoMvcController {
+
+  private final ProductoService service;
+
+  public ProductoMvcController(ProductoService service) {
+    this.service = service;
+  }
+
+  // GET /productos
+  @GetMapping
+  public String listar(Model model) {
+    model.addAttribute("productos", service.listar());
+    return "productos/lista";
+  }
+
+  // GET /productos/nuevo  (muestra formulario)
+  @GetMapping("/nuevo")
+  public String formularioNuevo(Model model) {
+    model.addAttribute("productoForm", new ProductoForm());
+    return "productos/form";
+  }
+
+  // POST /productos (procesa formulario)
+  @PostMapping
+  public String crear(
+      @Valid @ModelAttribute("productoForm") ProductoForm form,
+      BindingResult binding,
+      RedirectAttributes redirect
+  ) {
+    if (binding.hasErrors()) {
+      // si hay errores de validación, vuelves al form
+      return "productos/form";
+    }
+
+    Long id = service.crear(form);
+    redirect.addFlashAttribute("msgOk", "Producto creado con éxito");
+    return "redirect:/productos/" + id;
+  }
+
+  // GET /productos/{id} (detalle)
+  @GetMapping("/{id}")
+  public String detalle(@PathVariable Long id, Model model) {
+    ProductoDto p = service.obtenerPorId(id)
+        .orElseThrow(() -&gt; new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+    model.addAttribute("producto", p);
+    return "productos/detalle";
+  }
+
+  // POST /productos/{id}/borrar (forma MVC "clásica")
+  // Nota: los formularios HTML no envían DELETE fácilmente (sin JS o filtros).
+  @PostMapping("/{id}/borrar")
+  public String borrar(@PathVariable Long id, RedirectAttributes redirect) {
+    service.borrar(id);
+    redirect.addFlashAttribute("msgOk", "Producto eliminado");
+    return "redirect:/productos";
+  }
+}</code></pre>
+
+          <div class="callout warn">
+            <div class="title"><i class="fas fa-exclamation-triangle me-2"></i>⚠️ Sobre PUT/DELETE en HTML</div>
+            <div>
+              Los formularios HTML suelen enviar <strong>GET/POST</strong>. Para simular <code>PUT</code>/<code>DELETE</code>
+              se usa JavaScript, o el mecanismo de Spring <em>HiddenHttpMethodFilter</em> (campo oculto <code>_method</code>).
+              Para empezar, el patrón <code>POST /{id}/borrar</code> es simple y didáctico.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 2) Parámetros en MVC: @PathVariable, @RequestParam, @ModelAttribute -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingParams">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseParams" aria-expanded="false" aria-controls="collapseParams">
+          <i class="fas fa-sliders-h me-2"></i> Parámetros en MVC: @PathVariable, @RequestParam, @ModelAttribute
+        </button>
+      </h2>
+
+      <div id="collapseParams" class="accordion-collapse collapse" aria-labelledby="headingParams" data-bs-parent="#thymeleafAccordion">
+        <div class="accordion-body">
+
+          <p class="mb-2"><strong>Propósito:</strong> recoger datos de URL, query y formularios HTML.</p>
+
+          <div class="callout good">
+            <div class="title"><i class="fas fa-check-circle me-2"></i>✅ Buenas prácticas</div>
+            <div>
+              <ul class="mb-0">
+                <li>IDs y rutas → <code>@PathVariable</code></li>
+                <li>Filtros/búsqueda → <code>@RequestParam</code></li>
+                <li>Formularios → <code>@ModelAttribute</code> + <code>BindingResult</code></li>
+              </ul>
+            </div>
+          </div>
+
+          <pre><code>// GET /productos/buscar?q=teclado
+@GetMapping("/buscar")
+public String buscar(@RequestParam String q, Model model) {
+  model.addAttribute("productos", service.buscar(q));
+  model.addAttribute("q", q);
+  return "productos/lista"; // reutilizas la vista de listado
+}
+
+// Formularios: el form se mapea a un objeto (ProductoForm)
+public class ProductoForm {
+  @NotBlank(message = "El nombre es obligatorio")
+  private String nombre;
+
+  @NotNull(message = "El precio es obligatorio")
+  @Positive(message = "El precio debe ser positivo")
+  private BigDecimal precio;
+
+  // getters/setters
+}
+
+// Procesar envío:
+@PostMapping
+public String crear(
+  @Valid @ModelAttribute("productoForm") ProductoForm form,
+  BindingResult binding,
+  Model model
+) {
+  if (binding.hasErrors()) {
+    // Aquí Thymeleaf puede mostrar errores con th:errors / #fields
+    return "productos/form";
+  }
+  service.crear(form);
+  return "redirect:/productos";
+}</code></pre>
+
+          <div class="callout tip">
+            <div class="title"><i class="fas fa-lightbulb me-2"></i>💡 Pro-tip para Thymeleaf</div>
+            <div>
+              Si en la vista usas <code>&lt;form th:object="${productoForm}" ...&gt;</code>,
+              los campos con <code>th:field</code> se enlazan automáticamente al objeto del Model.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 3) Validación + feedback en la vista -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingValidation">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseValidation" aria-expanded="false" aria-controls="collapseValidation">
+          <i class="fas fa-shield-alt me-2"></i> Validación en MVC: @Valid, BindingResult y mensajes en Thymeleaf
+        </button>
+      </h2>
+
+      <div id="collapseValidation" class="accordion-collapse collapse" aria-labelledby="headingValidation" data-bs-parent="#thymeleafAccordion">
+        <div class="accordion-body">
+
+          <p class="mb-2"><strong>Propósito:</strong> evitar datos inválidos y mostrar errores al usuario en el formulario.</p>
+
+          <pre><code>// Controller (parte clave)
+@PostMapping("/registro")
+public String registrar(
+  @Valid @ModelAttribute("userForm") UserForm form,
+  BindingResult binding
+) {
+  if (binding.hasErrors()) {
+    // Se queda en la misma vista mostrando errores
+    return "usuarios/registro";
+  }
+  service.registrar(form);
+  return "redirect:/login";
+}</code></pre>
+
+          <pre><code>&lt;!-- templates/usuarios/registro.html (ideas clave) --&gt;
+&lt;form th:object="${userForm}" th:action="@{/registro}" method="post"&gt;
+
+  &lt;div class="mb-3"&gt;
+    &lt;label class="form-label"&gt;Email&lt;/label&gt;
+    &lt;input class="form-control" th:field="*{email}" /&gt;
+
+    &lt;!-- Mensaje de error asociado al campo --&gt;
+    &lt;div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"&gt;
+      Error email
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;button class="btn btn-success"&gt;Enviar&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+
+          <div class="callout warn">
+            <div class="title"><i class="fas fa-exclamation-triangle me-2"></i>⚠️ Orden importante</div>
+            <div>
+              <code>BindingResult</code> debe ir <strong>justo después</strong> del objeto validado.
+              Si no, Spring puede lanzar excepción en vez de devolverte el formulario con errores.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 4) Redirect y Flash Attributes -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingRedirect">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRedirect" aria-expanded="false" aria-controls="collapseRedirect">
+          <i class="fas fa-exchange-alt me-2"></i> Post/Redirect/Get: redirect: y RedirectAttributes (mensajes)
+        </button>
+      </h2>
+
+      <div id="collapseRedirect" class="accordion-collapse collapse" aria-labelledby="headingRedirect" data-bs-parent="#thymeleafAccordion">
+        <div class="accordion-body">
+
+          <p class="mb-2">
+            <strong>Propósito:</strong> evitar reenvíos duplicados al refrescar (F5) tras un POST
+            y mostrar mensajes de éxito/aviso al usuario.
+          </p>
+
+          <div class="callout good">
+            <div class="title"><i class="fas fa-check-circle me-2"></i>✅ Patrón Post/Redirect/Get</div>
+            <div class="text-muted">
+              Tras guardar con POST, haces <code>return "redirect:/ruta"</code>. Así el navegador termina en GET.
+            </div>
+          </div>
+
+          <pre><code>// POST /productos → crea y redirige
+@PostMapping("/productos")
+public String crear(@Valid @ModelAttribute("productoForm") ProductoForm form,
+                    BindingResult binding,
+                    RedirectAttributes redirect) {
+  if (binding.hasErrors()) return "productos/form";
+
+  Long id = service.crear(form);
+
+  // Mensaje flash: vive solo durante el redirect
+  redirect.addFlashAttribute("msgOk", "Creado correctamente");
+  return "redirect:/productos/" + id;
+}</code></pre>
+
+          <pre><code>&lt;!-- En la vista destino (p.e. templates/productos/detalle.html) --&gt;
+&lt;div class="alert alert-success" th:if="${msgOk}" th:text="${msgOk}"&gt;OK&lt;/div&gt;</code></pre>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 5) Errores y 404 en MVC -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingErrors">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseErrors" aria-expanded="false" aria-controls="collapseErrors">
+          <i class="fas fa-bug me-2"></i> Manejo de errores en MVC: ResponseStatusException y páginas de error
+        </button>
+      </h2>
+
+      <div id="collapseErrors" class="accordion-collapse collapse" aria-labelledby="headingErrors" data-bs-parent="#thymeleafAccordion">
+        <div class="accordion-body">
+
+          <p class="mb-2">
+            <strong>Propósito:</strong> cuando algo no existe o falla, mostrar una página coherente (404, 500…).
+          </p>
+
+          <pre><code>// Si no existe el recurso: lanza 404
+@GetMapping("/productos/{id}")
+public String detalle(@PathVariable Long id, Model model) {
+  ProductoDto p = service.obtenerPorId(id)
+      .orElseThrow(() -&gt; new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no existe"));
+
+  model.addAttribute("producto", p);
+  return "productos/detalle";
+}</code></pre>
+
+          <div class="callout tip">
+            <div class="title"><i class="fas fa-lightbulb me-2"></i>💡 Página 404 personalizada</div>
+            <div>
+              Si creas <code>templates/error/404.html</code>, Spring puede renderizar una vista propia para 404.
+              (También existe la carpeta <code>resources/static/error</code> según configuración).
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <img src="i18n.png" alt="internaciolanizacion" class="img-fluid mt-4 rounded">
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
