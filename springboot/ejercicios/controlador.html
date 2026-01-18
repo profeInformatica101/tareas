@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Tarea Controladores (Spring MVC + Thymeleaf + Bootstrap + Tests)</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body { background: #f5f7fb; }
+    .badge-tag { font-size: 0.8rem; margin-right: 0.25rem; }
+    .ej-card { border-radius: 1rem; border: none; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+    .ej-header { border-radius: 1rem 1rem 0 0 !important; }
+    code { color: purple; }
+    .text-muted { color: black; }
+    pre code { color: #222; }
+  </style>
+</head>
+
+<body>
+<div class="container my-5">
+
+  <div class="text-center mb-4">
+    <h1 class="fw-bold">
+      <i class="bi bi-diagram-3 text-primary"></i>
+      Tarea de Controladores: Spring MVC + Thymeleaf + Bootstrap + Tests (JUnit 5)
+    </h1>
+    <p class="text-muted">
+      Implementa un mini CRUD y <span class="fw-semibold">gestiona errores con try/catch</span> lanzando
+      <span class="badge bg-danger-subtle text-danger border border-danger">RuntimeException</span>.
+      Incluye <span class="badge bg-success-subtle text-success border border-success">pruebas unitarias</span>.
+    </p>
+  </div>
+
+  <!-- SECCIÓN REPOSITORIO -->
+  <div class="card mb-4 border-0 shadow-sm">
+    <div class="card-body d-flex flex-column flex-md-row align-items-md-center">
+      <div class="me-md-4 mb-3 mb-md-0">
+        <h2 class="h5 fw-bold mb-1">
+          <i class="bi bi-github me-2"></i>
+          Repositorio para hacer <span class="text-primary">fork</span>
+        </h2>
+        <p class="mb-1">
+          Punto de partida:
+        </p>
+        <p class="mb-1">
+          <a href="https://github.com/profeInformatica101/tareasSpringBoot" target="_blank" class="link-dark">
+            <i class="bi bi-box-arrow-up-right me-1"></i>
+            <code> https://github.com/profeInformatica101/SpringBootApp</code>
+          </a>
+        </p>
+        <p class="mb-2 small text-muted">
+          Tras el fork:
+          <code>https://github.com/&lt;tu_usuario&gt;/SpringBootApp</code>
+        </p>
+
+        <div class="alert alert-info mb-0">
+          <i class="bi bi-zip me-1"></i>
+          <strong>Entrega final:</strong> además del repositorio, se adjunta un <strong>ZIP del proyecto</strong>
+          (sin <code>target/</code>).
+        </div>
+      </div>
+
+      <div class="ms-md-auto">
+        <p class="mb-1 fw-semibold">
+          <i class="bi bi-git me-1 text-success"></i>
+          Control de versiones (mínimo)
+        </p>
+        <ul class="list-unstyled mb-0 small">
+          <li class="mb-1">
+            <span class="badge bg-dark me-1">main</span>
+            <span class="text-muted">– Base del proyecto.</span>
+          </li>
+          <li class="mb-1">
+            <span class="badge bg-primary me-1">feature/controllers</span>
+            <span class="text-muted">– Rama de trabajo (obligatoria).</span>
+          </li>
+          <li class="mb-1">
+            <span class="badge bg-success me-1">final</span>
+            <span class="text-muted">– Rama de integración final (merge al terminar).</span>
+          </li>
+          <li class="mt-2">
+            <i class="bi bi-check2-circle me-1"></i>
+            Mínimo <strong>5 commits</strong> con mensajes claros.
+          </li>
+ 
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- FIN REPO -->
+
+  <!-- ACORDEÓN PRINCIPAL -->
+  <div class="accordion" id="accordionTarea">
+
+    <!-- BLOQUE 1: OBJETIVO -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="h1">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#c1" aria-expanded="true" aria-controls="c1">
+          <span class="me-2 badge bg-success"><i class="bi bi-1-circle"></i></span>
+          <span class="fw-semibold">Objetivo de la tarea </span>
+          <span class="ms-auto">
+            <span class="badge bg-primary badge-tag">Spring MVC</span>
+            <span class="badge bg-success badge-tag">Thymeleaf</span>
+            <span class="badge bg-dark badge-tag">Bootstrap</span>
+          </span>
+        </button>
+      </h2>
+
+      <div id="c1" class="accordion-collapse collapse show" aria-labelledby="h1" data-bs-parent="#accordionTarea">
+        <div class="accordion-body">
+
+          <p class="mb-2">
+            Implementa un mini gestor de <strong>tareas</strong> con controlador MVC y vistas Thymeleaf.
+          </p>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                  <h3 class="h6 fw-bold"><i class="bi bi-list-check me-1"></i> Funcionalidades mínimas CRUD(Create-Read-Update-Delete)</h3>
+                  <ul class="mb-0">
+                    <li>Listar tareas</li>
+                    <li>Crear tarea (formulario)</li>
+                    <li>Editar tarea (formulario)</li>
+                    <li>Borrar tarea</li>
+                    <li>Toggle: marcar como hecha/no hecha</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                  <h3 class="h6 fw-bold"><i class="bi bi-shield-exclamation me-1"></i> Gestión de errores</h3>
+                  <ul class="mb-0">
+                    <li>En el controlador: <code>try { ... } catch(Exception e) { throw new RuntimeException(...); }</code></li>
+                    <li>Mostrar una vista de error amigable (<code>error.html</code>)</li>
+                    <li>Mensaje de error visible con Bootstrap</li>
+                             <li>Uso de clase <mark>GlobalExceptionHandler</mark> con etiqueta <b>@ControllerAdvice</b>  que gestione las excepcionesx <br>
+            <code>
+                <pre>
+                    @ControllerAdvice
+public class GlobalExceptionHandler {
+
+  @ExceptionHandler(RuntimeException.class)
+  public String handle(RuntimeException ex, Model model) {
+    model.addAttribute("message", ex.getMessage());
+    return "error";
+  }
+}
+
+                </pre>
+            </code>
+          </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-3">
+
+          <div class="alert alert-warning mb-0">
+            <i class="bi bi-stopwatch me-1"></i>
+            <strong>Tiempo:</strong> 2 horas. Prioriza que compile, funcione y pase tests.
+          </div>
+
+        </div>
+      </div>
+    </div>
+<!-- BLOQUE 2: ENDPOINTS (AJUSTADO) -->
+<div class="accordion-item ej-card mb-3">
+  <h2 class="accordion-header ej-header" id="h2">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c2"
+            aria-expanded="false" aria-controls="c2">
+      <span class="me-2 badge bg-success"><i class="bi bi-2-circle"></i></span>
+      <span class="fw-semibold">Rutas del controlador (obligatorias)</span>
+      <span class="ms-auto">
+        <span class="badge bg-info text-dark badge-tag">@GetMapping</span>
+        <span class="badge bg-info text-dark badge-tag">@PostMapping</span>
+        <span class="badge bg-secondary badge-tag">Model</span>
+        <span class="badge bg-dark badge-tag">@Valid</span>
+        <span class="badge bg-dark badge-tag">BindingResult</span>
+      </span>
+    </button>
+  </h2>
+
+  <div id="c2" class="accordion-collapse collapse" aria-labelledby="h2" data-bs-parent="#accordionTarea">
+    <div class="accordion-body">
+
+      <p class="mb-2">
+        Implementa <code>TaskController</code> (MVC) usando la entidad <code>Task</code> y devolviendo estas
+        <strong>vistas Thymeleaf</strong>:
+      </p>
+
+      <div class="table-responsive">
+        <table class="table table-sm table-bordered align-middle">
+          <thead class="table-light">
+          <tr>
+            <th style="width: 10%">Método</th>
+            <th style="width: 18%">Ruta</th>
+            <th style="width: 22%">Acción</th>
+            <th style="width: 20%">Devuelve (vista / redirect)</th>
+            <th style="width: 30%">Entrada + validación (parámetros)</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><span class="badge bg-info text-dark">GET</span></td>
+            <td><code>/</code></td>
+            <td>Redirigir a listado</td>
+            <td><code>redirect:/tasks</code></td>
+            <td><span class="text-muted">Sin parámetros</span></td>
+          </tr>
+
+          <tr>
+            <td><span class="badge bg-info text-dark">GET</span></td>
+            <td><code>/tasks</code></td>
+            <td>Listar tareas</td>
+            <td><code>tasks/list</code></td>
+            <td>
+              <ul class="mb-0 small">
+                <li><code>Model model</code></li>
+                <li>Atributo modelo: <code>"tasks"</code> (List&lt;Task&gt;)</li>
+              </ul>
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="badge bg-info text-dark">GET</span></td>
+            <td><code>/tasks/new</code></td>
+            <td>Mostrar formulario alta</td>
+            <td><code>tasks/form</code></td>
+            <td>
+              <ul class="mb-0 small">
+                <li><code>Model model</code></li>
+                <li>Atributo modelo: <code>"task"</code> (new Task())</li>
+              </ul>
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="badge bg-primary">POST</span></td>
+            <td><code>/tasks</code></td>
+            <td>Crear tarea</td>
+            <td>
+              OK: <code>redirect:/tasks</code><br>
+              Error: <code>tasks/form</code>
+            </td>
+            <td>
+              <ul class="mb-0 small">
+                <li><code>@Valid @ModelAttribute("task") Task task</code></li>
+                <li><code>BindingResult bindingResult</code> (justo después de <code>@Valid</code>)</li>
+                <li>Si <code>bindingResult.hasErrors()</code> → volver a <code>tasks/form</code></li>
+              </ul>
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="badge bg-info text-dark">GET</span></td>
+            <td><code>/tasks/{id}/edit</code></td>
+            <td>Mostrar formulario edición</td>
+            <td><code>tasks/form</code></td>
+            <td>
+              <ul class="mb-0 small">
+                <li><code>@PathVariable Long id</code></li>
+                <li><code>Model model</code></li>
+                <li>Atributo modelo: <code>"task"</code> (Task existente)</li>
+              </ul>
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="badge bg-primary">POST</span></td>
+            <td><code>/tasks/{id}</code></td>
+            <td>Actualizar tarea</td>
+            <td>
+              OK: <code>redirect:/tasks</code><br>
+              Error: <code>tasks/form</code>
+            </td>
+            <td>
+              <ul class="mb-0 small">
+                <li><code>@PathVariable Long id</code></li>
+                <li><code>@Valid @ModelAttribute("task") Task task</code></li>
+                <li><code>BindingResult bindingResult</code></li>
+                <li>Si hay errores → <code>tasks/form</code></li>
+              </ul>
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="badge bg-primary">POST</span></td>
+            <td><code>/tasks/{id}/delete</code></td>
+            <td>Borrar tarea</td>
+            <td><code>redirect:/tasks</code></td>
+            <td>
+              <ul class="mb-0 small">
+                <li><code>@PathVariable Long id</code></li>
+              </ul>
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="badge bg-primary">POST</span></td>
+            <td><code>/tasks/{id}/toggle</code></td>
+            <td>Marcar / desmarcar done</td>
+            <td><code>redirect:/tasks</code></td>
+            <td>
+              <ul class="mb-0 small">
+                <li><code>@PathVariable Long id</code></li>
+              </ul>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <hr class="my-3">
+
+      <h3 class="h6 fw-bold mb-2">
+        <i class="bi bi-tags me-1"></i> Nombres de vistas, modelo y etiquetas Thymeleaf obligatorias
+      </h3>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+              <h4 class="h6 fw-bold mb-2"><i class="bi bi-file-earmark-text me-1"></i> Vistas</h4>
+              <ul class="mb-0 small">
+                <li><code>tasks/list.html</code> → listado</li>
+                <li><code>tasks/form.html</code> → alta/edición</li>
+                <li><code>error.html</code> → errores (RuntimeException)</li>
+              </ul>
+              <hr>
+              <p class="small mb-0">
+                El atributo del formulario debe llamarse siempre: <code>"task"</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+              <h4 class="h6 fw-bold mb-2"><i class="bi bi-braces me-1"></i> Etiquetas Thymeleaf</h4>
+              <ul class="mb-0 small">
+                <li><code>th:each</code> (iterar tareas en tabla)</li>
+                <li><code>th:text</code> (mostrar valores)</li>
+                <li><code>th:href</code> (enlace editar)</li>
+                <li><code>th:action</code> + <code>th:method</code> (formularios)</li>
+                <li><code>th:object</code> + <code>th:field</code> (binding Task)</li>
+                <li><code>#fields</code> + <code>th:errors</code> (errores de validación)</li>
+                <li><code>th:if</code> / <code>th:unless</code> (mensajes condicionales)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-light border mt-3 mb-0">
+        <i class="bi bi-lightbulb me-1 text-warning"></i>
+        <strong>Binding correcto:</strong> en los POST con validación,
+        <code>BindingResult</code> debe ir <strong>justo después</strong> del parámetro con <code>@Valid</code>.
+        Ejemplo:
+        <code>public String create(@Valid @ModelAttribute("task") Task task, BindingResult bindingResult, Model model)</code>.
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+    <!-- BLOQUE 3: TRY/CATCH + RuntimeException -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="h3">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c3" aria-expanded="false" aria-controls="c3">
+          <span class="me-2 badge bg-warning text-dark"><i class="bi bi-3-circle"></i></span>
+          <span class="fw-semibold">Gestión de errores en el controlador (try/catch + RuntimeException)</span>
+          <span class="ms-auto">
+            <span class="badge bg-danger badge-tag">try/catch</span>
+            <span class="badge bg-dark badge-tag">RuntimeException</span>
+          </span>
+        </button>
+      </h2>
+
+      <div id="c3" class="accordion-collapse collapse" aria-labelledby="h3" data-bs-parent="#accordionTarea">
+        <div class="accordion-body">
+
+          <p>
+            En cada endpoint del controlador, envuelve la lógica en:
+          </p>
+
+<pre class="mb-3"><code>// Ejemplo de patrón (obligatorio)
+try {
+   // llamar a service + preparar model + return vista
+} catch (Exception e) {
+   throw new RuntimeException("Mensaje claro para el usuario", e);
+}
+</code></pre>
+
+          <p class="mb-2">
+            Crea una vista <code>error.html</code> que muestre:
+          </p>
+          <ul>
+            <li>Título: “Se ha producido un error”</li>
+            <li>Mensaje del error (del modelo)</li>
+            <li>Botón “Volver” a <code>/tasks</code></li>
+          </ul>
+
+          <div class="alert alert-info mb-0">
+            <i class="bi bi-stars me-1"></i>
+            <strong>Extra opcional:</strong> implementar <code>@ControllerAdvice</code> para capturar
+            <code>RuntimeException</code> y enviar a <code>error.html</code> (más limpio).
+                      <code>
+                <pre>
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+  @ExceptionHandler(RuntimeException.class)
+  public String handle(RuntimeException ex, Model model) {
+    model.addAttribute("message", ex.getMessage());
+    return "error";
+  }
+}
+
+                </pre>
+            </code>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOQUE 4: VISTAS BOOTSTRAP -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="h4">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c4" aria-expanded="false" aria-controls="c4">
+          <span class="me-2 badge bg-danger"><i class="bi bi-4-circle"></i></span>
+          <span class="fw-semibold">Vistas Thymeleaf con Bootstrap (mínimo)</span>
+          <span class="ms-auto">
+            <span class="badge bg-primary badge-tag">layout</span>
+            <span class="badge bg-success badge-tag">list</span>
+            <span class="badge bg-warning text-dark badge-tag">form</span>
+          </span>
+        </button>
+      </h2>
+
+      <div id="c4" class="accordion-collapse collapse" aria-labelledby="h4" data-bs-parent="#accordionTarea">
+        <div class="accordion-body">
+
+          <ul>
+            <li><code>templates/tasks/list.html</code> (tabla + acciones)</li>
+            <li><code>templates/tasks/form.html</code> (crear/editar)</li>
+            <li><code>templates/error.html</code> (errores)</li>
+          </ul>
+
+          <p class="mb-2">Recomendación visual (Bootstrap):</p>
+          <ul>
+            <li>Botones: <code>btn btn-sm btn-outline-primary</code>, <code>btn-outline-danger</code>, <code>btn-outline-success</code></li>
+            <li>Si <code>done=true</code> → badge “Hecha” y fila atenuada</li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOQUE 5: PRUEBAS JUNIT 5 -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="h5">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c5" aria-expanded="false" aria-controls="c5">
+          <span class="me-2 badge bg-dark"><i class="bi bi-5-circle"></i></span>
+          <span class="fw-semibold">Pruebas unitarias (JUnit 5) y tests de controlador (MockMvc)</span>
+          <span class="ms-auto">
+            <span class="badge bg-success badge-tag">JUnit 5</span>
+            <span class="badge bg-secondary badge-tag">Mockito</span>
+            <span class="badge bg-info text-dark badge-tag">MockMvc</span>
+          </span>
+        </button>
+      </h2>
+
+      <div id="c5" class="accordion-collapse collapse" aria-labelledby="h5" data-bs-parent="#accordionTarea">
+        <div class="accordion-body">
+
+          <p class="mb-2">
+            Debes incluir mínimo <strong>5 tests</strong> (todos pasando).
+          </p>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                  <h3 class="h6 fw-bold"><i class="bi bi-beaker me-1"></i> Unit tests (Service) — JUnit 5 + Mockito</h3>
+                  <ul class="mb-0">
+                    <li><code>create()</code> guarda y devuelve</li>
+                    <li><code>findById()</code> inexistente → lanza excepción</li>
+                    <li><code>toggleDone()</code> cambia estado</li>
+                  </ul>
+                  <hr>
+                  <p class="small mb-0">
+                    Usa: <code>@ExtendWith(MockitoExtension.class)</code>,
+                    <code>@Mock</code>, <code>@InjectMocks</code>.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                  <h3 class="h6 fw-bold"><i class="bi bi-window me-1"></i> Web tests (Controller) — @WebMvcTest</h3>
+                  <ul class="mb-0">
+                    <li><code>GET /tasks</code> → status 200 y vista correcta</li>
+                    <li><code>POST /tasks</code> inválido → vuelve al formulario</li>
+                  </ul>
+                  <hr>
+                  <p class="small mb-0">
+                    Usa: <code>@WebMvcTest(TaskController.class)</code> + <code>@MockBean TaskService</code>.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-warning mt-3 mb-0">
+            <i class="bi bi-exclamation-triangle me-1"></i>
+            Si no hay tests, o fallan: penalización alta.
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOQUE 6: ENTREGA -->
+    <div class="accordion-item ej-card mb-3">
+      <h2 class="accordion-header ej-header" id="h6">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c6" aria-expanded="false" aria-controls="c6">
+          <span class="me-2 badge bg-primary"><i class="bi bi-6-circle"></i></span>
+          <span class="fw-semibold">Entrega (ZIP + repo)</span>
+          <span class="ms-auto">
+            <span class="badge bg-dark badge-tag">ENTREGA.md</span>
+            <span class="badge bg-danger badge-tag">sin target/</span>
+          </span>
+        </button>
+      </h2>
+
+      <div id="c6" class="accordion-collapse collapse" aria-labelledby="h6" data-bs-parent="#accordionTarea">
+        <div class="accordion-body">
+
+          <p class="mb-2">
+            Entrega un ZIP con el proyecto y un fichero <code>ENTREGA.md</code> con:
+          </p>
+          <ul>
+            <li>Nombre y apellidos</li>
+            <li>Curso/grupo</li>
+            <li>URL del repo (fork)</li>
+            <li>Hash último commit: <code>git rev-parse HEAD</code></li>
+          </ul>
+
+          <div class="alert alert-danger mb-0">
+            <i class="bi bi-folder-x me-1"></i>
+            <strong>Importante:</strong> no incluir <code>target/</code> en el ZIP.
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div><!-- fin accordion -->
+
+</div><!-- fin container -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
