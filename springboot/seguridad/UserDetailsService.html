@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Seguridad con usuarios en BBDD (Spring Security + JPA + Thymeleaf)</title>
+
+  <!-- Bootstrap (si Moodle ya lo incluye, puedes quitarlo) -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+  <style>
+    pre { background: #0b1020; color: #e7eefc; padding: 1rem; border-radius: 1rem; overflow:auto; margin: 0; }
+    code { color: inherit; }
+    .muted { color: #6c757d; }
+    .tag { font-size: .85rem; }
+    .card { border: 0; }
+    .shadow-soft { box-shadow: 0 .25rem 1rem rgba(0,0,0,.08); }
+    .anchor { scroll-margin-top: 90px; }
+  </style>
+</head>
+
+<body class="bg-light">
+<div class="container py-4">
+
+  <!-- CABECERA -->
+  <div class="p-4 bg-white rounded-4 shadow-soft mb-4">
+    <h1 class="h3 mb-2">Seguridad con usuarios en BBDD</h1>
+    <p class="muted mb-0">
+      Spring Boot + Spring Security + JPA + Thymeleaf:
+      autenticación real con usuarios persistidos en base de datos (H2 en memoria para desarrollo).
+    </p>
+  </div>
+
+  <!-- ENTREGA -->
+  <div class="alert alert-warning rounded-4 shadow-soft mb-4">
+    <h2 class="h5 mb-2">📦 Entrega (Moodle)</h2>
+    <p class="mb-0">
+      El alumnado deberá <strong>adjuntar un fichero (*.zip)</strong> que contenga el proyecto completo con la
+      <strong>autenticación funcionando contra la BBDD</strong>:
+      usuarios y roles persistidos (no usuarios en memoria).
+    </p>
+  </div>
+
+  <!-- OBJETIVO -->
+  <div class="alert alert-primary rounded-4 shadow-soft mb-4">
+    <strong>Objetivo:</strong>
+    autenticar usuarios desde base de datos, asignar roles (USUARIO / MANAGER / ADMIN),
+    proteger rutas por rol y mostrar el usuario conectado en vistas Thymeleaf.
+  </div>
+
+  <!-- ÍNDICE -->
+  <div class="card rounded-4 shadow-soft mb-4">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Índice rápido</h2>
+      <div class="row g-2">
+        <div class="col-md-6">
+          <ul class="mb-0">
+            <li><a href="#dependencias">Dependencias y properties</a></li>
+            <li><a href="#modelo">Modelo: Usuario y Rol</a></li>
+            <li><a href="#repositorio">Repositorio Usuario</a></li>
+            <li><a href="#userdetails">UserDetails y UserDetailsService</a></li>
+            <li><a href="#securityconfig">SecurityConfig completo</a></li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <ul class="mb-0">
+            <li><a href="#servicio">Servicio de usuario + usuario conectado</a></li>
+            <li><a href="#controlador">Controlador y Model</a></li>
+            <li><a href="#thymeleaf">Fragments Thymeleaf (usuario + logout)</a></li>
+            <li><a href="#semilla">Datos de prueba (CommandLineRunner)</a></li>
+            <li><a href="#errores">Gestión de errores</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 0) DEPENDENCIAS + PROPERTIES -->
+  <div id="dependencias" class="card rounded-4 shadow-soft mb-4 anchor">
+    <div class="card-body">
+      <h2 class="h5 mb-3">0) Dependencias y configuración mínima</h2>
+
+      <div class="alert alert-secondary rounded-4">
+        <strong>Requisito:</strong> ya tienes en tu proyecto
+        <code>spring-boot-starter-security</code>, JPA, Thymeleaf y H2.
+        Asegura también un <code>PasswordEncoder</code> (BCrypt).
+      </div>
+
+      <p class="mb-2"><strong>application.properties</strong> (ejemplo para H2 en memoria):</p>
+      <pre><code>server.port=9000
+
+# H2 (dev)
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=false
+
+# (opcional) Evita warning open-in-view si no lo quieres
+# spring.jpa.open-in-view=false</code></pre>
+
+      <div class="alert alert-info rounded-4 mt-3 mb-0">
+        <strong>Nota didáctica:</strong> con solo añadir Spring Security, aparece <code>/login</code> y se habilita <code>/logout</code>.
+        También se activa la cadena de filtros (<code>springSecurityFilterChain</code>) y protección CSRF por defecto.
+      </div>
+    </div>
+  </div>
+
+  <!-- 1) ENTIDADES -->
+  <div id="modelo" class="card rounded-4 shadow-soft mb-4 anchor">
+    <div class="card-body">
+      <h2 class="h5 mb-3">1) Modelo de datos: Usuario y Rol</h2>
+
+      <p class="mb-2"><strong>Rol</strong> (enum):</p>
+      <pre><code>package com.optativa.thymeleaf.entidad.enumerado;
+
+public enum Rol {
+  USUARIO,
+  MANAGER, // Gestiona USUARIO y contenido
+  ADMIN    // Todos los privilegios
+}</code></pre>
+
+      <p class="mt-3 mb-2"><strong>Usuario</strong> (JPA):</p>
+      <pre><code>package com.optativa.thymeleaf.entidad;
+
+import jakarta.persistence.*;
+import com.optativa.thymeleaf.entidad.enumerado.Rol;
+
+@Entity
+public class Usuario {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  @Column(unique = true, nullable = false)
+  private String nombre;
+
+  @Column(nullable = false)
+  private String contrasena; // almacenada en BBDD como HASH (BCrypt)
+
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private Rol rol;
+
+  public Usuario() {}
+
+  public Long getId() { return id; }
+  public void setId(Long id) { this.id = id; }
+
+  public String getNombre() { return nombre; }
+  public void setNombre(String nombre) { this.nombre = nombre; }
+
+  public String getContrasena() { return contrasena; }
+  public void setContrasena(String contrasena) { this.contrasena = contrasena; }
+
+  public Rol getRol() { return rol; }
+  public void setRol(Rol rol) { this.rol = rol; }
+}</code></pre>
+
+      <div class="alert alert-warning rounded-4 mt-3 mb-0">
+        <strong>Seguridad:</strong> nunca guardes contraseñas en claro. Guarda siempre un <em>hash</em> (BCrypt).
+      </div>
+    </div>
+  </div>
+
+  <!-- 2) REPOSITORIO -->
+  <div id="repositorio" class="card rounded-4 shadow-soft mb-4 anchor">
+    <div class="card-body">
+      <h2 class="h5 mb-3">2) Repositorio: UsuarioRepositorio</h2>
+
+      <pre><code>package com.optativa.thymeleaf.repositorio;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.optativa.thymeleaf.entidad.Usuario;
+
+public interface UsuarioRepositorio extends JpaRepository&lt;Usuario, Long&gt; {
+  Usuario findByNombre(String username);
+}</code></pre>
+
+      <div class="alert alert-secondary rounded-4 mt-3 mb-0">
+        <strong>Coherencia:</strong> tu entidad usa <code>Long</code>, por tanto el repositorio también.
+      </div>
+    </div>
+  </div>
+
+  <!-- 3) USERDETAILS / USERDETAILSSERVICE -->
+  <div id="userdetails" class="card rounded-4 shadow-soft mb-4 anchor">
+    <div class="card-body">
+      <h2 class="h5 mb-3">3) UserDetails y UserDetailsService</h2>
+
+      <p class="mb-2">
+        <strong>UserDetails</strong> es el “formato interno” que Spring Security usa para representar al usuario autenticado:
+        username, password (hash), roles/authorities y flags (activo, bloqueado, etc.).
+        Spring Security autentica comparando el password del formulario con el hash recuperado.
+      </p>
+
+      <div class="alert alert-info rounded-4">
+        <strong>¿Por qué no usa tu entidad directamente?</strong>
+        Porque Spring Security necesita una abstracción estándar. Por eso adaptamos tu <code>Usuario</code> a un <code>UserDetails</code>.
+      </div>
+
+      <div class="alert alert-secondary rounded-4">
+        <strong>Enlace oficial (API):</strong>
+        <ul class="mb-0">
+          <li><code>https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/core/userdetails/UserDetails.html</code></li>
+          <li><code>https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/core/userdetails/UserDetailsService.html</code></li>
+        </ul>
+      </div>
+
+      <hr class="my-4">
+
+      <p class="mb-2">
+        <strong>UserDetailsService</strong> es el bean que Spring Security consulta durante el login.
+        Su método <code>loadUserByUsername</code> debe devolver un <code>UserDetails</code>.
+        Si no existe el usuario, lanza <code>UsernameNotFoundException</code>.
+      </p>
+
+      <pre><code>package com.optativa.thymeleaf.servicio.seguridad;
+
+import org.springframework.security.core.userdetails.*;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Component;
+
+import com.optativa.thymeleaf.entidad.Usuario;
+import com.optativa.thymeleaf.repositorio.UsuarioRepositorio;
+
+@Component
+public class UserDetailsServiceImpl implements UserDetailsService {
+
+  private final UsuarioRepositorio usuarioRepositorio;
+
+  public UserDetailsServiceImpl(UsuarioRepositorio usuarioRepositorio) {
+    this.usuarioRepositorio = usuarioRepositorio;
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+    Usuario usuario = usuarioRepositorio.findByNombre(username);
+
+    if (usuario == null) {
+      throw new UsernameNotFoundException("Usuario no encontrado: " + username);
+    }
+
+    return User.withUsername(usuario.getNombre())
+      .password(usuario.getContrasena())       // ya viene encriptada en BBDD
+      .roles(usuario.getRol().toString())      // crea ROLE_XXX internamente
+      .build();
+  }
+}</code></pre>
+
+      <div class="alert alert-warning rounded-4 mt-3 mb-0">
+        <strong>Ojo:</strong> <code>.roles("ADMIN")</code> genera la autoridad <code>ROLE_ADMIN</code>.
+        Por eso luego se usa <code>hasRole("ADMIN")</code> o <code>hasAnyRole(...)</code>.
+      </div>
+    </div>
+  </div>
+
+  <!-- 4) SECURITY CONFIG (TU VERSIÓN AJUSTADA) -->
+  <div id="securityconfig" class="card rounded-4 shadow-soft mb-4 anchor">
+    <div class="card-body">
+      <h2 class="h5 mb-3">4) SecurityConfig completo (SecurityFilterChain)</h2>
+
+      <div class="alert alert-success rounded-4">
+        <strong>Esta es la configuración alineada con lo que ya tienes</strong>:
+        <code>AuthenticationManager</code>, <code>PasswordEncoder</code> y autorización por rutas/roles,
+        además de H2 console con frames y CSRF ignorado solo para H2.
+      </div>
+
+      <pre><code>package com.optativa.thymeleaf.configuracion;
+
+import org.springframework.boot.security.autoconfigure.web.servlet.PathRequest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+import com.optativa.thymeleaf.entidad.enumerado.Rol;
+
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
+public class SecurityConfig {
+
+  @Bean
+  AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    return authenticationConfiguration.getAuthenticationManager();
+  }
+
+  @Bean
+  PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+
+  @Bean
+  SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+    // H2 console necesita iframes
+    http.headers(h -&gt; h.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+
+    http.authorizeHttpRequests(auth -&gt; auth
+      // estáticos
+      .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+      // público
+      .requestMatchers("/", "/saluda").permitAll()
+      // H2 solo ADMIN
+      .requestMatchers(PathRequest.toH2Console()).hasRole(Rol.ADMIN.toString())
+      .requestMatchers("/h2-console/**", "/h2/**").hasRole(Rol.ADMIN.toString())
+      // productos: USUARIO o ADMIN (ajústalo si quieres también MANAGER)
+      .requestMatchers("/productos/**").hasAnyRole(Rol.USUARIO.toString(), Rol.ADMIN.toString())
+      // el resto: autenticado
+      .anyRequest().authenticated()
+    );
+
+    // CSRF: desactivar solo para H2
+    http.csrf(csrf -&gt; csrf
+      .ignoringRequestMatchers(PathRequest.toH2Console())
+      .ignoringRequestMatchers("/h2-console/**", "/h2/**")
+    );
+
+    // login form
+    http.formLogin(form -&gt; form
+      .defaultSuccessUrl("/productos", true)
+      .permitAll()
+    );
+
+    // logout (por defecto usa POST /logout)
+    http.logout(logout -&gt; logout.permitAll());
+
+    return http.build();
+  }
+}</code></pre>
+
+      <div class="alert alert-warning rounded-4 mt-3 mb-0">
+        <strong>Logout importante:</strong> por defecto Spring Security usa <code>POST /logout</code>.
+        En Thymeleaf debes usar un formulario con CSRF (te lo dejo en los fragmentos).
+      </div>
+    </div>
+  </div>
+
+  <!-- 5) SERVICIO USUARIO -->
+  <div id="servicio" class="card rounded-4 shadow-soft mb-4 anchor">
+    <div class="card-body">
+      <h2 class="h5 mb-3">5) Servicio de usuarios (escalable y mantenible)</h2>
+
+      <p class="mb-2"><strong>Interfaz (la tuya):</strong></p>
+      <pre><code>package com.optativa.thymeleaf.servicio;
+
+import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import com.optativa.thymeleaf.entidad.Usuario;
+import com.optativa.thymeleaf.entidad.enumerado.Rol;
+
+public interface UsuarioServicio {
+  Usuario crear(String nombre, String contrasenaEnClaro, Rol rol);
+  Usuario actualizar(Long id, String nuevoNombre, Rol nuevoRol);
+  void cambiarContrasena(Long id, String contrasenaActualEnClaro, String nuevaContrasenaEnClaro);
+  Usuario obtenerPorId(Long id);
+  Usuario obtenerPorNombre(String nombre);
+  List&lt;Usuario&gt; listar();
+  Page&lt;Usuario&gt; listar(Pageable pageable);
+  void eliminar(Long id);
+  Usuario obtenerUsuarioConectado();
+}</code></pre>
+
+      <hr class="my-4">
+
+      <p class="mb-2">
+        <strong>¿Por qué existe obtenerUsuarioConectado()?</strong>
+        Porque en vistas/controladores muchas veces quieres tu entidad completa (con rol, id, etc.) desde BBDD.
+        Spring Security te da el “principal” (username/authorities), pero aquí lo “traducimos” a tu entidad <code>Usuario</code>.
+      </p>
+
+      <div class="alert alert-info rounded-4">
+        <strong>Alternativa:</strong> en controladores también puedes usar <code>@AuthenticationPrincipal</code>.
+        Aun así, <code>obtenerUsuarioConectado()</code> centraliza la lógica y hace el código más limpio.
+      </div>
+
+      <p class="mb-2"><strong>Implementación recomendada:</strong></p>
+      <pre><code>package com.optativa.thymeleaf.servicio.impl;
+
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.optativa.thymeleaf.entidad.Usuario;
+import com.optativa.thymeleaf.entidad.enumerado.Rol;
+import com.optativa.thymeleaf.repositorio.UsuarioRepositorio;
+import com.optativa.thymeleaf.servicio.UsuarioServicio;
+
+@Service
+public class UsuarioServicioImpl implements UsuarioServicio {
+
+  private final UsuarioRepositorio usuarioRepositorio;
+  private final PasswordEncoder passwordEncoder;
+
+  public UsuarioServicioImpl(UsuarioRepositorio usuarioRepositorio, PasswordEncoder passwordEncoder) {
+    this.usuarioRepositorio = usuarioRepositorio;
+    this.passwordEncoder = passwordEncoder;
+  }
+
+  @Override
+  public Usuario crear(String nombre, String contrasenaEnClaro, Rol rol) {
+    if (usuarioRepositorio.findByNombre(nombre) != null) {
+      throw new IllegalArgumentException("Ya existe un usuario con ese nombre");
+    }
+    Usuario u = new Usuario();
+    u.setNombre(nombre);
+    u.setContrasena(passwordEncoder.encode(contrasenaEnClaro));
+    u.setRol(rol);
+    return usuarioRepositorio.save(u);
+  }
+
+  @Override
+  public Usuario obtenerPorNombre(String nombre) {
+    return usuarioRepositorio.findByNombre(nombre);
+  }
+
+  @Override
+  public Usuario obtenerPorId(Long id) {
+    return usuarioRepositorio.findById(id)
+      .orElseThrow(() -&gt; new IllegalArgumentException("Usuario no encontrado con id=" + id));
+  }
+
+  @Override
+  public List&lt;Usuario&gt; listar() {
+    return usuarioRepositorio.findAll();
+  }
+
+  @Override
+  public Page&lt;Usuario&gt; listar(Pageable pageable) {
+    return usuarioRepositorio.findAll(pageable);
+  }
+
+  @Override
+  public Usuario actualizar(Long id, String nuevoNombre, Rol nuevoRol) {
+    Usuario u = obtenerPorId(id);
+    u.setNombre(nuevoNombre);
+    u.setRol(nuevoRol);
+    return usuarioRepositorio.save(u);
+  }
+
+  @Override
+  public void cambiarContrasena(Long id, String contrasenaActualEnClaro, String nuevaContrasenaEnClaro) {
+    Usuario u = obtenerPorId(id);
+    if (!passwordEncoder.matches(contrasenaActualEnClaro, u.getContrasena())) {
+      throw new IllegalArgumentException("La contraseña actual no es correcta");
+    }
+    u.setContrasena(passwordEncoder.encode(nuevaContrasenaEnClaro));
+    usuarioRepositorio.save(u);
+  }
+
+  @Override
+  public void eliminar(Long id) {
+    usuarioRepositorio.deleteById(id);
+  }
+
+  @Override
+  public Usuario obtenerUsuarioConectado() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+    if (authentication != null
+        &amp;&amp; !(authentication instanceof AnonymousAuthenticationToken)
+        &amp;&amp; authentication.isAuthenticated()) {
+
+      String nombreUsuarioConectado = authentication.getName();
+      return usuarioRepositorio.findByNombre(nombreUsuarioConectado);
+    }
+    return null;
+  }
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- 6) CONTROLADOR -->
+  <div id="controlador" class="card rounded-4 shadow-soft mb-4 anchor">
+    <div class="card-body">
+      <h2 class="h5 mb-3">6) Controlador: enviar el usuario conectado a la vista</h2>
+
+      <pre><code>package com.optativa.thymeleaf.controlador;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import com.optativa.thymeleaf.entidad.Producto;
+import com.optativa.thymeleaf.entidad.Usuario;
+import com.optativa.thymeleaf.servicio.ProductoServicio;
+import com.optativa.thymeleaf.servicio.UsuarioServicio;
+
+@Controller
+public class ProductoControlador {
+
+  private final ProductoServicio productoServicio;
+  private final UsuarioServicio usuarioServicio;
+
+  public ProductoControlador(ProductoServicio productoServicio, UsuarioServicio usuarioServicio) {
+    this.productoServicio = productoServicio;
+    this.usuarioServicio = usuarioServicio;
+  }
+
+  @GetMapping("/productos")
+  public String listado(Model model, @PageableDefault(size = 20) Pageable page) {
+
+    Page&lt;Producto&gt; productos = productoServicio.obtenerProductoPorPagina(page);
+    Usuario usuario = usuarioServicio.obtenerUsuarioConectado();
+
+    model.addAttribute("usuario", usuario);
+    model.addAttribute("productos", productos);
+    model.addAttribute("total", productos.getTotalElements());
+
+    return "lista";
+  }
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- 7) THYMELEAF FRAGMENTS -->
+  <div id="thymeleaf" class="card rounded-4 shadow-soft mb-4 anchor">
+    <div class="card-body">
+      <h2 class="h5 mb-3">7) Thymeleaf: usuario conectado + logout (FRAGMENTOS)</h2>
+
+      <p class="mb-2"><strong>fragmentos/usuario.html</strong></p>
+      <pre><code>&lt;!-- fragmentos/usuario.html --&gt;
+&lt;div th:fragment="usuario"&gt;
+  &lt;h1 class="h5 mb-0"&gt;
+    Bienvenido
+    &lt;span th:if="${usuario != null}" th:text="${usuario.nombre}"&gt;&lt;/span&gt;
+    &lt;span th:unless="${usuario != null}"&gt;invitado&lt;/span&gt;
+  &lt;/h1&gt;
+&lt;/div&gt;</code></pre>
+
+      <p class="mt-3 mb-2"><strong>fragmentos/logout.html</strong> (POST + CSRF + Bootstrap)</p>
+      <pre><code>&lt;!-- fragmentos/logout.html --&gt;
+&lt;div th:fragment="logout"&gt;
+  &lt;form th:if="${usuario != null}"
+        th:action="@{/logout}"
+        method="post"
+        class="d-inline"&gt;
+
+    &lt;input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /&gt;
+
+    &lt;button type="submit" class="btn btn-outline-light btn-sm ms-2"&gt;
+      Logout
+    &lt;/button&gt;
+  &lt;/form&gt;
+&lt;/div&gt;</code></pre>
+
+      <div class="alert alert-secondary rounded-4 mt-3 mb-0">
+        <strong>Uso en tu navbar/cabecera:</strong><br/>
+        <code>&lt;div th:replace="~{fragmentos/usuario :: usuario}"&gt;&lt;/div&gt;</code><br/>
+        <code>&lt;div th:replace="~{fragmentos/logout :: logout}"&gt;&lt;/div&gt;</code>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8) DATOS DE PRUEBA -->
+  <div id="semilla" class="card rounded-4 shadow-soft mb-4 anchor">
+    <div class="card-body">
+      <h2 class="h5 mb-3">8) Datos de prueba (CommandLineRunner)</h2>
+
+      <div class="alert alert-info rounded-4">
+        Este componente crea productos y usuarios si no existen. Así puedes probar login real:
+        <span class="badge text-bg-light border">admin/admin123</span>,
+        <span class="badge text-bg-light border">manager/manager123</span>,
+        <span class="badge text-bg-light border">usuario/usuario123</span>.
+      </div>
+
+      <pre><code>package com.optativa.thymeleaf.semilla;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+
+import com.github.javafaker.Faker;
+import com.optativa.thymeleaf.entidad.Producto;
+import com.optativa.thymeleaf.entidad.Usuario;
+import com.optativa.thymeleaf.entidad.enumerado.Rol;
+import com.optativa.thymeleaf.repositorio.UsuarioRepositorio;
+import com.optativa.thymeleaf.servicio.ProductoServicio;
+
+@Component
+public class IniciarDatos implements CommandLineRunner {
+
+  private final int TOTAL_PRODUCTO = 100;
+
+  private final ProductoServicio servicio;
+  private final UsuarioRepositorio usuarioRepositorio;
+  private final PasswordEncoder passwordEncoder;
+
+  public IniciarDatos(ProductoServicio servicio,
+                      UsuarioRepositorio usuarioRepositorio,
+                      PasswordEncoder passwordEncoder) {
+    this.servicio = servicio;
+    this.usuarioRepositorio = usuarioRepositorio;
+    this.passwordEncoder = passwordEncoder;
+  }
+
+  private void crearUsuarioSiNoExiste(String nombre, String contrasenaEnClaro, Rol rol) {
+    if (usuarioRepositorio.findByNombre(nombre) != null) return;
+
+    Usuario u = new Usuario();
+    u.setNombre(nombre);
+    u.setContrasena(passwordEncoder.encode(contrasenaEnClaro));
+    u.setRol(rol);
+
+    usuarioRepositorio.save(u);
+  }
+
+  @Override
+  public void run(String... args) throws Exception {
+
+    for (int i = 0; i &lt; TOTAL_PRODUCTO; i++) {
+      Producto p = new Producto();
+      p.setCategoria(Faker.instance().dog().name());
+      p.setNombre(Faker.instance().artist().name());
+      p.setPrecio(Faker.instance().number().randomDouble(2, 10, 100));
+      servicio.agregarProducto(p);
+    }
+
+    crearUsuarioSiNoExiste("admin", "admin123", Rol.ADMIN);
+    crearUsuarioSiNoExiste("manager", "manager123", Rol.MANAGER);
+    crearUsuarioSiNoExiste("usuario", "usuario123", Rol.USUARIO);
+  }
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- 9) ERRORES -->
+  <div id="errores" class="card rounded-4 shadow-soft mb-4 anchor">
+    <div class="card-body">
+      <h2 class="h5 mb-3">9) Gestión de errores (ControllerAdvice)</h2>
+
+      <pre><code>package com.optativa.thymeleaf.web;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+  @ExceptionHandler(UsernameNotFoundException.class)
+  public String handleUserNotFound(UsernameNotFoundException ex, HttpServletRequest req, Model model) {
+    model.addAttribute("titulo", "Usuario no encontrado");
+    model.addAttribute("mensaje", ex.getMessage());
+    model.addAttribute("path", req.getRequestURI());
+    model.addAttribute("status", 404);
+    return "error";
+  }
+
+  @ExceptionHandler(IllegalArgumentException.class)
+  public String handleBadRequest(IllegalArgumentException ex, HttpServletRequest req, Model model) {
+    model.addAttribute("titulo", "Petición no válida");
+    model.addAttribute("mensaje", ex.getMessage());
+    model.addAttribute("path", req.getRequestURI());
+    model.addAttribute("status", 400);
+    return "error";
+  }
+
+  @ExceptionHandler(Exception.class)
+  public String handleGeneric(Exception ex, HttpServletRequest req, Model model) {
+    model.addAttribute("titulo", "Error inesperado");
+    model.addAttribute("mensaje", "Ha ocurrido un error. Inténtalo de nuevo.");
+    model.addAttribute("path", req.getRequestURI());
+    model.addAttribute("status", 500);
+    return "error";
+  }
+}</code></pre>
+
+      <p class="mt-3 mb-2"><strong>Plantilla error.html</strong> (mínima):</p>
+      <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="es" xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"&gt;
+  &lt;title th:text="${titulo}"&gt;Error&lt;/title&gt;
+&lt;/head&gt;
+&lt;body class="bg-light"&gt;
+  &lt;div class="container py-4"&gt;
+    &lt;div class="card rounded-4 shadow-sm"&gt;
+      &lt;div class="card-body"&gt;
+        &lt;h1 class="h4" th:text="${titulo}"&gt;Error&lt;/h1&gt;
+        &lt;p class="text-muted mb-1"&gt;&lt;strong&gt;Ruta:&lt;/strong&gt; &lt;span th:text="${path}"&gt;&lt;/span&gt;&lt;/p&gt;
+        &lt;p class="text-muted mb-3"&gt;&lt;strong&gt;Status:&lt;/strong&gt; &lt;span th:text="${status}"&gt;&lt;/span&gt;&lt;/p&gt;
+        &lt;div class="alert alert-danger mb-3" th:text="${mensaje}"&gt;Mensaje&lt;/div&gt;
+        &lt;a class="btn btn-primary" th:href="@{/}"&gt;Volver al inicio&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+    </div>
+  </div>
+
+  <!-- 10) NOTAS PRÁCTICAS -->
+  <div class="card rounded-4 shadow-soft mb-4">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Notas prácticas y checklist</h2>
+
+      <div class="row g-3">
+        <div class="col-lg-6">
+          <div class="p-3 bg-white rounded-4 border">
+            <h3 class="h6">✅ Checklist mínimo (para que “cuente” como BBDD)</h3>
+            <ul class="mb-0">
+              <li>Entidad <code>Usuario</code> y enum <code>Rol</code>.</li>
+              <li><code>UsuarioRepositorio</code> con <code>findByNombre</code>.</li>
+              <li><code>UserDetailsServiceImpl</code> (bean) que carga desde BBDD.</li>
+              <li><code>PasswordEncoder</code> BCrypt.</li>
+              <li><code>SecurityFilterChain</code> con roles y rutas.</li>
+              <li>Logout con formulario <code>POST</code> + CSRF.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="p-3 bg-white rounded-4 border">
+            <h3 class="h6">🧠 Errores típicos (rápido)</h3>
+            <ul class="mb-0">
+              <li>Intentar logout por <code>GET</code> (por defecto es <code>POST</code>).</li>
+              <li>No pasar <code>usuario</code> al modelo y luego usar <code>${usuario.nombre}</code> (da null).</li>
+              <li>No cifrar contraseñas en BBDD (login nunca validará bien).</li>
+              <li>Confundir <code>ROLE_ADMIN</code> con <code>ADMIN</code> (usa <code>hasRole("ADMIN")</code>).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EJEMPLO COMPLETO -->
+  <div class="card rounded-4 shadow-soft">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Ejemplo completo (referencia)</h2>
+      <p class="mb-2">Repositorio de referencia:</p>
+      <div class="alert alert-light border rounded-4 mb-0">
+        <code>https://github.com/profeInformatica101/SpringBootApp/tree/seguridad-userdetails</code>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center text-muted small py-4">
+    © 2026 — Spring Security + JPA + Thymeleaf (Usuarios en BBDD)
+  </div>
+
+</div>
+
+<!-- (opcional) JS de Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
