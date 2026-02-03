@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía: Perfil Personalizado en GitHub</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #0d1117;
+            --secondary-color: #161b22;
+            --accent-color: #58a6ff;
+            --accent-hover: #1f6feb;
+            --success-color: #3fb950;
+            --warning-color: #d29922;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --border-color: #30363d;
+            --code-bg: #161b22;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Sora', sans-serif;
+            background: var(--primary-color);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .bg-animated {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(88, 166, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(118, 75, 162, 0.05) 0%, transparent 50%);
+            animation: bgMove 20s ease-in-out infinite;
+        }
+
+        @keyframes bgMove {
+            0%, 100% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.1) translateY(-20px); }
+        }
+
+        /* Header */
+        .hero-header {
+            background: var(--gradient-1);
+            padding: 80px 0 60px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            font-weight: 300;
+            opacity: 0.95;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .github-icon {
+            font-size: 5rem;
+            opacity: 0.2;
+            position: absolute;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .icon-1 { top: 10%; right: 10%; animation-delay: 0s; }
+        .icon-2 { bottom: 20%; left: 5%; animation-delay: 2s; }
+        .icon-3 { top: 60%; right: 15%; animation-delay: 4s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        /* Cards */
+        .step-card {
+            background: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--gradient-1);
+            transition: width 0.3s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(88, 166, 255, 0.15);
+            border-color: var(--accent-color);
+        }
+
+        .step-card:hover::before {
+            width: 100%;
+            opacity: 0.05;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-1);
+            border-radius: 12px;
+            font-family: 'Space Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 12px 30px rgba(102, 126, 234, 0.5); }
+        }
+
+        .step-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .step-content {
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        /* Lists */
+        .custom-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .custom-list li {
+            padding: 12px 0 12px 40px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .custom-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: 700;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .custom-list li:hover {
+            padding-left: 50px;
+            color: var(--accent-color);
+        }
+
+        .custom-list li:hover::before {
+            left: 10px;
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            position: relative;
+            overflow-x: auto;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .code-block::before {
+            content: 'markdown';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .code-block pre {
+            margin: 0;
+            color: var(--text-primary);
+            white-space: pre-wrap;
+        }
+
+        /* Badges */
+        .badge-custom {
+            display: inline-block;
+            padding: 8px 16px;
+            background: var(--gradient-3);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 5px;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .badge-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.5);
+        }
+
+        /* Alert boxes */
+        .alert-custom {
+            background: rgba(88, 166, 255, 0.1);
+            border-left: 4px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .alert-custom i {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-top: 3px;
+        }
+
+        .alert-success {
+            background: rgba(63, 185, 80, 0.1);
+            border-left-color: var(--success-color);
+        }
+
+        .alert-success i {
+            color: var(--success-color);
+        }
+
+        .alert-warning {
+            background: rgba(210, 153, 34, 0.1);
+            border-left-color: var(--warning-color);
+        }
+
+        .alert-warning i {
+            color: var(--warning-color);
+        }
+
+        /* Checklist */
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .checklist li {
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(88, 166, 255, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .checklist li:hover {
+            background: rgba(88, 166, 255, 0.1);
+            transform: translateX(10px);
+        }
+
+        .checklist li::before {
+            content: '☐';
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .checklist li.checked::before {
+            content: '☑';
+            color: var(--success-color);
+        }
+
+        /* Resources section */
+        .resource-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+            border-color: var(--accent-color);
+        }
+
+        .resource-card h5 {
+            color: var(--accent-color);
+            font-family: 'Space Mono', monospace;
+            margin-bottom: 10px;
+        }
+
+        .resource-card a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            word-break: break-all;
+        }
+
+        .resource-card a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
+        /* Button */
+        .btn-custom {
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.5);
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--secondary-color);
+            border-top: 1px solid var(--border-color);
+            padding: 40px 0;
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer p {
+            color: var(--text-secondary);
+            margin: 10px 0;
+        }
+
+        .footer-links {
+            margin: 20px 0;
+        }
+
+        .footer-links a {
+            color: var(--accent-color);
+            text-decoration: none;
+            margin: 0 15px;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-hover);
+        }
+
+        /* Progress bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--secondary-color);
+            z-index: 9999;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--gradient-1);
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .step-card {
+                padding: 25px;
+            }
+            
+            .step-number {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+            
+            .step-title {
+                font-size: 1.5rem;
+            }
+
+            .github-icon {
+                font-size: 3rem;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Copy button for code */
+        .copy-btn {
+            position: absolute;
+            top: 15px;
+            right: 80px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+
+        .code-block:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .copy-btn.copied {
+            background: var(--success-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Animated Background -->
+    <div class="bg-animated"></div>
+
+    <!-- Hero Header -->
+    <header class="hero-header">
+        <div class="hero-content text-center text-white">
+            <i class="fab fa-github github-icon icon-1"></i>
+            <i class="fab fa-github github-icon icon-2"></i>
+            <i class="fab fa-github github-icon icon-3"></i>
+            
+            <div class="container">
+                <h1 class="hero-title">
+                    <i class="fab fa-github me-3"></i>
+                    Perfil Personalizado en GitHub
+                </h1>
+                <p class="hero-subtitle">
+                    Crea tu carta de presentación digital con esta guía completa paso a paso
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        
+        <!-- Objetivo Section -->
+        <div class="step-card fade-in">
+            <div class="step-number">
+                <i class="fas fa-bullseye"></i>
+            </div>
+            <h2 class="step-title">📋 Objetivo de la Actividad</h2>
+            <div class="step-content">
+                <p>Crearás tu propio perfil personalizado en GitHub mediante un repositorio especial que será visible públicamente. Este perfil te servirá como carta de presentación en el mundo digital y como práctica para el manejo de herramientas de control de versiones.</p>
+                
+                <div class="alert-custom mt-4">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>¿Sabías qué?</strong> Tu perfil de GitHub es lo primero que ven los reclutadores y otros desarrolladores cuando visitan tu cuenta. ¡Hazlo memorable!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paso 1 -->
+        <div class="step-card fade-in">
+            <div class="step-number">1</div>
+            <h2 class="step-title">Paso 1: Crear el Repositorio Especial</h2>
+            <div class="step-content">
+                <ul class="custom-list">
+                    <li>Inicia sesión en tu cuenta de GitHub (<a href="https://github.com" target="_blank" class="text-decoration-none">https://github.com</a>)</li>
+                    <li>Haz clic en el botón <span class="badge-custom">+</span> en la esquina superior derecha de la pantalla</li>
+                    <li>Selecciona <strong>"New repository"</strong> (Nuevo repositorio)</li>
+                    <li>Configura el repositorio:</li>
+                </ul>
+
+                <div class="ms-5 mt-3">
+                    <p><strong>Repository name:</strong> Escribe <strong>exactamente</strong> tu nombre de usuario de GitHub</p>
+                    <div class="alert-warning mt-3">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>
+                            <strong>Ejemplo:</strong> Si tu usuario es <code>profeinformatica101</code>, el repositorio debe llamarse <code>profeinformatica101</code>
+                        </div>
+                    </div>
+                    
+                    <ul class="custom-list mt-3">
+                        <li><strong>Description</strong> (opcional): "Mi perfil personalizado de GitHub"</li>
+                        <li>Marca la casilla <strong>"Public"</strong> (Público) ✅</li>
+                        <li>Marca la casilla <strong>"Add a README file"</strong> ✅</li>
+                        <li>Deja sin marcar las demás opciones</li>
+                    </ul>
+                </div>
+
+                <button class="btn-custom mt-4">
+                    <i class="fas fa-plus-circle me-2"></i>
+                    Create repository
+                </button>
+
+                <div class="alert-success mt-4">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <strong>¡Atención!</strong> GitHub te mostrará un mensaje especial indicando que estás creando un repositorio que aparecerá en tu perfil público. ¡Es la señal de que lo estás haciendo bien!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paso 2 -->
+        <div class="step-card fade-in">
+            <div class="step-number">2</div>
+            <h2 class="step-title">Paso 2: Crear el Contenido del README.md</h2>
+            <div class="step-content">
+                <ul class="custom-list">
+                    <li>Abre el editor de Markdown en una nueva pestaña:</li>
+                </ul>
+
+                <div class="text-center my-4">
+                    <a href="https://pandao.github.io/editor.md/en.html" target="_blank" class="btn-custom">
+                        <i class="fas fa-external-link-alt me-2"></i>
+                        Abrir Editor de Markdown
+                    </a>
+                </div>
+
+                <ul class="custom-list">
+                    <li>Borra el contenido de ejemplo que aparece en el editor</li>
+                    <li>Copia y pega el siguiente código base en el editor:</li>
+                </ul>
+
+                <div class="code-block position-relative mt-4">
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <i class="fas fa-copy me-1"></i> Copiar
+                    </button>
+<pre># ¡Hola! 👋 Soy [Tu Nombre Completo]
+
+![Banner de bienvenida](https://via.placeholder.com/1000x200/0d1117/58a6ff?text=Bienvenido+a+mi+Perfil+de+GitHub)
+
+## 🚀 Sobre Mí
+
+Soy estudiante de **[Tu Especialidad/Carrera]** apasionado/a por la tecnología y el desarrollo de software. Me encanta aprender nuevas tecnologías y trabajar en proyectos innovadores.
+
+- 🔭 Actualmente trabajando en: **[Proyecto actual o "Mis estudios"]**
+- 🌱 Aprendiendo: **[Tecnologías que estás estudiando]**
+- 👯 Buscando colaborar en: **Proyectos educativos y open source**
+- 💬 Pregúntame sobre: **[Tus habilidades principales]**
+- 📫 Cómo contactarme: **tu.email@ejemplo.com**
+- ⚡ Dato curioso: **[Algo interesante sobre ti]**
+
+---
+
+## 🛠️ Tecnologías y Herramientas
+
+### Lenguajes de Programación
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+
+### Frameworks y Librerías
+![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+
+### Herramientas
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)
+![VS Code](https://img.shields.io/badge/VS_Code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white)
+
+---
+
+## 📊 Estadísticas de GitHub
+
+![Estadísticas de GitHub](https://github-readme-stats.vercel.app/api?username=TU_USUARIO&show_icons=true&theme=radical)
+
+![Lenguajes más usados](https://github-readme-stats.vercel.app/api/top-langs/?username=TU_USUARIO&layout=compact&theme=radical)
+
+---
+
+## 🏆 Mis Proyectos Destacados
+
+### 📁 [Nombre del Proyecto 1]
+> Breve descripción de tu proyecto más importante
+
+- 🔗 [Ver repositorio](https://github.com/TU_USUARIO/nombre-proyecto)
+- 💻 Tecnologías: HTML, CSS, JavaScript
+
+### 📁 [Nombre del Proyecto 2]
+> Descripción de otro proyecto relevante
+
+- 🔗 [Ver repositorio](https://github.com/TU_USUARIO/nombre-proyecto-2)
+- 💻 Tecnologías: Python, Bootstrap
+
+---
+
+## 🎓 Educación
+
+- 📚 **[Nombre de tu Institución Educativa]**
+  - [Tu grado/curso actual]
+  - Año: [2024-2025]
+
+---
+
+## 🌐 Conéctate Conmigo
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/tu-perfil)
+[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/tu-usuario)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:tu.email@ejemplo.com)
+[![Portfolio](https://img.shields.io/badge/Portfolio-000000?style=for-the-badge&logo=About.me&logoColor=white)](https://tu-portfolio.com)
+
+---
+
+## 📈 Actividad en GitHub
+
+![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=TU_USUARIO&theme=radical)
+
+---
+
+## 💭 Frase Favorita
+
+> "El código es como el humor. Cuando tienes que explicarlo, es malo." - Cory House
+
+---
+
+&lt;div align="center"&gt;
+  
+![Visitas al perfil](https://komarev.com/ghpvc/?username=TU_USUARIO&color=blueviolet&style=flat-square&label=Visitas+al+Perfil)
+
+**⭐ Si te gusta mi trabajo, no olvides darle una estrella a mis repositorios ⭐**
+
+&lt;/div&gt;</pre>
+                </div>
+
+                <div class="alert-custom mt-4">
+                    <i class="fas fa-lightbulb"></i>
+                    <div>
+                        <strong>Recuerda:</strong> Visualiza el resultado en el panel derecho del editor para ver cómo se verá tu perfil antes de publicarlo.
+                    </div>
+                </div>
+
+                <h4 class="text-white mt-5 mb-3">
+                    <i class="fas fa-edit me-2"></i>
+                    Personaliza el contenido reemplazando:
+                </h4>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="resource-card">
+                            <h5><i class="fas fa-user me-2"></i>Información Personal</h5>
+                            <ul class="list-unstyled">
+                                <li><code>[Tu Nombre Completo]</code> → Tu nombre real</li>
+                                <li><code>TU_USUARIO</code> → Tu usuario de GitHub</li>
+                                <li><code>[Tu Especialidad/Carrera]</code> → Tu carrera</li>
+                                <li><code>tu.email@ejemplo.com</code> → Tu correo real</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="resource-card">
+                            <h5><i class="fas fa-code me-2"></i>Proyectos y Habilidades</h5>
+                            <ul class="list-unstyled">
+                                <li><code>[Proyecto actual]</code> → Tu proyecto</li>
+                                <li><code>[Tecnologías]</code> → Lo que estudias</li>
+                                <li><code>[Habilidades]</code> → Tus destrezas</li>
+                                <li><code>[Dato curioso]</code> → Algo sobre ti</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paso 3 -->
+        <div class="step-card fade-in">
+            <div class="step-number">3</div>
+            <h2 class="step-title">Paso 3: Copiar el Contenido al README.md</h2>
+            <div class="step-content">
+                <ul class="custom-list">
+                    <li>Una vez personalizado el contenido en el editor, <strong>selecciona todo el texto</strong> del panel izquierdo (Ctrl+A o Cmd+A)</li>
+                    <li><strong>Copia</strong> el texto (Ctrl+C o Cmd+C)</li>
+                    <li>Regresa a tu <strong>repositorio en GitHub</strong></li>
+                    <li>Haz clic en el archivo <code>README.md</code></li>
+                    <li>Haz clic en el <strong>ícono del lápiz</strong> (✏️) que dice "Edit this file"</li>
+                    <li><strong>Borra</strong> todo el contenido actual</li>
+                    <li><strong>Pega</strong> el contenido que copiaste del editor (Ctrl+V o Cmd+V)</li>
+                    <li>Desplázate hacia abajo y haz clic en <strong>"Commit changes"</strong></li>
+                </ul>
+
+                <div class="alert-custom mt-4">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>En la ventana emergente:</strong>
+                        <ul class="mb-0 mt-2">
+                            <li><strong>Commit message:</strong> "Actualizar perfil personalizado"</li>
+                            <li><strong>Extended description:</strong> "Añadir información personal y proyectos"</li>
+                            <li>Deja seleccionada <strong>"Commit directly to the main branch"</strong></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <ul class="custom-list mt-3">
+                    <li>Haz clic en <strong>"Commit changes"</strong> para guardar</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Paso 4 -->
+        <div class="step-card fade-in">
+            <div class="step-number">4</div>
+            <h2 class="step-title">Paso 4: Verificar tu Perfil</h2>
+            <div class="step-content">
+                <ul class="custom-list">
+                    <li>Ve a tu perfil de GitHub haciendo clic en tu foto de perfil → <strong>"Your profile"</strong></li>
+                    <li>Deberías ver tu README personalizado en la parte superior de tu perfil</li>
+                    <li>Verifica que todo se vea correctamente:</li>
+                </ul>
+
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="alert-success">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>Checklist de verificación:</strong>
+                                <ul class="mb-0 mt-2">
+                                    <li>Las imágenes se cargan</li>
+                                    <li>Los badges se muestran</li>
+                                    <li>Los enlaces funcionan</li>
+                                    <li>No hay errores de formato</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                <strong>Si algo no funciona:</strong>
+                                <ul class="mb-0 mt-2">
+                                    <li>Verifica tu nombre de usuario</li>
+                                    <li>Revisa la sintaxis Markdown</li>
+                                    <li>Comprueba las URLs</li>
+                                    <li>Refresca la página</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Checklist de Entrega -->
+        <div class="step-card fade-in">
+            <div class="step-number">
+                <i class="fas fa-tasks"></i>
+            </div>
+            <h2 class="step-title">✅ Checklist de Entrega</h2>
+            <div class="step-content">
+                <p class="mb-4">Antes de dar por terminada la actividad, verifica que hayas completado:</p>
+                
+                <ul class="checklist">
+                    <li onclick="toggleCheck(this)">Crear el repositorio con el mismo nombre que tu usuario</li>
+                    <li onclick="toggleCheck(this)">Marcar el repositorio como público</li>
+                    <li onclick="toggleCheck(this)">Crear y personalizar el archivo README.md</li>
+                    <li onclick="toggleCheck(this)">Reemplazar toda la información de ejemplo con tus datos reales</li>
+                    <li onclick="toggleCheck(this)">Actualizar tu nombre de usuario en todas las URLs</li>
+                    <li onclick="toggleCheck(this)">Verificar que las estadísticas se muestren correctamente</li>
+                    <li onclick="toggleCheck(this)">Comprobar que el perfil sea visible desde tu página principal de GitHub</li>
+                    <li onclick="toggleCheck(this)">Agregar al menos 2-3 tecnologías que conozcas</li>
+                    <li onclick="toggleCheck(this)">Incluir información de contacto actualizada</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Recursos Adicionales -->
+        <div class="step-card fade-in">
+            <div class="step-number">
+                <i class="fas fa-book"></i>
+            </div>
+            <h2 class="step-title">📚 Recursos Adicionales</h2>
+            <div class="step-content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="resource-card">
+                            <h5><i class="fas fa-edit me-2"></i>Editor Markdown</h5>
+                            <a href="https://pandao.github.io/editor.md/en.html" target="_blank">https://pandao.github.io/editor.md/en.html</a>
+                        </div>
+                        <div class="resource-card">
+                            <h5><i class="fas fa-book-open me-2"></i>Guía de Markdown</h5>
+                            <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">https://www.markdownguide.org/basic-syntax/</a>
+                        </div>
+                        <div class="resource-card">
+                            <h5><i class="fas fa-shield-alt me-2"></i>Shields.io (Badges)</h5>
+                            <a href="https://shields.io" target="_blank">https://shields.io</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="resource-card">
+                            <h5><i class="fas fa-chart-bar me-2"></i>GitHub Readme Stats</h5>
+                            <a href="https://github.com/anuraghazra/github-readme-stats" target="_blank">github.com/anuraghazra/github-readme-stats</a>
+                        </div>
+                        <div class="resource-card">
+                            <h5><i class="fas fa-smile me-2"></i>Emojis para Markdown</h5>
+                            <a href="https://github.com/ikatyang/emoji-cheat-sheet" target="_blank">github.com/ikatyang/emoji-cheat-sheet</a>
+                        </div>
+                        <div class="resource-card">
+                            <h5><i class="fab fa-github me-2"></i>Documentación GitHub</h5>
+                            <a href="https://docs.github.com" target="_blank">https://docs.github.com</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Consejos Finales -->
+        <div class="step-card fade-in">
+            <div class="step-number">
+                <i class="fas fa-lightbulb"></i>
+            </div>
+            <h2 class="step-title">💡 Consejos Finales</h2>
+            <div class="step-content">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center p-4 bg-dark rounded">
+                            <i class="fas fa-heart fa-3x mb-3" style="color: #f093fb;"></i>
+                            <h5>Sé Auténtico</h5>
+                            <p>Tu perfil debe reflejar quién eres realmente</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center p-4 bg-dark rounded">
+                            <i class="fas fa-sync-alt fa-3x mb-3" style="color: #4facfe;"></i>
+                            <h5>Mantén Actualizado</h5>
+                            <p>Revisa y actualiza tu perfil regularmente</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center p-4 bg-dark rounded">
+                            <i class="fas fa-star fa-3x mb-3" style="color: #ffd700;"></i>
+                            <h5>Sé Profesional</h5>
+                            <p>Puede ser visto por futuros empleadores</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center p-4 bg-dark rounded">
+                            <i class="fas fa-trophy fa-3x mb-3" style="color: #3fb950;"></i>
+                            <h5>Muestra tus Logros</h5>
+                            <p>Destaca tus mejores proyectos</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center p-4 bg-dark rounded">
+                            <i class="fas fa-spell-check fa-3x mb-3" style="color: #d29922;"></i>
+                            <h5>Revisa la Ortografía</h5>
+                            <p>Un perfil sin errores causa mejor impresión</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center p-4 bg-dark rounded">
+                            <i class="fas fa-rocket fa-3x mb-3" style="color: #667eea;"></i>
+                            <h5>Sé Creativo</h5>
+                            <p>Haz que tu perfil sea único y memorable</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="text-center mt-5 mb-5 fade-in">
+            <h2 class="mb-4" style="font-family: 'Space Mono', monospace; color: var(--accent-color);">
+                ¡Buena suerte con tu perfil de GitHub! 🚀
+            </h2>
+            <a href="https://github.com" target="_blank" class="btn-custom">
+                <i class="fab fa-github me-2"></i>
+                Ir a GitHub
+            </a>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p><i class="fab fa-github me-2"></i>Guía creada para estudiantes | 2026</p>
+            <div class="footer-links">
+                <a href="https://github.com" target="_blank">GitHub</a>
+                <a href="https://docs.github.com" target="_blank">Documentación</a>
+                <a href="https://education.github.com" target="_blank">GitHub Education</a>
+            </div>
+            <p class="mt-3">
+                <small>
+                    Diseñado con <i class="fas fa-heart" style="color: #f093fb;"></i> para facilitar el aprendizaje
+                </small>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Progress bar on scroll
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Copy code function
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block');
+            const code = codeBlock.querySelector('pre').textContent;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check me-1"></i> ¡Copiado!';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Error al copiar:', err);
+                button.innerHTML = '<i class="fas fa-times me-1"></i> Error';
+            });
+        }
+
+        // Toggle checklist items
+        function toggleCheck(element) {
+            element.classList.toggle('checked');
+            
+            // Play a subtle animation
+            element.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                element.style.transform = 'scale(1)';
+            }, 200);
+            
+            // Check if all items are checked
+            const allItems = document.querySelectorAll('.checklist li');
+            const checkedItems = document.querySelectorAll('.checklist li.checked');
+            
+            if (allItems.length === checkedItems.length) {
+                // Trigger confetti or celebration
+                showCelebration();
+            }
+        }
+
+        // Celebration effect
+        function showCelebration() {
+            // Create celebration message
+            const celebration = document.createElement('div');
+            celebration.innerHTML = `
+                <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                     padding: 30px 50px; border-radius: 15px; z-index: 10000; 
+                     box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: celebrate 0.5s ease-out;">
+                    <h2 style="color: white; margin: 0; font-family: 'Space Mono', monospace;">
+                        🎉 ¡Felicitaciones! 🎉
+                    </h2>
+                    <p style="color: white; margin-top: 10px;">
+                        Has completado todos los pasos
+                    </p>
+                </div>
+            `;
+            document.body.appendChild(celebration);
+            
+            setTimeout(() => {
+                celebration.remove();
+            }, 3000);
+        }
+
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add pulse effect to step numbers on hover
+        document.querySelectorAll('.step-number').forEach(num => {
+            num.addEventListener('mouseenter', function() {
+                this.style.animation = 'none';
+                setTimeout(() => {
+                    this.style.animation = '';
+                }, 10);
+            });
+        });
+
+        // Console Easter Egg
+        console.log('%c¡Hola Desarrollador! 👋', 'color: #58a6ff; font-size: 20px; font-weight: bold;');
+        console.log('%c¿Revisando el código? ¡Excelente! 🔍', 'color: #3fb950; font-size: 14px;');
+        console.log('%cEsta página fue creada para ayudarte a crear tu perfil en GitHub.', 'color: #8b949e; font-size: 12px;');
+        console.log('%c¡Buena suerte con tu perfil! 🚀', 'color: #d29922; font-size: 14px;');
+    </script>
+</body>
+</html>
