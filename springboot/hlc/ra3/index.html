@@ -19,3 +19,231 @@
 </head>
 
 <body class="bg-light">
+<!-- RA3 (DAW II) - Descripción de entrega + Rúbrica + Incidencias (Bootstrap) -->
+<!-- Pega este bloque en Moodle (en modo HTML). Requiere que tu tema permita Bootstrap; si no, igual se verá bien por estilos básicos. -->
+
+<div class="container my-4">
+  <div class="card shadow-sm">
+    <div class="card-body">
+
+      <!-- Cabecera -->
+      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 mb-3">
+        <div>
+          <h1 class="h4 mb-1">📘 RA3 (DAW II) — Entrega y rúbrica</h1>
+          <p class="mb-0 text-secondary">
+            Desarrollo de aplicaciones backend con <strong>Spring Boot</strong>
+          </p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <span class="badge text-bg-danger fw-semibold">🔴 Insuficiente</span>
+          <span class="badge text-bg-warning fw-semibold">🟡 Básico</span>
+          <span class="badge text-bg-success fw-semibold">🟢 Adecuado</span>
+          <span class="badge text-bg-primary fw-semibold">🔵 Avanzado</span>
+        </div>
+      </div>
+
+      <!-- Fecha -->
+      <div class="alert alert-warning mb-4">
+        <strong>📅 Fecha final de entrega:</strong> <span class="fw-semibold">11 de febrero</span>.
+        <span class="d-block mt-1">A partir de esa fecha daremos comienzo al <strong>siguiente RA</strong>.</span>
+      </div>
+
+      <!-- Objetivo -->
+      <div class="card border-0 bg-light mb-4">
+        <div class="card-body">
+          <h2 class="h5 mb-2">🎯 Objetivo</h2>
+          <p class="mb-0">
+            Desarrollar una aplicación <strong>backend</strong> con <strong>Spring Boot</strong> aplicando arquitectura por capas,
+            controladores y rutas, persistencia con <strong>JPA/Hibernate</strong>, operaciones <strong>CRUD</strong>, uso de
+            <strong>servicios e inyección de dependencias</strong>, integración <strong>MVC + Thymeleaf</strong> y una capa básica
+            de <strong>autenticación y autorización</strong> con <strong>Spring Security</strong>.
+            La evaluación se realizará conforme a la <strong>rúbrica RA3</strong> publicada.
+          </p>
+        </div>
+      </div>
+
+      <!-- Qué entregar -->
+      <div class="row g-3 mb-4">
+        <div class="col-12 col-lg-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h2 class="h5 mb-2">📦 Qué debes entregar</h2>
+          <p class="mb-2"><strong>1) Repositorio en GitHub
+              (obligatorio)</strong></p>
+          <ul class="mb-3">
+            <li>El proyecto deberá estar gestionado en un repositorio llamado
+              <strong><code>tareasSpringBoot</code></strong>.</li>
+            <li>El repositorio debe contener el código actualizado del proyecto
+              y reflejar el trabajo realizado para el <strong>RA3</strong>.</li>
+            <li>Indica la <strong>URL del repositorio</strong>, la <strong>rama
+                de trabajo</strong> (por ejemplo <code>main</code> o
+              <code>dev</code>) y el <strong>commit</strong> correspondiente a
+              la entrega.</li>
+            <li>Los commits deben ser claros, coherentes y representativos del
+              trabajo realizado.</li>
+            <li>El proyecto debe <strong>compilar y arrancar</strong>
+              correctamente.</li>
+          </ul>
+
+              <p class="mb-2"><strong>2) Código fuente por Moodle (obligatorio)</strong></p>
+              <ul class="mb-0">
+                <li>Sube un <strong>ZIP</strong> con el <strong>código fuente completo</strong> (no ejecutables).</li>
+                <li>Debe incluir <code>pom.xml</code>, estructura Maven, recursos y plantillas Thymeleaf.</li>
+                <li>Incluye <code>application.properties</code> o <code>application.yml</code> (sin credenciales sensibles).</li>
+                <li>Añade un <strong>README mínimo</strong> con instrucciones de ejecución.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Requisitos mínimos -->
+        <div class="col-12 col-lg-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h2 class="h5 mb-2">🧪 Requisitos mínimos de funcionamiento</h2>
+              <p class="text-secondary mb-2">
+                Para que la entrega sea <strong>evaluable</strong>, debe cumplirse al menos:
+              </p>
+              <ul class="mb-0">
+                <li>La aplicación <strong>arranca</strong> correctamente.</li>
+                <li>Controladores y rutas funcionales.</li>
+                <li>Persistencia configurada (JPA/Hibernate) y base de datos operativa.</li>
+                <li>CRUD completo (crear, listar, actualizar, borrar).</li>
+                <li>Servicios e inyección de dependencias.</li>
+                <li>MVC + Thymeleaf con datos dinámicos.</li>
+                <li>Seguridad básica (autenticación y autorización con Spring Security).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Incidencias -->
+      <div class="alert alert-info mb-4">
+        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+          <div>
+            <h2 class="h5 mb-1">📩 Incidencias y seguimiento</h2>
+            <p class="mb-2">
+              Para agilizar la ayuda y la corrección, <strong>cualquier problema técnico deberá comunicarse mediante el
+              formulario de incidencias</strong>. Esto permite priorizar, reproducir y resolver dudas con más eficacia.
+            </p>
+            <p class="mb-2"><strong>Incluye:</strong> descripción, pasos para reproducir, mensaje de error/stacktrace, captura si aplica,
+              enlace a GitHub (repo/rama/commit) y referencia a la entrega en Moodle (ZIP).
+            </p>
+            <p class="mb-0">
+              <strong>Tras enviarlo</strong>, la incidencia queda registrada y se revisará por <strong>orden de prioridad</strong>
+              según su impacto; recibirás indicaciones concretas para la resolución (código, configuración o enfoque).
+            </p>
+          </div>
+
+          <div class="text-md-end">
+            <a class="btn btn-primary"
+               href="https://docs.google.com/forms/d/e/1FAIpQLSfDYlriU09hEhzBnN2TH57yHWRT4NTecg2KAVKZFMWcosGZ6A/viewform"
+               target="_blank" rel="noopener">
+              Abrir formulario
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Atención -->
+      <div class="card border-success mb-4">
+        <div class="card-body">
+          <h2 class="h5 mb-2">👨‍🏫 Atención al alumnado</h2>
+          <ul class="mb-0">
+            <li>Durante el horario lectivo estaré disponible en el <strong>Departamento de Informática</strong>.</li>
+            <li>Resolveré dudas, revisaré incidencias enviadas mediante el formulario y haré seguimiento del trabajo.</li>
+            <li>La evaluación se realizará conforme a la <strong>rúbrica publicada</strong>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Rúbrica -->
+      <h2 class="h5 mb-3">🧩 Rúbrica (RA3)</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+          <thead class="table-light">
+            <tr>
+              <th style="min-width:220px;">Criterio</th>
+              <th class="text-danger" style="min-width:240px;">🔴 Insuficiente</th>
+              <th class="text-warning" style="min-width:240px;">🟡 Básico</th>
+              <th class="text-success" style="min-width:240px;">🟢 Adecuado</th>
+              <th class="text-primary" style="min-width:240px;">🔵 Avanzado / Excelente</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>🏗️ Fundamentos y arquitectura de Spring Boot (CE a)</th>
+              <td>No identifica capas ni componentes. Estructura confusa o inexistente.</td>
+              <td>Reconoce conceptos (controller/service/repo) sin coherencia global.</td>
+              <td>Arquitectura por capas correcta y responsabilidades claras.</td>
+              <td>Diseño sólido, bien organizado y con buenas prácticas justificadas.</td>
+            </tr>
+            <tr>
+              <th>⚙️ Entorno (Maven, dependencias) (CE b)</th>
+              <td>Proyecto no compila/arranca o configuración incorrecta.</td>
+              <td>Proyecto funcional con dependencias desordenadas o innecesarias.</td>
+              <td>Configuración correcta con Maven y dependencias adecuadas.</td>
+              <td>Configuración optimizada; dependencias limpias y bien justificadas.</td>
+            </tr>
+            <tr>
+              <th>🛣️ Controladores y rutas (CE c)</th>
+              <td>Endpoints mal definidos o no funcionales.</td>
+              <td>Endpoints funcionales pero con rutas poco claras o inconsistentes.</td>
+              <td>Rutas coherentes y controladores correctos (MVC/REST según el caso).</td>
+              <td>Diseño limpio y escalable; buen uso de verbos HTTP y organización por recursos.</td>
+            </tr>
+            <tr>
+              <th>🎨 MVC + Thymeleaf (modelos, vistas, controladores)</th>
+              <td>No sigue MVC o vistas desconectadas del backend.</td>
+              <td>Vistas básicas con errores de integración o estructura mejorable.</td>
+              <td>Modelos, vistas y controladores integrados correctamente.</td>
+              <td>Plantillas reutilizables, limpias y coherentes (layouts/fragments).</td>
+            </tr>
+            <tr>
+              <th>🔄 Datos dinámicos en vistas (Thymeleaf)</th>
+              <td>No se muestran datos o se muestran incorrectamente.</td>
+              <td>Datos dinámicos simples sin validación ni control de errores.</td>
+              <td>Datos integrados correctamente; navegación y estados coherentes.</td>
+              <td>Validaciones, mensajes al usuario y manejo avanzado de estados.</td>
+            </tr>
+            <tr>
+              <th>🗄️ Persistencia ORM (JPA/Hibernate) (CE d)</th>
+              <td>Sin persistencia o mapeo incorrecto.</td>
+              <td>Entidades básicas con problemas de mapeo/relaciones.</td>
+              <td>Entidades bien mapeadas y uso correcto de anotaciones.</td>
+              <td>Buenas prácticas ORM; relaciones/modelo de dominio consistentes.</td>
+            </tr>
+            <tr>
+              <th>📝 Base de datos + CRUD (Repositorios) (CE e)</th>
+              <td>CRUD incompleto o no funcional.</td>
+              <td>CRUD funcional con duplicación de lógica o diseño mejorable.</td>
+              <td>CRUD completo e integrado correctamente con la base de datos.</td>
+              <td>Manejo de excepciones, validaciones y consultas personalizadas cuando procede.</td>
+            </tr>
+            <tr>
+              <th>🔌 Servicios e inyección de dependencias (CE f)</th>
+              <td>Código acoplado; lógica en controladores o sin servicios.</td>
+              <td>Servicios presentes pero con responsabilidades mezcladas.</td>
+              <td>Servicios correctos e inyección adecuada; capas separadas.</td>
+              <td>Diseño desacoplado, reutilizable, fácil de mantener y testear.</td>
+            </tr>
+            <tr>
+              <th>🔐 Autenticación y autorización (Spring Security) (CE g)</th>
+              <td>Sin seguridad o configuración incorrecta.</td>
+              <td>Login básico con fallos (rutas sin proteger, roles confusos).</td>
+              <td>Autenticación y autorización funcionales con rutas protegidas.</td>
+              <td>Roles/permisos claros, protección fina de rutas y buenas prácticas de configuración.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="text-secondary mb-0">
+        <small>*La calificación final se obtiene valorando el nivel alcanzado en cada criterio, según las indicaciones del módulo.*</small>
+      </p>
+
+    </div>
+  </div>
+</div>
+</body>
